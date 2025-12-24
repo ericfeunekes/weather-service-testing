@@ -12,11 +12,25 @@ from wxbench.providers.errors import ProviderPayloadError
 __all__ = ["fetch_msc_geomet_forecast", "fetch_msc_geomet_observation"]
 
 
-BASE_URL = "https://api.weather.gc.ca"
+BASE_URL = "https://api.weather.gc.ca/collections/citypageweather-realtime/items"
 
 
-def _build_common_params(latitude: float, longitude: float) -> dict[str, str]:
-    return {"lat": str(latitude), "lon": str(longitude), "f": "json"}
+def _build_common_params(latitude: float, longitude: float, *, bbox_radius: float = 0.5) -> dict[str, str]:
+    return {
+        "bbox": f"{longitude - bbox_radius},{latitude - bbox_radius},{longitude + bbox_radius},{latitude + bbox_radius}",
+        "limit": "1",
+        "f": "json",
+    }
+
+
+def _extract_first_feature(payload: dict[str, object]) -> dict[str, object]:
+    features = payload.get("features")
+    if not isinstance(features, list) or not features:
+        raise ProviderPayloadError("msc_geomet", "feature", "No features returned for coordinate")
+    first = features[0]
+    if not isinstance(first, dict):  # pragma: no cover - defensive
+        raise ProviderPayloadError("msc_geomet", "feature", "Unexpected feature format")
+    return first
 
 
 def fetch_msc_geomet_observation(
@@ -32,7 +46,7 @@ def fetch_msc_geomet_observation(
 
     request = client.build_request(
         "GET",
-        f"{base_url}/collections/observations/point",
+        base_url,
         params=_build_common_params(latitude, longitude),
         headers={"accept": "application/json"},
         timeout=timeout,
@@ -51,7 +65,8 @@ def fetch_msc_geomet_observation(
         raise ProviderPayloadError("msc_geomet", "observation", "Invalid JSON payload") from exc
 
     try:
-        return map_msc_geomet_observation(payload)
+        feature = _extract_first_feature(payload)
+        return map_msc_geomet_observation(feature)
     except ValueError as exc:
         raise ProviderPayloadError("msc_geomet", "observation", str(exc)) from exc
 
@@ -69,7 +84,7 @@ def fetch_msc_geomet_forecast(
 
     request = client.build_request(
         "GET",
-        f"{base_url}/collections/forecasts/point",
+        base_url,
         params=_build_common_params(latitude, longitude),
         headers={"accept": "application/json"},
         timeout=timeout,
@@ -88,6 +103,7 @@ def fetch_msc_geomet_forecast(
         raise ProviderPayloadError("msc_geomet", "forecast", "Invalid JSON payload") from exc
 
     try:
-        return map_msc_geomet_forecast(payload)
+        feature = _extract_first_feature(payload)
+        return map_msc_geomet_forecast(feature)
     except ValueError as exc:
         raise ProviderPayloadError("msc_geomet", "forecast", str(exc)) from exc
