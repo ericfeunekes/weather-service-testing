@@ -1,0 +1,22 @@
+# Tomorrow.io Weather API contract notes
+
+- **Base URL:** `https://api.tomorrow.io/v4/weather`
+- **Endpoints used:**
+  - `GET /realtime` (observations)
+  - `GET /forecast` (timelines)
+- **Required query params:**
+  - `location` – comma-separated `lat,lon`
+  - `units` – set to `metric`
+  - `apikey` – Tomorrow.io API key (optional in tests; required in production)
+  - `timesteps` – cadence for forecasts (default `1h` from adapter)
+- **Response fields mapped:**
+  - Common metadata: `data.time`, `data.location.lat`, `data.location.lon`, `data.location.name`
+  - Observation values: `data.values.temperature`, `dewPoint`, `windSpeed`, `windDirection`, `pressureSurfaceLevel`, `humidity`, `visibility`, `weatherCode`, `precipitationIntensity`
+  - Forecast timelines: `data.timelines[].timestep`, `intervals[].startTime`, `intervals[].values.temperature`, `precipitationProbability`, `precipitationIntensity`, `windSpeed`, `windDirection`, `weatherCode`
+- **Units and conversions:**
+  - Requests force metric output.
+  - Wind speed is returned in meters/second and converted to km/h.
+  - Pressure is returned in hPa and converted to kPa.
+  - Visibility is returned in meters and converted to kilometers.
+  - Precipitation intensity is provided in mm/hour and scaled by interval duration to mm totals.
+  - Weather codes are mapped to human-readable descriptions in the mapper.
