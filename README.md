@@ -1,128 +1,81 @@
 # README.md
 
-# weather-bench
+# wx-bench
 
-This repo benchmarks weather forecast accuracy for *your* location.
+Benchmark weather forecast accuracy for one location using your Ambient weather station as ground truth.
 
-Minimal viable scope (MVP)
-- Ground truth observations: your Ambient Weather station (via AmbientWeather.net API).
-- Forecast providers (MVP): OpenWeather + Tomorrow.io.
-- Scheduled runs:
+Scope (minimal)
+- Collect observations from AmbientWeather.net (your station uploads there).
+- Collect forecasts from:
+  - OpenWeather (hourly + daily)
+  - Tomorrow.io (hourly + daily)
+- Run on a schedule:
   - Hourly: capture one observation snapshot + one forecast snapshot per provider.
-  - Daily: score yesterday’s forecasts vs what actually happened and publish a simple report.
+  - Daily: score yesterday’s data and write a simple report.
 
-Optional later (keep out of MVP unless you need it)
-- Environment Canada integration, Apple WeatherKit, AccuWeather, Foreca, Xweather, etc.
-- Web dashboard / database / long-term storage.
+Non-goals (keep out of MVP)
+- Databases, dashboards, web apps, cloud storage, paid infra.
+- Multi-location support.
+- Adding every provider at once.
 
----
+## What this repo will produce
 
-## What you’ll get
+Raw data (append-only, easy to inspect)
+- JSONL snapshots stored under `data/`:
+  - `data/observations/<source>/YYYY-MM-DD.jsonl`
+  - `data/forecasts/<provider>/YYYY-MM-DD.jsonl`
 
-1) Raw data you can inspect
-- Line-delimited JSON (JSONL) snapshots in `data/`.
-- One file per day per source to keep files small and append-friendly.
+Daily reports
+- `reports/YYYY-MM-DD.md` (human-readable ranking + metrics)
+- `reports/YYYY-MM-DD.json` (machine-readable metrics)
 
-2) A daily accuracy report
-- Markdown summary in `reports/` that ranks providers for:
-  - Hourly temperature error (MAE)
-  - Daily high/low error (MAE)
-  - Precipitation occurrence (simple hit-rate or Brier score)
+## Quick start (GitHub Actions)
 
----
-
-## Setup (phone-friendly)
-
-1) Create a new GitHub repo (private recommended).
-2) Add two files to the repo root:
-   - `README.md` (this file)
-   - `AGENTS.md` (included in this chat)
-3) Open Codex Cloud and connect this repo.
-4) Tell Codex: “Implement this repo according to README.md and AGENTS.md (start with MVP only).”
-
-When Codex opens a PR, merge it.
-
-Then configure GitHub Actions secrets/vars and wait for the scheduled workflows to run.
-
----
-
-## Configuration
-
-### GitHub Actions Secrets (required for MVP)
-Add these in GitHub → Settings → Secrets and variables → Actions → Secrets:
+1) Create a new GitHub repo and add this `README.md` and `AGENTS.md`.
+2) Enable GitHub Actions on the repo.
+3) Add secrets (GitHub → Settings → Secrets and variables → Actions → Secrets):
 
 - `AMBIENT_APPLICATION_KEY`
 - `AMBIENT_API_KEY`
 - `OPENWEATHER_API_KEY`
 - `TOMORROW_API_KEY`
 
-### GitHub Actions Variables (non-secret config)
-Add these in GitHub → Settings → Secrets and variables → Actions → Variables:
+4) Add variables (GitHub → Settings → Secrets and variables → Actions → Variables):
 
-- `WX_LAT` (e.g., `44.65`)
-- `WX_LON` (e.g., `-63.57`)
-- `WX_TZ`  (e.g., `America/Halifax`)
+- `WX_LAT`  (e.g., `44.65`)
+- `WX_LON`  (e.g., `-63.57`)
+- `WX_TZ`   (e.g., `America/Halifax`)
 
-Optional:
+Optional variables:
 - `WX_UNITS` (`metric` default)
-- `WX_PROVIDER_ENABLE` (comma-separated list, e.g. `ambient,openweather,tomorrow`)
+- `AMBIENT_DEVICE_MAC` (only if your Ambient account has multiple devices)
 
----
+After workflows are added, the repo will start collecting snapshots hourly and publishing a daily report.
 
-## How it runs
+## Running locally (once implemented)
 
-GitHub Actions workflows (Codex will create these):
-- `.github/workflows/hourly.yml` (cron hourly)
-  - Fetch Ambient observation snapshot
-  - Fetch forecast snapshots from enabled providers
-  - Append to `data/…/*.jsonl`
-  - Commit changes back to `main` (or upload artifacts; MVP prefers commit for persistence)
+Create a venv, install dependencies, run fetch + score:
 
-- `.github/workflows/daily.yml` (cron daily)
-  - Read yesterday’s raw snapshots
-  - Score errors
-  - Write `reports/YYYY-MM-DD.md` + a small machine-readable `reports/YYYY-MM-DD.json`
-  - Commit the report
+- `python -m venv .venv`
+- `source .venv/bin/activate`
+- `pip install -r requirements.txt -r requirements-dev.txt`
+- `python -m wxbench.fetch`   (or `python scripts/fetch.py`)
+- `python -m wxbench.score --date YYYY-MM-DD`
 
----
+(Exact commands are defined in AGENTS.md and should match the repo.)
 
-## Data layout (intended)
+## Codex Cloud notes (development)
 
-data/
-  observations/
-    ambient/
-      2025-01-05.jsonl
-  forecasts/
-    openweather/
-      2025-01-05.jsonl
-    tomorrow/
-      2025-01-05.jsonl
-reports/
-  2025-01-05.md
-  2025-01-05.json
-specs/
-  openweather.openapi.json        (if available)
-  tomorrow.openapi.json           (if available)
-  ambient.openapi.json            (if available; otherwise a short specs/ambient.md)
-  README.md                       (notes about how specs were obtained)
+If you use Codex Cloud to implement or run code in its cloud environment:
+- Environment variables persist for the full task.
+- “Secrets” are only available to setup scripts and are removed when the agent is running. If you want the agent itself to run live API calls during development/tests, provide keys as environment variables (or rely on fixtures).  [oai_citation:1‡OpenAI Developers](https://developers.openai.com/codex/cloud/environments/)
+- Internet access is off by default for the agent phase; enable it only if needed and prefer an allowlist of domains.  [oai_citation:2‡OpenAI Developers](https://developers.openai.com/codex/cloud/internet-access/)
 
----
+## Repo layout (target)
 
-## Notes / constraints
-
-- You won’t get meaningful rankings until you have at least a few days of data.
-- Keep the MVP small: collect snapshots + compute basic scores. Only then add more providers or charts.
-
----
-
-## Suggested first Codex prompt (copy/paste)
-
-Implement the MVP described in README.md and AGENTS.md:
-- Python package + scripts to fetch Ambient obs + OpenWeather + Tomorrow forecasts.
-- Store snapshots as JSONL under data/ (one file per day per source).
-- Add hourly + daily GitHub Actions workflows.
-- Add scoring (MAE for temperature; daily high/low; precip occurrence).
-- Tests must run without secrets (use fixtures); add an optional “live smoke test” that runs only if keys exist.
-- Add specs/ folder and fetch OpenAPI specs where possible; otherwise write minimal specs/*.md describing endpoints used.
-
-Do not add databases, dashboards, or extra providers in the first PR.
+- `src/wxbench/` (library code)
+- `scripts/` (thin wrappers if needed)
+- `data/` (raw JSONL snapshots; committed or stored via artifacts, depending on workflow choice)
+- `reports/` (daily outputs)
+- `specs/` (OpenAPI specs or minimal endpoint docs per provider)
+- `.github/workflows/` (hourly + daily schedules
