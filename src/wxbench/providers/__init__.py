@@ -6,11 +6,13 @@ Use dependency injection for clients and clocks to keep integration points
 testable.
 """
 
+from wxbench.providers.ambient_weather import fetch_ambient_weather_observation
 from wxbench.providers.msc_geomet import fetch_msc_geomet_forecast, fetch_msc_geomet_observation
 from wxbench.providers.openweather import fetch_openweather_forecast, fetch_openweather_observation
 from wxbench.providers.tomorrow_io import fetch_tomorrow_io_forecast, fetch_tomorrow_io_observation
 
 __all__ = [
+    "fetch_ambient_weather_observation",
     "fetch_msc_geomet_forecast",
     "fetch_msc_geomet_observation",
     "fetch_openweather_forecast",
