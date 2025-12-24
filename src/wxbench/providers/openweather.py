@@ -7,6 +7,7 @@ import httpx
 
 from wxbench.domain.mappers.openweather import map_openweather_forecast, map_openweather_observation
 from wxbench.providers._http import DEFAULT_TIMEOUT, send_with_retries
+from wxbench.providers.errors import ProviderPayloadError
 
 __all__ = ["fetch_openweather_forecast", "fetch_openweather_observation"]
 
@@ -40,8 +41,23 @@ def fetch_openweather_observation(
         headers={"accept": "application/json"},
         timeout=timeout,
     )
-    response = send_with_retries(client, request, retries=retries)
-    return map_openweather_observation(response.json())
+    response = send_with_retries(
+        client,
+        request,
+        provider="openweather",
+        operation="observation",
+        retries=retries,
+    )
+
+    try:
+        payload = response.json()
+    except (ValueError, httpx.HTTPError) as exc:
+        raise ProviderPayloadError("openweather", "observation", "Invalid JSON payload") from exc
+
+    try:
+        return map_openweather_observation(payload)
+    except ValueError as exc:
+        raise ProviderPayloadError("openweather", "observation", str(exc)) from exc
 
 
 def fetch_openweather_forecast(
@@ -63,5 +79,20 @@ def fetch_openweather_forecast(
         headers={"accept": "application/json"},
         timeout=timeout,
     )
-    response = send_with_retries(client, request, retries=retries)
-    return map_openweather_forecast(response.json())
+    response = send_with_retries(
+        client,
+        request,
+        provider="openweather",
+        operation="forecast",
+        retries=retries,
+    )
+
+    try:
+        payload = response.json()
+    except (ValueError, httpx.HTTPError) as exc:
+        raise ProviderPayloadError("openweather", "forecast", "Invalid JSON payload") from exc
+
+    try:
+        return map_openweather_forecast(payload)
+    except ValueError as exc:
+        raise ProviderPayloadError("openweather", "forecast", str(exc)) from exc
