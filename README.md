@@ -58,6 +58,21 @@ Create and install:
 Run tests:
 - `pytest -q`
 
+## Refreshing provider specs
+
+OpenAPI documents for unauthenticated providers can be downloaded locally with
+httpx. The helper script saves each document to `specs/{provider}.json` without
+any redaction or API keys. The default target is Environment and Climate Change
+Canada's MSC GeoMet OGC API (`https://api.weather.gc.ca/openapi`), which is
+public and does not require authentication.
+
+```
+PYTHONPATH=src python scripts/fetch_specs.py
+```
+
+The command relies only on public documentation endpoints and can be run from
+any development environment.
+
 ## How data is stored (intended)
 
 Raw snapshots are append-only JSONL:
