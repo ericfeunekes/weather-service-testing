@@ -1,0 +1,19 @@
+interactions:
+- request:
+    body: null
+    headers:
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.tomorrow.io/v4/weather/realtime?location=40.7%2C-74.0&units=metric&apikey=REDACTED
+  response:
+    body:
+      string: |-
+        {"data": {"time": "2024-05-01T12:00:00Z", "location": {"lat": 40.7, "lon": -74.0, "name": "NYC"}, "values": {"temperature": 15.2, "dewPoint": 7.5, "windSpeed": 5.5, "windDirection": 210, "pressureSurfaceLevel": 1012.5, "humidity": 62, "visibility": 15000, "weatherCode": 4200, "precipitationIntensity": 0.1}}}
+    headers:
+      Content-Type:
+      - application/json
+    status:
+      code: 200
+      message: OK
+version: 1
