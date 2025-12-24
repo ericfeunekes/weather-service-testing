@@ -2,80 +2,84 @@
 
 # wx-bench
 
-Benchmark weather forecast accuracy for one location using your Ambient weather station as ground truth.
+Benchmarks weather forecast accuracy for a single configured location, using your own weather station as ground truth.
 
-Scope (minimal)
-- Collect observations from AmbientWeather.net (your station uploads there).
-- Collect forecasts from:
-  - OpenWeather (hourly + daily)
-  - Tomorrow.io (hourly + daily)
-- Run on a schedule:
-  - Hourly: capture one observation snapshot + one forecast snapshot per provider.
-  - Daily: score yesterday’s data and write a simple report.
+This repo is designed to be automation-first (GitHub Actions) and testable without relying on live external services in CI.
 
-Non-goals (keep out of MVP)
-- Databases, dashboards, web apps, cloud storage, paid infra.
-- Multi-location support.
-- Adding every provider at once.
+## Repo-wide principles
 
-## What this repo will produce
+Architecture
+- Keep business logic pure where possible.
+- Treat external HTTP calls as a thin adapter behind a hard seam.
+- Pass dependencies (client, clock, config) as arguments so orchestration remains testable.
 
-Raw data (append-only, easy to inspect)
-- JSONL snapshots stored under `data/`:
-  - `data/observations/<source>/YYYY-MM-DD.jsonl`
-  - `data/forecasts/<provider>/YYYY-MM-DD.jsonl`
+Testing
+- Recorded HTTP conversations are reusable artifacts.
+- CI must be deterministic: replay recordings, do not hit the network.
+- Live end-to-end checks are smoke tests only and run on a schedule or manually.
 
-Daily reports
-- `reports/YYYY-MM-DD.md` (human-readable ranking + metrics)
-- `reports/YYYY-MM-DD.json` (machine-readable metrics)
+## Repository layout (target)
 
-## Quick start (GitHub Actions)
+- `src/wxbench/`
+  - `domain/` pure logic: mapping, validation, scoring, decisions
+  - `providers/` boundary adapters: HTTP calls, auth, retries, timeouts
+  - `storage/` append-only JSONL and report writers
+- `tests/`
+  - `unit/` pure-function tests only
+  - `contract/` VCR-based boundary contract tests (replay in CI)
+  - `component/` larger slices using the same cassettes (replay in CI)
+  - `e2e/` minimal live smoke tests (not run on PRs)
+  - `fixtures/` golden JSON used by unit tests and respx variants
+  - `cassettes/` VCR recordings (redacted)
+- `data/` (optional, depending on workflow persistence choice)
+- `reports/` daily outputs
+- `specs/` OpenAPI specs (if available) or minimal endpoint docs
 
-1) Create a new GitHub repo and add this `README.md` and `AGENTS.md`.
-2) Enable GitHub Actions on the repo.
-3) Add secrets (GitHub → Settings → Secrets and variables → Actions → Secrets):
+## Configuration
 
-- `AMBIENT_APPLICATION_KEY`
-- `AMBIENT_API_KEY`
-- `OPENWEATHER_API_KEY`
-- `TOMORROW_API_KEY`
+All runtime configuration is via environment variables.
 
-4) Add variables (GitHub → Settings → Secrets and variables → Actions → Variables):
+Location
+- `WX_LAT`
+- `WX_LON`
+- `WX_TZ` (IANA timezone)
 
-- `WX_LAT`  (e.g., `44.65`)
-- `WX_LON`  (e.g., `-63.57`)
-- `WX_TZ`   (e.g., `America/Halifax`)
+Provider keys are expected via environment variables at runtime (in GitHub Actions these come from repo secrets). Do not commit keys.
 
-Optional variables:
-- `WX_UNITS` (`metric` default)
-- `AMBIENT_DEVICE_MAC` (only if your Ambient account has multiple devices)
+## Development setup
 
-After workflows are added, the repo will start collecting snapshots hourly and publishing a daily report.
+Python 3.12+ recommended.
 
-## Running locally (once implemented)
-
-Create a venv, install dependencies, run fetch + score:
-
+Create and install:
 - `python -m venv .venv`
 - `source .venv/bin/activate`
 - `pip install -r requirements.txt -r requirements-dev.txt`
-- `python -m wxbench.fetch`   (or `python scripts/fetch.py`)
-- `python -m wxbench.score --date YYYY-MM-DD`
 
-(Exact commands are defined in AGENTS.md and should match the repo.)
+Run tests:
+- `pytest -q`
 
-## Codex Cloud notes (development)
+## How data is stored (intended)
 
-If you use Codex Cloud to implement or run code in its cloud environment:
-- Environment variables persist for the full task.
-- “Secrets” are only available to setup scripts and are removed when the agent is running. If you want the agent itself to run live API calls during development/tests, provide keys as environment variables (or rely on fixtures).  [oai_citation:1‡OpenAI Developers](https://developers.openai.com/codex/cloud/environments/)
-- Internet access is off by default for the agent phase; enable it only if needed and prefer an allowlist of domains.  [oai_citation:2‡OpenAI Developers](https://developers.openai.com/codex/cloud/internet-access/)
+Raw snapshots are append-only JSONL:
+- One file per day per source/provider.
+- Each line is one “snapshot event” with a capture timestamp and raw provider payload.
 
-## Repo layout (target)
+Daily reports:
+- `reports/YYYY-MM-DD.md` (human-readable)
+- `reports/YYYY-MM-DD.json` (machine-readable metrics)
 
-- `src/wxbench/` (library code)
-- `scripts/` (thin wrappers if needed)
-- `data/` (raw JSONL snapshots; committed or stored via artifacts, depending on workflow choice)
-- `reports/` (daily outputs)
-- `specs/` (OpenAPI specs or minimal endpoint docs per provider)
-- `.github/workflows/` (hourly + daily schedules
+## CI expectations
+
+- Unit tests: no network, no external files required.
+- Contract/component tests: VCR replay-only in CI.
+- E2E smoke: scheduled or manual, not on every PR.
+
+## Security and privacy
+
+- Never log secrets.
+- VCR recordings must redact auth headers, tokens, and any sensitive identifiers.
+- Avoid embedding precise personal location details in documentation. Use only configuration variables.
+
+## Contributing
+
+See `AGENTS.md` for repo-wide engineering rules (testing pyramid, seams, recording policy, and library choices).
