@@ -1,0 +1,16 @@
+{
+  "type": "Feature",
+  "geometry": {"type": "Point", "coordinates": [-75.7, 45.4]},
+  "properties": {
+    "stationIdentifier": "CARO",
+    "observationTime": "2024-05-01T12:00:00Z",
+    "airTemperature": 12.3,
+    "dewpointTemperature": 3.4,
+    "wind": {"direction": 260, "speed": 15.2},
+    "seaLevelPressure": 101.2,
+    "relativeHumidity": 72,
+    "visibility": 24.0,
+    "presentWeather": [{"value": "Rain"}],
+    "precipitationLastHour": 0.2
+  }
+}

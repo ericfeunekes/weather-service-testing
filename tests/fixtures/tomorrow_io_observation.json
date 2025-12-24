@@ -1,0 +1,21 @@
+{
+  "data": {
+    "time": "2024-05-01T12:00:00Z",
+    "location": {
+      "lat": 40.7,
+      "lon": -74.0,
+      "name": "NYC"
+    },
+    "values": {
+      "temperature": 15.2,
+      "dewPoint": 7.5,
+      "windSpeed": 5.5,
+      "windDirection": 210,
+      "pressureSurfaceLevel": 1012.5,
+      "humidity": 62,
+      "visibility": 15000,
+      "weatherCode": 4200,
+      "precipitationIntensity": 0.1
+    }
+  }
+}
