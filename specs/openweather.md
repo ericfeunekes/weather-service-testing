@@ -1,0 +1,25 @@
+# OpenWeather API contract notes
+
+- **Base URL:** `https://api.openweathermap.org/data/2.5`
+- **Endpoints used:**
+  - `GET /weather` (current conditions)
+  - `GET /forecast` (5-day/3-hour forecast)
+- **Required query params:**
+  - `lat` – latitude in decimal degrees
+  - `lon` – longitude in decimal degrees
+  - `appid` – API key (optional in tests; required in production)
+- **Response fields mapped:**
+  - Coordinates: `coord.lat`, `coord.lon`
+  - Observation timestamps: `dt` (UNIX seconds), forecast list `list[].dt`
+  - Temperature metrics from `main`: `temp`, `temp_max`, `temp_min`, `pressure`, `humidity`
+  - Wind: `wind.speed`, `wind.deg`
+  - Visibility: `visibility`
+  - Weather summary: first element of `weather[].description` or `weather[].main`
+  - Precipitation: `rain.1h`/`rain.3h` or `snow.1h`/`snow.3h`
+  - Forecast precipitation probability: `list[].pop`
+- **Units and conversions:**
+  - Temperatures are returned in Kelvin; mappers convert to Celsius.
+  - Pressure is returned in hPa and converted to kPa.
+  - Wind speed is returned in meters/second and converted to km/h.
+  - Visibility is returned in meters and converted to kilometers.
+  - Precipitation values are treated as millimeters (per hour or per 3-hour window as provided).
