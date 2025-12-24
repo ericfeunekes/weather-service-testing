@@ -1,0 +1,19 @@
+interactions:
+- request:
+    body: null
+    headers:
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.tomorrow.io/v4/weather/forecast?location=40.7%2C-74.0&units=metric&apikey=REDACTED&timesteps=1h
+  response:
+    body:
+      string: |-
+        {"data": {"time": "2024-05-01T12:30:00Z", "location": {"lat": 40.7, "lon": -74.0}, "timelines": [{"timestep": "1h", "startTime": "2024-05-01T13:00:00Z", "intervals": [{"startTime": "2024-05-01T13:00:00Z", "values": {"temperature": 16.0, "precipitationProbability": 20, "precipitationIntensity": 0.0, "windSpeed": 6.0, "windDirection": 220, "weatherCode": 1001}}, {"startTime": "2024-05-01T14:00:00Z", "values": {"temperature": 14.0, "precipitationProbability": 55, "precipitationIntensity": 0.4, "windSpeed": 7.5, "windDirection": 230, "weatherCode": 4200}}]}]}}
+    headers:
+      Content-Type:
+      - application/json
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,0 +1,19 @@
+interactions:
+- request:
+    body: null
+    headers:
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.openweathermap.org/data/2.5/forecast?lat=51.51&lon=-0.13&appid=REDACTED
+  response:
+    body:
+      string: |-
+        {"cod": "200", "message": 0.0032, "cnt": 2, "list": [{"dt": 1682910000, "main": {"temp": 290.15, "temp_min": 289.15, "temp_max": 291.15, "pressure": 1014, "humidity": 70}, "weather": [{"id": 801, "main": "Clouds", "description": "few clouds", "icon": "02d"}], "wind": {"speed": 3.5, "deg": 90}, "rain": {"3h": 0}, "pop": 0.1, "dt_txt": "2023-05-01 03:00:00"}, {"dt": 1682920800, "main": {"temp": 292.15, "temp_min": 291.15, "temp_max": 293.15, "pressure": 1013, "humidity": 60}, "weather": [{"id": 500, "main": "Rain", "description": "light rain", "icon": "10d"}], "wind": {"speed": 4.0, "deg": 100}, "rain": {"3h": 0.7}, "pop": 0.6, "dt_txt": "2023-05-01 06:00:00"}], "city": {"id": 2643743, "name": "London", "coord": {"lat": 51.51, "lon": -0.13}, "country": "GB"}}
+    headers:
+      Content-Type:
+      - application/json
+    status:
+      code: 200
+      message: OK
+version: 1
