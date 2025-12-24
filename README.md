@@ -58,6 +58,43 @@ Create and install:
 Run tests:
 - `pytest -q`
 
+### Recording or refreshing contract tests
+
+Contract tests use VCR cassettes by default. To exercise the live provider APIs and regenerate recordings:
+
+1. Export API keys (only required for authenticated providers):
+   - `WX_OPENWEATHER_API_KEY` – OpenWeather
+   - `WX_TOMORROW_IO_API_KEY` – Tomorrow.io
+   - `WX_AMBIENT_API_KEY` and `WX_AMBIENT_APPLICATION_KEY` – Ambient Weather
+   - Optional location overrides for contract tests: `WX_OPENWEATHER_LAT/LON`, `WX_TOMORROW_IO_LAT/LON`, `WX_MSC_GEOMET_LAT/LON`.
+2. Enable recording: `WX_VCR_RECORD_MODE=all pytest tests/contract -q`
+
+Cassettes redact API keys automatically; never commit raw credentials.
+
+### Live provider connectivity (latest run)
+
+Command: `WX_VCR_RECORD_MODE=all pytest tests/contract -rs -q`
+
+Required environment for a full live run (all providers):
+
+- `WX_AMBIENT_API_KEY` and `WX_AMBIENT_APPLICATION_KEY`
+- `WX_OPENWEATHER_API_KEY`
+- `WX_TOMORROW_IO_API_KEY`
+- Optional location overrides: `WX_MSC_GEOMET_LAT/LON`, `WX_OPENWEATHER_LAT/LON`, `WX_TOMORROW_IO_LAT/LON`
+
+Latest recorded attempt:
+
+- ✅ MSC GeoMet forecast and observation calls hit the live `citypageweather-realtime` endpoint without credentials using the
+  default Ottawa bounding box (`WX_MSC_GEOMET_LAT/LON` overrides available).
+- ⚠️ Ambient Weather was skipped because `WX_AMBIENT_API_KEY` and `WX_AMBIENT_APPLICATION_KEY` were not set.
+- ⚠️ OpenWeather was skipped because `WX_OPENWEATHER_API_KEY` was not present in the environment; this variable must be set for
+  live recording.
+- ⚠️ Tomorrow.io was skipped because `WX_TOMORROW_IO_API_KEY` was not present in the environment; this variable must be set for
+  live recording.
+
+Re-run the command above after exporting the missing keys (and optional `*_LAT/LON` overrides) to exercise the live APIs and
+refresh the VCR cassettes.
+
 ## Refreshing provider specs
 
 OpenAPI documents for unauthenticated providers can be downloaded locally with
