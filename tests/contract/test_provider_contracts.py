@@ -10,6 +10,7 @@ import vcr
 from wxbench.providers import (
     fetch_msc_geomet_forecast,
     fetch_msc_geomet_observation,
+    fetch_ambient_weather_observation,
     fetch_openweather_forecast,
     fetch_openweather_observation,
     fetch_tomorrow_io_forecast,
@@ -37,6 +38,21 @@ recorder = vcr.VCR(
 def client() -> httpx.Client:
     with httpx.Client() as session:
         yield session
+
+
+def test_ambient_weather_observation_contract(client: httpx.Client) -> None:
+    with recorder.use_cassette("ambient_weather_observation.yaml"):
+        observation = fetch_ambient_weather_observation(
+            api_key="super-secret",
+            application_key="another-secret",
+            client=client,
+        )
+
+    assert observation.provider == "ambient_weather"
+    assert observation.station == "Backyard"
+    assert observation.location.latitude == pytest.approx(40.0)
+    assert observation.location.longitude == pytest.approx(-75.0)
+    assert observation.temperature_c == pytest.approx(20.0, abs=0.01)
 
 
 def test_openweather_observation_contract(client: httpx.Client) -> None:

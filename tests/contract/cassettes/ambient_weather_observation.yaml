@@ -1,0 +1,19 @@
+interactions:
+- request:
+    body: null
+    headers:
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.ambientweather.net/v1/devices?applicationKey=REDACTED&apiKey=REDACTED
+  response:
+    body:
+      string: |-
+        [{"macAddress":"00:11:22:33:44:55","info":{"name":"Backyard","coords":[40.0,-75.0]},"lastData":{"dateutc":1685577600000,"tempf":68.0,"dewPoint":55.0,"humidity":70,"windspeedmph":5.0,"winddir":135,"baromrelin":29.92,"hourlyrainin":0.02}}]
+    headers:
+      Content-Type:
+      - application/json
+    status:
+      code: 200
+      message: OK
+version: 1
