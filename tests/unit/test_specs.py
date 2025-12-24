@@ -1,4 +1,9 @@
+import sys
 from pathlib import Path
+
+# Ensure src is importable without installation
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.append(str(ROOT / "src"))
 
 from wxbench import specs
 
