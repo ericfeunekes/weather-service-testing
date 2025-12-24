@@ -7,6 +7,7 @@ import httpx
 
 from wxbench.domain.mappers.msc_geomet import map_msc_geomet_forecast, map_msc_geomet_observation
 from wxbench.providers._http import DEFAULT_TIMEOUT, send_with_retries
+from wxbench.providers.errors import ProviderPayloadError
 
 __all__ = ["fetch_msc_geomet_forecast", "fetch_msc_geomet_observation"]
 
@@ -36,8 +37,23 @@ def fetch_msc_geomet_observation(
         headers={"accept": "application/json"},
         timeout=timeout,
     )
-    response = send_with_retries(client, request, retries=retries)
-    return map_msc_geomet_observation(response.json())
+    response = send_with_retries(
+        client,
+        request,
+        provider="msc_geomet",
+        operation="observation",
+        retries=retries,
+    )
+
+    try:
+        payload = response.json()
+    except (ValueError, httpx.HTTPError) as exc:
+        raise ProviderPayloadError("msc_geomet", "observation", "Invalid JSON payload") from exc
+
+    try:
+        return map_msc_geomet_observation(payload)
+    except ValueError as exc:
+        raise ProviderPayloadError("msc_geomet", "observation", str(exc)) from exc
 
 
 def fetch_msc_geomet_forecast(
@@ -58,5 +74,20 @@ def fetch_msc_geomet_forecast(
         headers={"accept": "application/json"},
         timeout=timeout,
     )
-    response = send_with_retries(client, request, retries=retries)
-    return map_msc_geomet_forecast(response.json())
+    response = send_with_retries(
+        client,
+        request,
+        provider="msc_geomet",
+        operation="forecast",
+        retries=retries,
+    )
+
+    try:
+        payload = response.json()
+    except (ValueError, httpx.HTTPError) as exc:
+        raise ProviderPayloadError("msc_geomet", "forecast", "Invalid JSON payload") from exc
+
+    try:
+        return map_msc_geomet_forecast(payload)
+    except ValueError as exc:
+        raise ProviderPayloadError("msc_geomet", "forecast", str(exc)) from exc

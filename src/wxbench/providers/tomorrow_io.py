@@ -7,6 +7,7 @@ import httpx
 
 from wxbench.domain.mappers.tomorrow_io import map_tomorrow_io_forecast, map_tomorrow_io_observation
 from wxbench.providers._http import DEFAULT_TIMEOUT, send_with_retries
+from wxbench.providers.errors import ProviderPayloadError
 
 __all__ = ["fetch_tomorrow_io_forecast", "fetch_tomorrow_io_observation"]
 
@@ -43,8 +44,23 @@ def fetch_tomorrow_io_observation(
         headers={"accept": "application/json"},
         timeout=timeout,
     )
-    response = send_with_retries(client, request, retries=retries)
-    return map_tomorrow_io_observation(response.json())
+    response = send_with_retries(
+        client,
+        request,
+        provider="tomorrow_io",
+        operation="observation",
+        retries=retries,
+    )
+
+    try:
+        payload = response.json()
+    except (ValueError, httpx.HTTPError) as exc:
+        raise ProviderPayloadError("tomorrow_io", "observation", "Invalid JSON payload") from exc
+
+    try:
+        return map_tomorrow_io_observation(payload)
+    except ValueError as exc:
+        raise ProviderPayloadError("tomorrow_io", "observation", str(exc)) from exc
 
 
 def fetch_tomorrow_io_forecast(
@@ -70,5 +86,20 @@ def fetch_tomorrow_io_forecast(
         headers={"accept": "application/json"},
         timeout=timeout,
     )
-    response = send_with_retries(client, request, retries=retries)
-    return map_tomorrow_io_forecast(response.json())
+    response = send_with_retries(
+        client,
+        request,
+        provider="tomorrow_io",
+        operation="forecast",
+        retries=retries,
+    )
+
+    try:
+        payload = response.json()
+    except (ValueError, httpx.HTTPError) as exc:
+        raise ProviderPayloadError("tomorrow_io", "forecast", "Invalid JSON payload") from exc
+
+    try:
+        return map_tomorrow_io_forecast(payload)
+    except ValueError as exc:
+        raise ProviderPayloadError("tomorrow_io", "forecast", str(exc)) from exc

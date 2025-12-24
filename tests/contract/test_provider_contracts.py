@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 import httpx
@@ -20,8 +21,13 @@ CASSETTE_DIR = Path(__file__).parent / "cassettes"
 
 recorder = vcr.VCR(
     cassette_library_dir=str(CASSETTE_DIR),
-    record_mode="none",
-    filter_query_parameters=[("appid", "REDACTED"), ("apikey", "REDACTED")],
+    record_mode=os.getenv("WX_VCR_RECORD_MODE", "none"),
+    filter_query_parameters=[
+        ("appid", "REDACTED"),
+        ("apikey", "REDACTED"),
+        ("apiKey", "REDACTED"),
+        ("applicationKey", "REDACTED"),
+    ],
     filter_headers=["authorization"],
     match_on=["method", "scheme", "host", "port", "path", "query"],
 )
