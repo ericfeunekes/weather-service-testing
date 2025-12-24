@@ -117,19 +117,43 @@ def map_ambient_weather_observation(
 
     observed_at = _parse_observed_at(last_data.get("dateutc"))
 
-    temperature_f = _to_optional_float(last_data.get("tempf") or last_data.get("tempOut") or last_data.get("tempc"))
-    dewpoint_f = _to_optional_float(last_data.get("dewPoint") or last_data.get("dewptf") or last_data.get("dewpt"))
-    wind_speed_mph = _to_optional_float(last_data.get("windspeedmph") or last_data.get("windSpeed"))
-    pressure_inhg = _to_optional_float(last_data.get("baromrelin") or last_data.get("baromabsin") or last_data.get("barometer"))
-    precipitation_in = _to_optional_float(last_data.get("hourlyrainin") or last_data.get("hourlyrain"))
+    temperature_f = _to_optional_float(last_data.get("tempf"))
+    if temperature_f is None:
+        temperature_f = _to_optional_float(last_data.get("tempOut"))
+    if temperature_f is None:
+        temperature_c_metric = _to_optional_float(last_data.get("tempc"))
+    else:
+        temperature_c_metric = None
+
+    dewpoint_f = _to_optional_float(last_data.get("dewPoint"))
+    if dewpoint_f is None:
+        dewpoint_f = _to_optional_float(last_data.get("dewptf"))
+    if dewpoint_f is None:
+        dewpoint_c_metric = _to_optional_float(last_data.get("dewpt"))
+    else:
+        dewpoint_c_metric = None
+
+    wind_speed_mph = _to_optional_float(last_data.get("windspeedmph"))
+    if wind_speed_mph is None:
+        wind_speed_mph = _to_optional_float(last_data.get("windSpeed"))
+
+    pressure_inhg = _to_optional_float(last_data.get("baromrelin"))
+    if pressure_inhg is None:
+        pressure_inhg = _to_optional_float(last_data.get("baromabsin"))
+    if pressure_inhg is None:
+        pressure_inhg = _to_optional_float(last_data.get("barometer"))
+
+    precipitation_in = _to_optional_float(last_data.get("hourlyrainin"))
+    if precipitation_in is None:
+        precipitation_in = _to_optional_float(last_data.get("hourlyrain"))
 
     return Observation(
         provider=provider,
         station=info.get("name") or device.get("macAddress"),
         location=Location(latitude=latitude, longitude=longitude),
         observed_at=observed_at,
-        temperature_c=_f_to_c(temperature_f),
-        dewpoint_c=_f_to_c(dewpoint_f),
+        temperature_c=temperature_c_metric if temperature_c_metric is not None else _f_to_c(temperature_f),
+        dewpoint_c=dewpoint_c_metric if dewpoint_c_metric is not None else _f_to_c(dewpoint_f),
         wind_speed_kph=_mph_to_kph(wind_speed_mph),
         wind_direction_deg=_to_optional_int(last_data.get("winddir")),
         pressure_kpa=_inHg_to_kpa(pressure_inhg),
