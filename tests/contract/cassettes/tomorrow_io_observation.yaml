@@ -1,19 +1,299 @@
 interactions:
 - request:
-    body: null
+    body: ''
     headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.tomorrow.io
+      User-Agent:
+      - python-httpx/0.27.2
       accept:
       - application/json
     method: GET
-    uri: https://api.tomorrow.io/v4/weather/realtime?location=40.7%2C-74.0&units=metric&apikey=REDACTED
+    uri: https://api.tomorrow.io/v4/weather/realtime?apikey=REDACTED&location=40.7%2C-74.0&units=metric
   response:
     body:
-      string: |-
-        {"data": {"time": "2024-05-01T12:00:00Z", "location": {"lat": 40.7, "lon": -74.0, "name": "NYC"}, "values": {"temperature": 15.2, "dewPoint": 7.5, "windSpeed": 5.5, "windDirection": 210, "pressureSurfaceLevel": 1012.5, "humidity": 62, "visibility": 15000, "weatherCode": 4200, "precipitationIntensity": 0.1}}}
+      string: '{"code":401001,"type":"Invalid Auth","message":"The method requires
+        authentication but it was not presented or is invalid."}'
     headers:
-      Content-Type:
-      - application/json
+      access-control-allow-origin:
+      - '*'
+      cf-apo-via:
+      - origin,host
+      cf-cache-status:
+      - DYNAMIC
+      cf-ray:
+      - 9b394ff2fc60863e-ORD
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Thu, 25 Dec 2025 15:18:39 GMT
+      expect-ct:
+      - max-age=86400, enforce
+      referrer-policy:
+      - same-origin
+      server:
+      - envoy
+      set-cookie:
+      - __cf_bm=lyaaUe1v0vC0RYoHIpx6XxqWWP4x5pmnI5guSLhzvsI-1766675919-1.0.1.1-ZgygqmBhOfTb5bGor8v9_fM.PwPB2WtnQsQW6161OuxqEjj70S0s0cud4FluaTGW_hVS5PFQHj82j9huA7o40WnkzRTR5JHfvrEO8Vbp3vs;
+        path=/; expires=Thu, 25-Dec-25 15:48:39 GMT; domain=.tomorrow.io; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=RSKQDBHlXUvLskIv6abz_roMOQ4KIY_QmMQIyi7GRCc-1766675919906-0.0.1.1-604800000;
+        path=/; domain=.tomorrow.io; HttpOnly; Secure; SameSite=None
+      strict-transport-security:
+      - max-age=31536000
+      transfer-encoding:
+      - chunked
+      vary:
+      - Accept-Encoding
+      via:
+      - 1.1 google
+      x-content-type-options:
+      - nosniff
+      x-envoy-upstream-service-time:
+      - '115'
+      x-frame-options:
+      - SAMEORIGIN
+      x-kong-response-latency:
+      - '12'
+      x-ratelimit-remaining-plan-5f857927f9d5bdc6c63abb67:
+      - '10'
+      x-ratelimit-remaining-plan-5f96c370732c89cb4d9a98e8:
+      - '3'
+      x-ratelimit-remaining-plan-5fa4047f4acee993fbd7399d:
+      - '3'
+      x-ratelimit-remaining-plan-5fb2a269785f8043656f245e:
+      - '10'
+      x-ratelimit-remaining-plan-600d6ce482ff404e9a7a4c0c:
+      - '5'
+      x-ratelimit-remaining-plan-600d73bef98f624e9adcf465:
+      - '5'
+      x-ratelimit-remaining-plan-600d742fdee75e4e9aab6661:
+      - '5'
+      x-ratelimit-remaining-plan-6036283133bb2ff6d4bd82a7:
+      - '3'
+      x-ratelimit-remaining-plan-606d86d0a26c4d7df907bc7a:
+      - '5'
+      x-ratelimit-remaining-plan-609d458bdd3d437ff19fd44f:
+      - '5'
+      x-ratelimit-remaining-plan-60d46beae90c3b3549a59ff3:
+      - '3'
+      x-ratelimit-remaining-plan-60f00adf8d481f9421462962:
+      - '3'
+      x-ratelimit-remaining-plan-60f00d40803f8e9421c5a7f8:
+      - '5'
+      x-ratelimit-remaining-plan-60f58bbc299fbc36c91529aa:
+      - '5'
+      x-ratelimit-remaining-plan-648b3f22ef567da8b7fb4599:
+      - '3'
+      x-ratelimit-remaining-plan-649ab4540000000000b71412:
+      - '3'
+      x-ratelimit-remaining-web-app:
+      - '500000'
+      x-xss-protection:
+      - 1; mode=block
     status:
-      code: 200
-      message: OK
+      code: 401
+      message: Unauthorized
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.tomorrow.io
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.tomorrow.io/v4/weather/realtime?apikey=REDACTED&location=40.7%2C-74.0&units=metric
+  response:
+    body:
+      string: '{"code":401001,"type":"Invalid Auth","message":"The method requires
+        authentication but it was not presented or is invalid."}'
+    headers:
+      access-control-allow-origin:
+      - '*'
+      cf-apo-via:
+      - origin,host
+      cf-cache-status:
+      - DYNAMIC
+      cf-ray:
+      - 9b39507ccb7261cf-ORD
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Thu, 25 Dec 2025 15:19:01 GMT
+      expect-ct:
+      - max-age=86400, enforce
+      referrer-policy:
+      - same-origin
+      server:
+      - envoy
+      set-cookie:
+      - __cf_bm=beQEFZyFmU8jlQ0gykKj8CzrF67jYRoHd4Ad9G6Ea_Q-1766675941-1.0.1.1-bQNqEuCZEtTJlCibIV60iGvLLLKap7m604UXOZchdxm39sMQJYh2Gi9VkfUKgFLvfkKRHH4DAunGfh_AA3Gl7jn7fL7aJa7R1MES4JZwZ5Y;
+        path=/; expires=Thu, 25-Dec-25 15:49:01 GMT; domain=.tomorrow.io; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=xV6M8hbolsBe3HLb.6LlXcPAB9xQ4AoliYVpHzsmAFc-1766675941964-0.0.1.1-604800000;
+        path=/; domain=.tomorrow.io; HttpOnly; Secure; SameSite=None
+      strict-transport-security:
+      - max-age=31536000
+      transfer-encoding:
+      - chunked
+      vary:
+      - Accept-Encoding
+      via:
+      - 1.1 google
+      x-content-type-options:
+      - nosniff
+      x-envoy-upstream-service-time:
+      - '128'
+      x-frame-options:
+      - SAMEORIGIN
+      x-kong-response-latency:
+      - '15'
+      x-ratelimit-remaining-plan-5f857927f9d5bdc6c63abb67:
+      - '10'
+      x-ratelimit-remaining-plan-5f96c370732c89cb4d9a98e8:
+      - '3'
+      x-ratelimit-remaining-plan-5fa4047f4acee993fbd7399d:
+      - '3'
+      x-ratelimit-remaining-plan-5fb2a269785f8043656f245e:
+      - '10'
+      x-ratelimit-remaining-plan-600d6ce482ff404e9a7a4c0c:
+      - '5'
+      x-ratelimit-remaining-plan-600d73bef98f624e9adcf465:
+      - '5'
+      x-ratelimit-remaining-plan-600d742fdee75e4e9aab6661:
+      - '5'
+      x-ratelimit-remaining-plan-6036283133bb2ff6d4bd82a7:
+      - '3'
+      x-ratelimit-remaining-plan-606d86d0a26c4d7df907bc7a:
+      - '5'
+      x-ratelimit-remaining-plan-609d458bdd3d437ff19fd44f:
+      - '5'
+      x-ratelimit-remaining-plan-60d46beae90c3b3549a59ff3:
+      - '3'
+      x-ratelimit-remaining-plan-60f00adf8d481f9421462962:
+      - '3'
+      x-ratelimit-remaining-plan-60f00d40803f8e9421c5a7f8:
+      - '5'
+      x-ratelimit-remaining-plan-60f58bbc299fbc36c91529aa:
+      - '5'
+      x-ratelimit-remaining-plan-648b3f22ef567da8b7fb4599:
+      - '3'
+      x-ratelimit-remaining-plan-649ab4540000000000b71412:
+      - '3'
+      x-ratelimit-remaining-web-app:
+      - '500000'
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 401
+      message: Unauthorized
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.tomorrow.io
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.tomorrow.io/v4/weather/realtime?apikey=REDACTED&location=40.7%2C-74.0&units=metric
+  response:
+    body:
+      string: '{"code":401001,"type":"Invalid Auth","message":"The method requires
+        authentication but it was not presented or is invalid."}'
+    headers:
+      access-control-allow-origin:
+      - '*'
+      cf-apo-via:
+      - origin,host
+      cf-cache-status:
+      - DYNAMIC
+      cf-ray:
+      - 9b3a26b35b9913a0-ORD
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Thu, 25 Dec 2025 17:45:16 GMT
+      expect-ct:
+      - max-age=86400, enforce
+      referrer-policy:
+      - same-origin
+      server:
+      - envoy
+      set-cookie:
+      - __cf_bm=vBgjKKTbqbAqrjmh1TzrEUsP8TK.wxbVne26SxSsJ.A-1766684716-1.0.1.1-3SiTqKuU91m1fgZ8ZqMygexrO5zNStVk5pqjwMru9FfIoF3ruXxUIopyx1QXsJkqau1e.a1nklzmWgruSElRytcVVLzypwMJWkci7nE9O2g;
+        path=/; expires=Thu, 25-Dec-25 18:15:16 GMT; domain=.tomorrow.io; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=D5qW3StS5nD3U_flDNu4Ibrouwvr6jrMum3anhGNxnU-1766684716125-0.0.1.1-604800000;
+        path=/; domain=.tomorrow.io; HttpOnly; Secure; SameSite=None
+      strict-transport-security:
+      - max-age=31536000
+      transfer-encoding:
+      - chunked
+      vary:
+      - Accept-Encoding
+      via:
+      - 1.1 google
+      x-content-type-options:
+      - nosniff
+      x-envoy-upstream-service-time:
+      - '122'
+      x-frame-options:
+      - SAMEORIGIN
+      x-kong-response-latency:
+      - '16'
+      x-ratelimit-remaining-plan-5f857927f9d5bdc6c63abb67:
+      - '10'
+      x-ratelimit-remaining-plan-5f96c370732c89cb4d9a98e8:
+      - '3'
+      x-ratelimit-remaining-plan-5fa4047f4acee993fbd7399d:
+      - '3'
+      x-ratelimit-remaining-plan-5fb2a269785f8043656f245e:
+      - '10'
+      x-ratelimit-remaining-plan-600d6ce482ff404e9a7a4c0c:
+      - '5'
+      x-ratelimit-remaining-plan-600d73bef98f624e9adcf465:
+      - '5'
+      x-ratelimit-remaining-plan-600d742fdee75e4e9aab6661:
+      - '5'
+      x-ratelimit-remaining-plan-6036283133bb2ff6d4bd82a7:
+      - '3'
+      x-ratelimit-remaining-plan-606d86d0a26c4d7df907bc7a:
+      - '5'
+      x-ratelimit-remaining-plan-609d458bdd3d437ff19fd44f:
+      - '5'
+      x-ratelimit-remaining-plan-60d46beae90c3b3549a59ff3:
+      - '3'
+      x-ratelimit-remaining-plan-60f00adf8d481f9421462962:
+      - '3'
+      x-ratelimit-remaining-plan-60f00d40803f8e9421c5a7f8:
+      - '5'
+      x-ratelimit-remaining-plan-60f58bbc299fbc36c91529aa:
+      - '5'
+      x-ratelimit-remaining-plan-648b3f22ef567da8b7fb4599:
+      - '3'
+      x-ratelimit-remaining-plan-649ab4540000000000b71412:
+      - '3'
+      x-ratelimit-remaining-web-app:
+      - '500000'
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 401
+      message: Unauthorized
 version: 1

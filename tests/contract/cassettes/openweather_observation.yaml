@@ -5,14 +5,223 @@ interactions:
       accept:
       - application/json
     method: GET
-    uri: https://api.openweathermap.org/data/2.5/weather?lat=51.51&lon=-0.13&appid=REDACTED
+    uri: https://api.openweathermap.org/data/2.5/weather?appid=REDACTED&lat=51.51&lon=-0.13
   response:
     body:
-      string: |-
-        {"coord": {"lon": -0.13, "lat": 51.51}, "weather": [{"id": 500, "main": "Rain", "description": "light rain"}], "base": "stations", "main": {"temp": 289.82, "pressure": 1012, "humidity": 82, "temp_min": 288.71, "temp_max": 290.93}, "visibility": 10000, "wind": {"speed": 4.1, "deg": 80}, "rain": {"1h": 0.25}, "clouds": {"all": 90}, "dt": 1682899200, "sys": {"country": "GB"}, "name": "London", "cod": 200}
+      string: '{"coord": {"lon": -0.13, "lat": 51.51}, "weather": [{"id": 500, "main":
+        "Rain", "description": "light rain"}], "base": "stations", "main": {"temp":
+        289.82, "pressure": 1012, "humidity": 82, "temp_min": 288.71, "temp_max":
+        290.93}, "visibility": 10000, "wind": {"speed": 4.1, "deg": 80}, "rain": {"1h":
+        0.25}, "clouds": {"all": 90}, "dt": 1682899200, "sys": {"country": "GB"},
+        "name": "London", "cod": 200}'
     headers:
       Content-Type:
       - application/json
+    status:
+      code: 200
+      message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.openweathermap.org
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.openweathermap.org/data/2.5/weather?appid=REDACTED&lat=51.51&lon=-0.13
+  response:
+    body:
+      string: '{"coord":{"lon":-0.1257,"lat":51.5085},"weather":[{"id":803,"main":"Clouds","description":"broken
+        clouds","icon":"04d"}],"base":"stations","main":{"temp":278.22,"feels_like":273.68,"temp_min":277.47,"temp_max":278.81,"pressure":1026,"humidity":59,"sea_level":1026,"grnd_level":1023},"visibility":10000,"wind":{"speed":7.2,"deg":70},"clouds":{"all":75},"dt":1766675633,"sys":{"type":2,"id":268730,"country":"GB","sunrise":1766649929,"sunset":1766678134},"timezone":0,"id":2643743,"name":"London","cod":200}'
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-methods:
+      - GET, POST
+      access-control-allow-origin:
+      - '*'
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Thu, 25 Dec 2025 15:16:53 GMT
+      server:
+      - envoy
+      transfer-encoding:
+      - chunked
+      x-cache-key:
+      - /data/2.5/weather?lat=51.51&lon=-0.13
+      x-envoy-upstream-service-time:
+      - '119'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.openweathermap.org
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.openweathermap.org/data/2.5/weather?appid=REDACTED&lat=51.51&lon=-0.13
+  response:
+    body:
+      string: '{"coord":{"lon":-0.1276,"lat":51.5073},"weather":[{"id":803,"main":"Clouds","description":"broken
+        clouds","icon":"04d"}],"base":"stations","main":{"temp":278.2,"feels_like":273.66,"temp_min":277.49,"temp_max":278.83,"pressure":1026,"humidity":59,"sea_level":1026,"grnd_level":1023},"visibility":10000,"wind":{"speed":7.2,"deg":70},"clouds":{"all":75},"dt":1766675719,"sys":{"type":2,"id":268730,"country":"GB","sunrise":1766649929,"sunset":1766678135},"timezone":0,"id":2643743,"name":"London","cod":200}'
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-methods:
+      - GET, POST
+      access-control-allow-origin:
+      - '*'
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Thu, 25 Dec 2025 15:17:36 GMT
+      server:
+      - envoy
+      transfer-encoding:
+      - chunked
+      x-cache-key:
+      - /data/2.5/weather?lat=51.51&lon=-0.13
+      x-envoy-upstream-service-time:
+      - '98'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.openweathermap.org
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.openweathermap.org/data/2.5/weather?appid=REDACTED&lat=51.51&lon=-0.13
+  response:
+    body:
+      string: '{"coord":{"lon":-0.1276,"lat":51.5073},"weather":[{"id":803,"main":"Clouds","description":"broken
+        clouds","icon":"04d"}],"base":"stations","main":{"temp":278.2,"feels_like":273.66,"temp_min":277.49,"temp_max":278.83,"pressure":1026,"humidity":59,"sea_level":1026,"grnd_level":1023},"visibility":10000,"wind":{"speed":7.2,"deg":70},"clouds":{"all":75},"dt":1766675719,"sys":{"type":2,"id":268730,"country":"GB","sunrise":1766649929,"sunset":1766678135},"timezone":0,"id":2643743,"name":"London","cod":200}'
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-methods:
+      - GET, POST
+      access-control-allow-origin:
+      - '*'
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Thu, 25 Dec 2025 15:18:39 GMT
+      server:
+      - envoy
+      transfer-encoding:
+      - chunked
+      x-cache-key:
+      - /data/2.5/weather?lat=51.51&lon=-0.13
+      x-envoy-upstream-service-time:
+      - '95'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.openweathermap.org
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.openweathermap.org/data/2.5/weather?appid=REDACTED&lat=51.51&lon=-0.13
+  response:
+    body:
+      string: '{"coord":{"lon":-0.1276,"lat":51.5073},"weather":[{"id":803,"main":"Clouds","description":"broken
+        clouds","icon":"04d"}],"base":"stations","main":{"temp":278.2,"feels_like":273.66,"temp_min":277.49,"temp_max":278.83,"pressure":1026,"humidity":59,"sea_level":1026,"grnd_level":1023},"visibility":10000,"wind":{"speed":7.2,"deg":70},"clouds":{"all":75},"dt":1766675719,"sys":{"type":2,"id":268730,"country":"GB","sunrise":1766649929,"sunset":1766678135},"timezone":0,"id":2643743,"name":"London","cod":200}'
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-methods:
+      - GET, POST
+      access-control-allow-origin:
+      - '*'
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Thu, 25 Dec 2025 15:19:01 GMT
+      server:
+      - envoy
+      transfer-encoding:
+      - chunked
+      x-cache-key:
+      - /data/2.5/weather?lat=51.51&lon=-0.13
+      x-envoy-upstream-service-time:
+      - '142'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.openweathermap.org
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.openweathermap.org/data/2.5/weather?appid=REDACTED&lat=51.51&lon=-0.13
+  response:
+    body:
+      string: '{"coord":{"lon":-0.13,"lat":51.51},"weather":[{"id":804,"main":"Clouds","description":"overcast
+        clouds","icon":"04n"}],"base":"stations","main":{"temp":277.42,"feels_like":273.27,"temp_min":276.38,"temp_max":278.27,"pressure":1027,"humidity":73,"sea_level":1027,"grnd_level":1023},"visibility":10000,"wind":{"speed":5.66,"deg":70},"clouds":{"all":100},"dt":1766684715,"sys":{"type":2,"id":268730,"country":"GB","sunrise":1766649930,"sunset":1766678135},"timezone":0,"id":2643743,"name":"London","cod":200}'
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-methods:
+      - GET, POST
+      access-control-allow-origin:
+      - '*'
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Thu, 25 Dec 2025 17:45:15 GMT
+      server:
+      - envoy
+      transfer-encoding:
+      - chunked
+      x-cache-key:
+      - /data/2.5/weather?lat=51.51&lon=-0.13
+      x-envoy-upstream-service-time:
+      - '110'
     status:
       code: 200
       message: OK
