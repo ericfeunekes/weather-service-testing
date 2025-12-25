@@ -296,4 +296,103 @@ interactions:
     status:
       code: 401
       message: Unauthorized
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.tomorrow.io
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.tomorrow.io/v4/weather/realtime?apikey=REDACTED&location=40.7%2C-74.0&units=metric
+  response:
+    body:
+      string: '{"code":401001,"type":"Invalid Auth","message":"The method requires
+        authentication but it was not presented or is invalid."}'
+    headers:
+      access-control-allow-origin:
+      - '*'
+      cf-apo-via:
+      - origin,host
+      cf-cache-status:
+      - DYNAMIC
+      cf-ray:
+      - 9b3a82144a64f83e-ORD
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Thu, 25 Dec 2025 18:47:38 GMT
+      expect-ct:
+      - max-age=86400, enforce
+      referrer-policy:
+      - same-origin
+      server:
+      - envoy
+      set-cookie:
+      - __cf_bm=nlps6oCX0BMZLGssLCGcNJrF7KDGCd1EPTfqDx2Ux38-1766688458-1.0.1.1-gxuqvKtjHZ8lFRiCbx7EAk837PUXUBnE6cdOM0DqaoPamlAb1VJpQGLriaa5gRzo3mrmrgvTGfRAW_nRXdrqALpHX7xF1TcPt1HAyM6dbFs;
+        path=/; expires=Thu, 25-Dec-25 19:17:38 GMT; domain=.tomorrow.io; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=Vu9jwlavO5xzX_V3sF8xAgeYz1owSRtnDUxY9lkupek-1766688458993-0.0.1.1-604800000;
+        path=/; domain=.tomorrow.io; HttpOnly; Secure; SameSite=None
+      strict-transport-security:
+      - max-age=31536000
+      transfer-encoding:
+      - chunked
+      vary:
+      - Accept-Encoding
+      via:
+      - 1.1 google
+      x-content-type-options:
+      - nosniff
+      x-envoy-upstream-service-time:
+      - '108'
+      x-frame-options:
+      - SAMEORIGIN
+      x-kong-response-latency:
+      - '14'
+      x-ratelimit-remaining-plan-5f857927f9d5bdc6c63abb67:
+      - '10'
+      x-ratelimit-remaining-plan-5f96c370732c89cb4d9a98e8:
+      - '3'
+      x-ratelimit-remaining-plan-5fa4047f4acee993fbd7399d:
+      - '3'
+      x-ratelimit-remaining-plan-5fb2a269785f8043656f245e:
+      - '10'
+      x-ratelimit-remaining-plan-600d6ce482ff404e9a7a4c0c:
+      - '5'
+      x-ratelimit-remaining-plan-600d73bef98f624e9adcf465:
+      - '5'
+      x-ratelimit-remaining-plan-600d742fdee75e4e9aab6661:
+      - '5'
+      x-ratelimit-remaining-plan-6036283133bb2ff6d4bd82a7:
+      - '3'
+      x-ratelimit-remaining-plan-606d86d0a26c4d7df907bc7a:
+      - '5'
+      x-ratelimit-remaining-plan-609d458bdd3d437ff19fd44f:
+      - '5'
+      x-ratelimit-remaining-plan-60d46beae90c3b3549a59ff3:
+      - '3'
+      x-ratelimit-remaining-plan-60f00adf8d481f9421462962:
+      - '3'
+      x-ratelimit-remaining-plan-60f00d40803f8e9421c5a7f8:
+      - '5'
+      x-ratelimit-remaining-plan-60f58bbc299fbc36c91529aa:
+      - '5'
+      x-ratelimit-remaining-plan-648b3f22ef567da8b7fb4599:
+      - '3'
+      x-ratelimit-remaining-plan-649ab4540000000000b71412:
+      - '3'
+      x-ratelimit-remaining-web-app:
+      - '500000'
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 401
+      message: Unauthorized
 version: 1

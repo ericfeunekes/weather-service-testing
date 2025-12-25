@@ -88,9 +88,10 @@ Latest recorded attempt:
 - ✅ MSC GeoMet forecast and observation calls hit the live `citypageweather-realtime` endpoint without credentials using the
   default Ottawa bounding box (`WX_MSC_GEOMET_LAT/LON` overrides available).
 - ✅ OpenWeather forecast and observation calls succeeded against live endpoints with the provided `WX_OPENWEATHER_API_KEY`.
-- ⚠️ Tomorrow.io forecast and observation calls still return HTTP 401 (`Invalid Auth`) even with `WX_TOMORROW_IO_API_KEY`
-  present in the environment. The error body is recorded in the cassette to aid debugging, and the contract tests remain marked
-  as expected failures until a valid key/plan is available.
+- ⚠️ Tomorrow.io forecast and observation calls still return HTTP 401 (`Invalid Auth`) with the updated
+  `WX_TOMORROW_IO_API_KEY`. The cassette captures the upstream error payload (`code: 401001, type: Invalid Auth, message:
+  The method requires authentication but it was not presented or is invalid.`) to aid debugging; the contract tests remain
+  expected failures until a valid key/plan is available.
 - ⚠️ Ambient Weather was skipped because `WX_AMBIENT_APPLICATION_KEY` was not present in the environment (the tests observed
   `WX_AMBIENT_API_KEY` but no application key). Ensure both keys are exported without trailing whitespace before rerunning.
 
