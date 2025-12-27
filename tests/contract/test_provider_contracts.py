@@ -63,14 +63,14 @@ def _tomorrow_io_key() -> str:
     return _require_env("WX_TOMORROW_IO_API_KEY", provider="Tomorrow.io") or DEFAULT_TOMORROW_IO_API_KEY
 
 
-def _coords(prefix: str, *, default_lat: float, default_lon: float) -> tuple[float, float]:
-    lat_raw = os.getenv(f"{prefix}_LAT")
-    lon_raw = os.getenv(f"{prefix}_LON")
+def _coords(*, default_lat: float, default_lon: float) -> tuple[float, float]:
+    lat_raw = os.getenv("WX_LAT")
+    lon_raw = os.getenv("WX_LON")
     if lat_raw and lon_raw:
         try:
             return float(lat_raw), float(lon_raw)
         except ValueError:
-            pytest.skip(f"Invalid coordinates provided via {prefix}_LAT/LON")
+            pytest.skip("Invalid coordinates provided via WX_LAT/WX_LON")
     return default_lat, default_lon
 
 
@@ -98,7 +98,7 @@ def test_ambient_weather_observation_contract(client: httpx.Client) -> None:
 
 def test_openweather_observation_contract(client: httpx.Client) -> None:
     with recorder.use_cassette("openweather_observation.yaml"):
-        latitude, longitude = _coords("WX_OPENWEATHER", default_lat=51.51, default_lon=-0.13)
+        latitude, longitude = _coords(default_lat=51.51, default_lon=-0.13)
         observation = fetch_openweather_observation(
             latitude=latitude,
             longitude=longitude,
@@ -115,7 +115,7 @@ def test_openweather_observation_contract(client: httpx.Client) -> None:
 
 def test_openweather_forecast_contract(client: httpx.Client) -> None:
     with recorder.use_cassette("openweather_forecast.yaml"):
-        latitude, longitude = _coords("WX_OPENWEATHER", default_lat=51.51, default_lon=-0.13)
+        latitude, longitude = _coords(default_lat=51.51, default_lon=-0.13)
         periods = fetch_openweather_forecast(
             latitude=latitude,
             longitude=longitude,
@@ -130,7 +130,7 @@ def test_openweather_forecast_contract(client: httpx.Client) -> None:
 
 def test_tomorrow_io_observation_contract(client: httpx.Client) -> None:
     with recorder.use_cassette("tomorrow_io_observation.yaml"):
-        latitude, longitude = _coords("WX_TOMORROW_IO", default_lat=40.7, default_lon=-74.0)
+        latitude, longitude = _coords(default_lat=40.7, default_lon=-74.0)
         observation = fetch_tomorrow_io_observation(
             latitude=latitude,
             longitude=longitude,
@@ -147,7 +147,7 @@ def test_tomorrow_io_observation_contract(client: httpx.Client) -> None:
 
 def test_tomorrow_io_forecast_contract(client: httpx.Client) -> None:
     with recorder.use_cassette("tomorrow_io_forecast.yaml"):
-        latitude, longitude = _coords("WX_TOMORROW_IO", default_lat=40.7, default_lon=-74.0)
+        latitude, longitude = _coords(default_lat=40.7, default_lon=-74.0)
         periods = fetch_tomorrow_io_forecast(
             latitude=latitude,
             longitude=longitude,
@@ -163,7 +163,7 @@ def test_tomorrow_io_forecast_contract(client: httpx.Client) -> None:
 
 def test_msc_geomet_observation_contract(client: httpx.Client) -> None:
     with recorder.use_cassette("msc_geomet_observation.yaml"):
-        latitude, longitude = _coords("WX_MSC_GEOMET", default_lat=45.421, default_lon=-75.697)
+        latitude, longitude = _coords(default_lat=45.421, default_lon=-75.697)
         observation = fetch_msc_geomet_observation(
             latitude=latitude,
             longitude=longitude,
@@ -178,7 +178,7 @@ def test_msc_geomet_observation_contract(client: httpx.Client) -> None:
 
 def test_msc_geomet_forecast_contract(client: httpx.Client) -> None:
     with recorder.use_cassette("msc_geomet_forecast.yaml"):
-        latitude, longitude = _coords("WX_MSC_GEOMET", default_lat=45.421, default_lon=-75.697)
+        latitude, longitude = _coords(default_lat=45.421, default_lon=-75.697)
         periods = fetch_msc_geomet_forecast(
             latitude=latitude,
             longitude=longitude,
