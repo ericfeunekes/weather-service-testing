@@ -192,7 +192,9 @@ def forecast_to_datapoints(
 
     lead_unit = "hour" if product_kind == PRODUCT_FORECAST_HOURLY else "day"
     if lead_unit == "hour":
-        delta = forecast.start_time - run_at
+        run_hour = run_at.replace(minute=0, second=0, microsecond=0)
+        forecast_hour = forecast.start_time.replace(minute=0, second=0, microsecond=0)
+        delta = forecast_hour - run_hour
         lead_offset = int(delta.total_seconds() // 3600)
     else:
         forecast_day = _local_day(forecast.start_time, tz_name)
