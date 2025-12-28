@@ -43,12 +43,6 @@ def _ms_to_kph(value: Optional[float]) -> Optional[float]:
     return value * 3.6
 
 
-def _meters_to_km(value: Optional[float]) -> Optional[float]:
-    if value is None:
-        return None
-    return value / 1000.0
-
-
 def _hpa_to_kpa(value: Optional[float]) -> Optional[float]:
     if value is None:
         return None
@@ -89,12 +83,24 @@ def _describe_weather_code(code: Any) -> Optional[str]:
     return _WEATHER_CODE_TO_DESCRIPTION.get(numeric, str(numeric))
 
 
+def _sum_intensities(values: Mapping[str, Any]) -> Optional[float]:
+    total = 0.0
+    found = False
+    for key in ("rainIntensity", "snowIntensity", "sleetIntensity", "freezingRainIntensity"):
+        amount = _to_optional_float(values.get(key))
+        if amount is None:
+            continue
+        total += amount
+        found = True
+    return total if found else None
+
+
 def map_tomorrow_io_observation(
     payload: Mapping[str, Any], *, provider: str = "tomorrow_io", iso_parser: Optional[IsoParser] = None
 ) -> Observation:
     data: Mapping[str, Any] = payload.get("data") or {}
     values: Mapping[str, Any] = data.get("values") or {}
-    location: Mapping[str, Any] = data.get("location") or {}
+    location: Mapping[str, Any] = payload.get("location") or {}
 
     if "lat" not in location or "lon" not in location:
         raise ValueError("Missing coordinates for observation")
@@ -111,9 +117,9 @@ def map_tomorrow_io_observation(
     wind_direction = _to_optional_int(values.get("windDirection"))
     pressure = _hpa_to_kpa(_to_optional_float(values.get("pressureSurfaceLevel")))
     humidity = _to_optional_float(values.get("humidity"))
-    visibility = _meters_to_km(_to_optional_float(values.get("visibility")))
+    visibility = _to_optional_float(values.get("visibility"))
     condition = _describe_weather_code(values.get("weatherCode"))
-    precipitation_hour = _to_optional_float(values.get("precipitationIntensity"))
+    precipitation_hour = _sum_intensities(values)
 
     return Observation(
         provider=provider,
@@ -140,7 +146,7 @@ def _infer_end_time(
     iso_parser: Optional[IsoParser],
 ) -> datetime:
     if index + 1 < len(intervals):
-        next_raw = intervals[index + 1].get("startTime")
+        next_raw = intervals[index + 1].get("time")
         if next_raw:
             return _parse_iso8601(str(next_raw), iso_parser)
 
@@ -159,61 +165,58 @@ def _infer_end_time(
 def map_tomorrow_io_forecast(
     payload: Mapping[str, Any], *, provider: str = "tomorrow_io", iso_parser: Optional[IsoParser] = None
 ) -> list[ForecastPeriod]:
-    data: Mapping[str, Any] = payload.get("data") or {}
-    timelines: Sequence[Mapping[str, Any]] = data.get("timelines") or []
-    location: Mapping[str, Any] = data.get("location") or {}
+    location: Mapping[str, Any] = payload.get("location") or {}
+    timelines: Mapping[str, Any] = payload.get("timelines") or {}
+    intervals: Sequence[Mapping[str, Any]] = timelines.get("hourly") or []
 
     if "lat" not in location or "lon" not in location:
         raise ValueError("Missing coordinates for forecast")
 
-    if not timelines:
+    if not intervals:
         return []
 
-    issued_raw = data.get("time") or timelines[0].get("startTime")
+    issued_raw = intervals[0].get("time")
     if not issued_raw:
         raise ValueError("Missing forecast issue time")
     issued_at = _parse_iso8601(str(issued_raw), iso_parser)
 
     normalized: list[ForecastPeriod] = []
-    for timeline in timelines:
-        timestep = timeline.get("timestep")
-        intervals: Sequence[Mapping[str, Any]] = timeline.get("intervals") or []
-        for index, interval in enumerate(intervals):
-            start_raw = interval.get("startTime")
-            if not start_raw:
-                raise ValueError("Forecast interval missing start time")
+    for index, interval in enumerate(intervals):
+        start_raw = interval.get("time")
+        if not start_raw:
+            raise ValueError("Forecast interval missing start time")
 
-            start_time = _parse_iso8601(str(start_raw), iso_parser)
-            end_time = _infer_end_time(index, intervals, start_time, str(timestep) if timestep else None, iso_parser)
+        start_time = _parse_iso8601(str(start_raw), iso_parser)
+        end_time = _infer_end_time(index, intervals, start_time, "1h", iso_parser)
 
-            values: Mapping[str, Any] = interval.get("values") or {}
-            temp = _to_optional_float(values.get("temperature"))
-            pop = _to_optional_float(values.get("precipitationProbability"))
-            precip_intensity = _to_optional_float(values.get("precipitationIntensity"))
-            wind_speed = _ms_to_kph(_to_optional_float(values.get("windSpeed")))
-            wind_dir = _to_optional_int(values.get("windDirection"))
-            condition = _describe_weather_code(values.get("weatherCode"))
+        values: Mapping[str, Any] = interval.get("values") or {}
+        temp = _to_optional_float(values.get("temperature"))
+        pop = _to_optional_float(values.get("precipitationProbability"))
+        precip_intensity = _sum_intensities(values)
+        wind_speed = _ms_to_kph(_to_optional_float(values.get("windSpeed")))
+        wind_dir = _to_optional_int(values.get("windDirection"))
+        condition = _describe_weather_code(values.get("weatherCode"))
 
-            precipitation_mm = precip_intensity
-            if precip_intensity is not None and end_time != start_time:
-                duration_hours = (end_time - start_time).total_seconds() / 3600.0
-                precipitation_mm = precip_intensity * duration_hours
+        precipitation_mm = precip_intensity
+        if precip_intensity is not None and end_time != start_time:
+            duration_hours = (end_time - start_time).total_seconds() / 3600.0
+            precipitation_mm = precip_intensity * duration_hours
 
-            normalized.append(
-                ForecastPeriod(
-                    provider=provider,
-                    location=Location(latitude=float(location["lat"]), longitude=float(location["lon"])),
-                    issued_at=issued_at,
-                    start_time=start_time,
-                    end_time=end_time,
-                    temperature_c=temp,
-                    precipitation_probability=pop,
-                    precipitation_mm=precipitation_mm,
-                    summary=condition,
-                    wind_speed_kph=wind_speed,
-                    wind_direction_deg=wind_dir,
-                )
+        normalized.append(
+            ForecastPeriod(
+                provider=provider,
+                location=Location(latitude=float(location["lat"]), longitude=float(location["lon"])),
+                issued_at=issued_at,
+                start_time=start_time,
+                end_time=end_time,
+                temperature_c=temp,
+                precipitation_probability=pop,
+                precipitation_mm=precipitation_mm,
+                summary=condition,
+                wind_speed_kph=wind_speed,
+                wind_direction_deg=wind_dir,
             )
+        )
 
     return normalized
 

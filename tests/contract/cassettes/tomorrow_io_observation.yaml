@@ -1,18 +1,113 @@
 interactions:
 - request:
-    body: null
+    body: ''
     headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.tomorrow.io
+      User-Agent:
+      - python-httpx/0.27.2
       accept:
       - application/json
     method: GET
-    uri: https://api.tomorrow.io/v4/weather/realtime?location=40.7%2C-74.0&units=metric&apikey=REDACTED
+    uri: https://api.tomorrow.io/v4/weather/realtime?apikey=REDACTED&location=40.7%2C-74.0&units=metric
   response:
     body:
-      string: |-
-        {"data": {"time": "2024-05-01T12:00:00Z", "location": {"lat": 40.7, "lon": -74.0, "name": "NYC"}, "values": {"temperature": 15.2, "dewPoint": 7.5, "windSpeed": 5.5, "windDirection": 210, "pressureSurfaceLevel": 1012.5, "humidity": 62, "visibility": 15000, "weatherCode": 4200, "precipitationIntensity": 0.1}}}
+      string: !!binary |
+        H4sIAAAAAAAEA2VRy07DMBD8lz0nkeO+c4MiQSUOFeXEzY231JJrR34kQNV/Z+22gqo37+zszs74
+        CFIEAc0RgjogNMAZn5Q1L/n8nS0avmgY+4ACeqEj+sQTOjEDug2GoMwnNDXjvFoU0Gob5aPwtKae
+        XsolKp1JJmp9xWyPDhpWgMRhbZUJ0JSTikZ2DvGH6G9CmZUJaLwK35m5jwclczEfFdA5bFWnggjK
+        mrWzW7ElmQuVmt5HhxsUr9ijzgeOqvo8d25FtxMt/rXrajwpwN3Jeo0Ybi/xxg63SMBDh04E0iQj
+        pFTAP+ih64TD7HFakUjsX5Ay3C+tadGZ7C72KyPxK7975dXVTYpxQBH26JZWplwZo9gGZeSTogyS
+        faBPIsWEPUdPUfKUZCo3HaJM9fh0KkDbNseV/lAL4o1ZNUswbShnRPkF02GjaAsCAAA=
     headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 9b5009132da2f5f7-EWR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
       Content-Type:
-      - application/json
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 28 Dec 2025 09:29:49 GMT
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=zd7LgvRRTXdj9GuwkWlS6d__.UJbU27.ORaYY_Vr_7c-1766914189-1.0.1.1-6zX.LxB_cyDUo6dtmoB9n5N.TmZDnJS6SahTDqugZRPI34i4SCHr0G_.UzF5AQed_Wr_vDtJRMgEe0xNLpypQhwpTUQNIhO5OCKwQG9Ve7k;
+        path=/; expires=Sun, 28-Dec-25 09:59:49 GMT; domain=.tomorrow.io; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=q60Bu91tLmqb7IS.lcR_hvsuec_jkazZVSKAFNGa6B0-1766914189364-0.0.1.1-604800000;
+        path=/; domain=.tomorrow.io; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - accept-encoding
+      Via:
+      - 1.1 google
+      cf-apo-via:
+      - origin,host
+      expect-ct:
+      - max-age=86400, enforce
+      referrer-policy:
+      - same-origin
+      x-content-type-options:
+      - nosniff
+      x-correlation-id:
+      - 0f544af5-9b16-47e2-b7e9-5070d18abd1f
+      x-frame-options:
+      - SAMEORIGIN
+      x-kong-proxy-latency:
+      - '11'
+      x-kong-upstream-latency:
+      - '11'
+      x-ratelimit-remaining-plan-5f857927f9d5bdc6c63abb67:
+      - '10'
+      x-ratelimit-remaining-plan-5f96c370732c89cb4d9a98e8:
+      - '3'
+      x-ratelimit-remaining-plan-5fa4047f4acee993fbd7399d:
+      - '3'
+      x-ratelimit-remaining-plan-5fb2a269785f8043656f245e:
+      - '10'
+      x-ratelimit-remaining-plan-600d6ce482ff404e9a7a4c0c:
+      - '5'
+      x-ratelimit-remaining-plan-600d73bef98f624e9adcf465:
+      - '5'
+      x-ratelimit-remaining-plan-600d742fdee75e4e9aab6661:
+      - '5'
+      x-ratelimit-remaining-plan-6036283133bb2ff6d4bd82a7:
+      - '3'
+      x-ratelimit-remaining-plan-606d86d0a26c4d7df907bc7a:
+      - '5'
+      x-ratelimit-remaining-plan-609d458bdd3d437ff19fd44f:
+      - '5'
+      x-ratelimit-remaining-plan-60d46beae90c3b3549a59ff3:
+      - '3'
+      x-ratelimit-remaining-plan-60f00adf8d481f9421462962:
+      - '3'
+      x-ratelimit-remaining-plan-60f00d40803f8e9421c5a7f8:
+      - '5'
+      x-ratelimit-remaining-plan-60f58bbc299fbc36c91529aa:
+      - '5'
+      x-ratelimit-remaining-plan-648b3f22ef567da8b7fb4599:
+      - '3'
+      x-ratelimit-remaining-plan-649ab4540000000000b71412:
+      - '3'
+      x-ratelimit-remaining-web-app:
+      - '500000'
+      x-request-id:
+      - 250be59f-f959-466b-a237-a898c1a1ec6f
+      x-xss-protection:
+      - 1; mode=block
     status:
       code: 200
       message: OK

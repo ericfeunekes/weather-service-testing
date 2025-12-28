@@ -51,9 +51,9 @@ Provider keys are expected via environment variables at runtime (in GitHub Actio
 Python 3.12+ recommended.
 
 Create and install:
-- `python -m venv .venv`
+- `uv venv`
 - `source .venv/bin/activate`
-- `pip install -r requirements.txt -r requirements-dev.txt`
+- `uv pip install -e ".[dev]"`
 
 Run tests:
 - `pytest -q`
@@ -66,6 +66,8 @@ Contract tests use VCR cassettes by default. To exercise the live provider APIs 
    - `WX_OPENWEATHER_API_KEY` – OpenWeather
    - `WX_TOMORROW_IO_API_KEY` – Tomorrow.io
    - `WX_AMBIENT_API_KEY` and `WX_AMBIENT_APPLICATION_KEY` – Ambient Weather
+   - Optional location override for contract tests: `WX_LAT` and `WX_LON`.
+   - Trailing whitespace in environment variables is stripped automatically to avoid hidden newline issues during live runs.
 2. Enable recording: `WX_VCR_RECORD_MODE=all pytest tests/contract -q`
 
 Cassettes redact API keys automatically; never commit raw credentials.
@@ -79,16 +81,15 @@ Required environment for a full live run (all providers):
 - `WX_AMBIENT_API_KEY` and `WX_AMBIENT_APPLICATION_KEY`
 - `WX_OPENWEATHER_API_KEY`
 - `WX_TOMORROW_IO_API_KEY`
+- Optional location override: `WX_LAT` and `WX_LON`
 
-Latest recorded attempt:
+Latest recorded attempt (2025-12-28):
 
 - ✅ MSC GeoMet forecast and observation calls hit the live `citypageweather-realtime` endpoint without credentials using the
   default Ottawa bounding box (uses `WX_LAT/WX_LON` if set).
-- ⚠️ Ambient Weather was skipped because `WX_AMBIENT_API_KEY` and `WX_AMBIENT_APPLICATION_KEY` were not set.
-- ⚠️ OpenWeather was skipped because `WX_OPENWEATHER_API_KEY` was not present in the environment; this variable must be set for
-  live recording.
-- ⚠️ Tomorrow.io was skipped because `WX_TOMORROW_IO_API_KEY` was not present in the environment; this variable must be set for
-  live recording.
+- ✅ OpenWeather forecast and observation calls succeeded against live endpoints with the provided `WX_OPENWEATHER_API_KEY`.
+- ✅ Tomorrow.io forecast and observation calls succeeded against live endpoints with the provided `WX_TOMORROW_IO_API_KEY`.
+- ✅ Ambient Weather observation calls succeeded once both `WX_AMBIENT_API_KEY` and `WX_AMBIENT_APPLICATION_KEY` were present.
 
 Re-run the command above after exporting the missing keys (and optional `*_LAT/LON` overrides) to exercise the live APIs and
 refresh the VCR cassettes.

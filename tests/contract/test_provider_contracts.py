@@ -16,6 +16,7 @@ from wxbench.providers import (
     fetch_tomorrow_io_forecast,
     fetch_tomorrow_io_observation,
 )
+from wxbench.providers.errors import ProviderAuthError
 
 
 CASSETTE_DIR = Path(__file__).parent / "cassettes"
@@ -44,6 +45,8 @@ DEFAULT_TOMORROW_IO_API_KEY = "another-secret"
 
 def _require_env(var: str, *, provider: str) -> str:
     value = os.getenv(var)
+    if value:
+        value = value.strip()
     if RECORDING and not value:
         pytest.skip(f"Set {var} to hit the live {provider} API")
     return value or ""

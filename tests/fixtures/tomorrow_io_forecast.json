@@ -1,38 +1,37 @@
 {
-  "data": {
-    "time": "2024-05-01T12:30:00Z",
-    "location": {
-      "lat": 40.7,
-      "lon": -74.0
-    },
-    "timelines": [
+  "location": {
+    "lat": 40.7,
+    "lon": -74.0
+  },
+  "timelines": {
+    "hourly": [
       {
-        "timestep": "1h",
-        "startTime": "2024-05-01T13:00:00Z",
-        "intervals": [
-          {
-            "startTime": "2024-05-01T13:00:00Z",
-            "values": {
-              "temperature": 16.0,
-              "precipitationProbability": 20,
-              "precipitationIntensity": 0.0,
-              "windSpeed": 6.0,
-              "windDirection": 220,
-              "weatherCode": 1001
-            }
-          },
-          {
-            "startTime": "2024-05-01T14:00:00Z",
-            "values": {
-              "temperature": 14.0,
-              "precipitationProbability": 55,
-              "precipitationIntensity": 0.4,
-              "windSpeed": 7.5,
-              "windDirection": 230,
-              "weatherCode": 4200
-            }
-          }
-        ]
+        "time": "2024-05-01T13:00:00Z",
+        "values": {
+          "temperature": 16.0,
+          "precipitationProbability": 20,
+          "rainIntensity": 0.0,
+          "snowIntensity": 0.0,
+          "sleetIntensity": 0.0,
+          "freezingRainIntensity": 0.0,
+          "windSpeed": 6.0,
+          "windDirection": 220,
+          "weatherCode": 1001
+        }
+      },
+      {
+        "time": "2024-05-01T14:00:00Z",
+        "values": {
+          "temperature": 14.0,
+          "precipitationProbability": 55,
+          "rainIntensity": 0.4,
+          "snowIntensity": 0.0,
+          "sleetIntensity": 0.0,
+          "freezingRainIntensity": 0.0,
+          "windSpeed": 7.5,
+          "windDirection": 230,
+          "weatherCode": 4200
+        }
       }
     ]
   }
