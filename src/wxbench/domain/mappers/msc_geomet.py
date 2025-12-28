@@ -135,6 +135,7 @@ def map_msc_geomet_observation(
             or (merged_properties.get("condition", {}) if isinstance(merged_properties.get("condition"), Mapping) else None)
         ),
         precipitation_last_hour_mm=_to_optional_float(merged_properties.get("precipitationLastHour")),
+        temperature_wind_chill_c=_to_optional_float(_first_present(merged_properties, ("windChill",))),
     )
 
 
@@ -250,6 +251,9 @@ def map_msc_geomet_forecast(
                 summary=summary,
                 wind_speed_kph=wind_speed_kph,
                 wind_direction_deg=wind_direction_deg,
+                relative_humidity=_to_optional_float(period.get("relativeHumidity")),
+                uv_index=_to_optional_float(_first_present(period, ("uv",))),
+                temperature_wind_chill_c=_to_optional_float(_first_present(period, ("windChill",))),
             )
         )
 

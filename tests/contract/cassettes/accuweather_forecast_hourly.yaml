@@ -1,0 +1,102 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - dataservice.accuweather.com
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://dataservice.accuweather.com/forecasts/v1/hourly/12hour/49538?apikey=REDACTED&details=true&metric=true
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Alt-Svc:
+      - h3=":443"; ma=93600,h3-29=":443"; ma=93600
+      Cache-Control:
+      - public, max-age=1200
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '2200'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 28 Dec 2025 11:57:46 GMT
+      Expires:
+      - Sun, 28 Dec 2025 12:17:46 GMT
+      Server-Timing:
+      - cdn-cache; desc=MISS
+      - edge; dur=17
+      - origin; dur=206
+      - ak_p; desc="1766923065822_400219538_288403910_22315_1398_33_49_-";dur=1
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      akamai-grn:
+      - 0.491c2117.1766923065.1286e84b
+      am:
+      - 'true'
+      ratelimit-limit:
+      - '1'
+      ratelimit-remaining:
+      - '249'
+      request-context:
+      - appId=cid-v1:ea11c69b-764f-4610-b1e2-0faa867e8fb2
+      zp-rid:
+      - 357b4d4b-bd11-40e9-97c3-183e77777a17
+    status:
+      code: 200
+      message: OK
+version: 1

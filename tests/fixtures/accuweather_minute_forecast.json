@@ -1,0 +1,34 @@
+{
+  "Summary": {
+    "Phrase": "Light rain for the next hour.",
+    "ShortPhrase": "Light rain",
+    "LongPhrase": "Light rain for the next 60 minutes.",
+    "Icon": 18
+  },
+  "Summaries": [
+    {
+      "StartMinute": 0,
+      "EndMinute": 0,
+      "CountMinute": 1,
+      "MinuteText": "Light rain",
+      "MinutesText": "Light rain",
+      "ShortPhrase": "Light rain",
+      "BriefPhrase": "Light rain",
+      "LongPhrase": "Light rain expected",
+      "Type": 0,
+      "Icon": 18
+    },
+    {
+      "StartMinute": 1,
+      "EndMinute": 1,
+      "CountMinute": 1,
+      "MinuteText": "Light rain",
+      "MinutesText": "Light rain",
+      "ShortPhrase": "Light rain",
+      "BriefPhrase": "Light rain",
+      "LongPhrase": "Light rain expected",
+      "Type": 0,
+      "Icon": 18
+    }
+  ]
+}
