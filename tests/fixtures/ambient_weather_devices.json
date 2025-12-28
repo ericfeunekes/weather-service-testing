@@ -3,7 +3,15 @@
     "macAddress": "00:11:22:33:44:55",
     "info": {
       "name": "Backyard",
-      "coords": [40.0, -75.0]
+      "coords": {
+        "coords": {
+          "lat": 40.0,
+          "lon": -75.0
+        },
+        "address": "123 Example St",
+        "location": "Backyard",
+        "elevation": 100
+      }
     },
     "lastData": {
       "dateutc": 1685577600000,
@@ -20,7 +28,15 @@
     "macAddress": "AA:BB:CC:DD:EE:FF",
     "info": {
       "name": "Garage",
-      "coords": [41.0, -76.0]
+      "coords": {
+        "coords": {
+          "lat": 41.0,
+          "lon": -76.0
+        },
+        "address": "456 Sample Ave",
+        "location": "Garage",
+        "elevation": 120
+      }
     },
     "lastData": {
       "dateutc": 1685593200000,

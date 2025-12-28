@@ -70,8 +70,13 @@ def _parse_observed_at(timestamp: Any) -> datetime:
 def _extract_coords(info: Mapping[str, Any]) -> tuple[float, float]:
     coords: Any = info.get("coords")
     if isinstance(coords, Mapping):
-        lat = coords.get("lat") or coords.get("latitude")
-        lon = coords.get("lon") or coords.get("longitude")
+        nested = coords.get("coords")
+        if isinstance(nested, Mapping):
+            lat = nested.get("lat") or nested.get("latitude")
+            lon = nested.get("lon") or nested.get("longitude")
+        else:
+            lat = coords.get("lat") or coords.get("latitude")
+            lon = coords.get("lon") or coords.get("longitude")
     elif isinstance(coords, Sequence) and not isinstance(coords, (str, bytes)):
         if len(coords) < 2:
             lat = lon = None

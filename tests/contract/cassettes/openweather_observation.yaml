@@ -266,4 +266,121 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.openweathermap.org
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.openweathermap.org/data/2.5/weather?appid=REDACTED&lat=51.51&lon=-0.13
+  response:
+    body:
+      string: '{"coord":{"lon":-0.1278,"lat":51.5074},"weather":[{"id":804,"main":"Clouds","description":"overcast
+        clouds","icon":"04d"}],"base":"stations","main":{"temp":280.01,"feels_like":277.23,"temp_min":279.12,"temp_max":280.49,"pressure":1033,"humidity":75,"sea_level":1033,"grnd_level":1029},"visibility":10000,"wind":{"speed":4.12,"deg":40},"clouds":{"all":100},"dt":1766913497,"sys":{"type":2,"id":268730,"country":"GB","sunrise":1766909166,"sunset":1766937470},"timezone":0,"id":2643743,"name":"London","cod":200}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '509'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 28 Dec 2025 09:23:32 GMT
+      X-Cache-Key:
+      - /data/2.5/weather?lat=51.51&lon=-0.13
+    status:
+      code: 200
+      message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.openweathermap.org
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.openweathermap.org/data/2.5/weather?appid=REDACTED&lat=51.51&lon=-0.13
+  response:
+    body:
+      string: '{"coord":{"lon":-0.1278,"lat":51.5074},"weather":[{"id":804,"main":"Clouds","description":"overcast
+        clouds","icon":"04d"}],"base":"stations","main":{"temp":280.01,"feels_like":277.23,"temp_min":279.12,"temp_max":280.49,"pressure":1033,"humidity":74,"sea_level":1033,"grnd_level":1029},"visibility":10000,"wind":{"speed":4.12,"deg":40},"clouds":{"all":100},"dt":1766913984,"sys":{"type":2,"id":268730,"country":"GB","sunrise":1766909166,"sunset":1766937470},"timezone":0,"id":2643743,"name":"London","cod":200}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '509'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 28 Dec 2025 09:29:00 GMT
+      X-Cache-Key:
+      - /data/2.5/weather?lat=51.51&lon=-0.13
+    status:
+      code: 200
+      message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.openweathermap.org
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.openweathermap.org/data/2.5/weather?appid=REDACTED&lat=51.51&lon=-0.13
+  response:
+    body:
+      string: '{"coord":{"lon":-0.1278,"lat":51.5074},"weather":[{"id":804,"main":"Clouds","description":"overcast
+        clouds","icon":"04d"}],"base":"stations","main":{"temp":280.01,"feels_like":277.23,"temp_min":279.12,"temp_max":280.49,"pressure":1033,"humidity":74,"sea_level":1033,"grnd_level":1029},"visibility":10000,"wind":{"speed":4.12,"deg":40},"clouds":{"all":100},"dt":1766913984,"sys":{"type":2,"id":268730,"country":"GB","sunrise":1766909166,"sunset":1766937470},"timezone":0,"id":2643743,"name":"London","cod":200}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '509'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 28 Dec 2025 09:29:49 GMT
+      X-Cache-Key:
+      - /data/2.5/weather?lat=51.51&lon=-0.13
+    status:
+      code: 200
+      message: OK
 version: 1

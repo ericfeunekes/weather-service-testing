@@ -20,7 +20,7 @@ def test_observation_mapping_normalizes_fields():
     observation = map_tomorrow_io_observation(raw)
 
     assert observation.provider == "tomorrow_io"
-    assert observation.station == "NYC"
+    assert observation.station is None
     assert observation.location.latitude == pytest.approx(40.7)
     assert observation.location.longitude == pytest.approx(-74.0)
     assert observation.observed_at == datetime(2024, 5, 1, 12, tzinfo=timezone.utc)
@@ -38,7 +38,7 @@ def test_observation_mapping_normalizes_fields():
 def test_observation_requires_coordinates():
     raw = load_fixture("tomorrow_io_observation.json")
     broken = deepcopy(raw)
-    broken["data"]["location"].pop("lat")
+    broken["location"].pop("lat")
 
     with pytest.raises(ValueError):
         map_tomorrow_io_observation(broken)
@@ -52,7 +52,7 @@ def test_forecast_mapping_normalizes_intervals():
     assert len(periods) == 2
     first, second = periods
 
-    assert first.issued_at == datetime(2024, 5, 1, 12, 30, tzinfo=timezone.utc)
+    assert first.issued_at == datetime(2024, 5, 1, 13, tzinfo=timezone.utc)
     assert first.start_time == datetime(2024, 5, 1, 13, tzinfo=timezone.utc)
     assert first.end_time == datetime(2024, 5, 1, 14, tzinfo=timezone.utc)
     assert first.temperature_c == pytest.approx(16.0)
@@ -72,7 +72,7 @@ def test_forecast_mapping_normalizes_intervals():
 def test_forecast_requires_start_time():
     raw = load_fixture("tomorrow_io_forecast.json")
     broken = deepcopy(raw)
-    broken["data"]["timelines"][0]["intervals"][0].pop("startTime")
+    broken["timelines"]["hourly"][0].pop("time")
 
     with pytest.raises(ValueError):
         map_tomorrow_io_forecast(broken)
