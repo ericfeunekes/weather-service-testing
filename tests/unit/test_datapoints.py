@@ -179,3 +179,55 @@ def test_forecast_to_datapoints_daily_lead_time_local_day_boundary():
     assert points
     assert all(point.lead_unit == "day" for point in points)
     assert all(point.lead_offset == 2 for point in points)
+
+
+def test_forecast_to_datapoints_daily_lead_time_dst_start():
+    tz_name = "America/Los_Angeles"
+    run_at = datetime(2024, 3, 10, 8, 30, tzinfo=timezone.utc)  # 00:30 local (pre-DST jump)
+    start_time = datetime(2024, 3, 11, 7, 0, tzinfo=timezone.utc)  # 00:00 local (post-jump)
+    end_time = start_time + timedelta(days=1)
+    forecast = ForecastPeriod(
+        provider="demo",
+        location=Location(latitude=10.0, longitude=20.0),
+        issued_at=run_at,
+        start_time=start_time,
+        end_time=end_time,
+        temperature_high_c=12.0,
+    )
+
+    points = forecast_to_datapoints(
+        forecast,
+        run_at=run_at,
+        tz_name=tz_name,
+        product_kind=PRODUCT_FORECAST_DAILY,
+    )
+
+    assert points
+    assert all(point.lead_unit == "day" for point in points)
+    assert all(point.lead_offset == 1 for point in points)
+
+
+def test_forecast_to_datapoints_daily_lead_time_dst_end():
+    tz_name = "America/Los_Angeles"
+    run_at = datetime(2024, 11, 3, 8, 30, tzinfo=timezone.utc)  # 01:30 local (before fallback)
+    start_time = datetime(2024, 11, 4, 8, 0, tzinfo=timezone.utc)  # 00:00 local (after fallback)
+    end_time = start_time + timedelta(days=1)
+    forecast = ForecastPeriod(
+        provider="demo",
+        location=Location(latitude=10.0, longitude=20.0),
+        issued_at=run_at,
+        start_time=start_time,
+        end_time=end_time,
+        temperature_high_c=12.0,
+    )
+
+    points = forecast_to_datapoints(
+        forecast,
+        run_at=run_at,
+        tz_name=tz_name,
+        product_kind=PRODUCT_FORECAST_DAILY,
+    )
+
+    assert points
+    assert all(point.lead_unit == "day" for point in points)
+    assert all(point.lead_offset == 1 for point in points)

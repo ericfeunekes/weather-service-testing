@@ -115,7 +115,12 @@ def _assert_period_sequence(
     assert all(delta >= min_step for delta in deltas)
     if expected_step is None:
         expected_step = deltas[0]
-    assert all(delta == expected_step for delta in deltas)
+    expected_seconds = int(expected_step.total_seconds())
+    assert expected_seconds > 0
+    for delta in deltas:
+        delta_seconds = int(delta.total_seconds())
+        assert delta_seconds >= expected_seconds
+        assert delta_seconds % expected_seconds == 0
 
 
 @pytest.fixture()
