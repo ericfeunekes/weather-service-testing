@@ -427,16 +427,29 @@ def _forecast_points(
     quality_flag: Optional[str] = None,
 ) -> list[DataPoint]:
     points: list[DataPoint] = []
-    for period in periods:
-        points.extend(
-            forecast_to_datapoints(
-                period,
-                run_at=run_at,
-                tz_name=tz_name,
-                product_kind=product_kind,
-                quality_flag=quality_flag,
+    if product_kind == PRODUCT_FORECAST_DAILY:
+        for index, period in enumerate(periods):
+            points.extend(
+                forecast_to_datapoints(
+                    period,
+                    run_at=run_at,
+                    tz_name=tz_name,
+                    product_kind=product_kind,
+                    lead_day_index=index,
+                    quality_flag=quality_flag,
+                )
             )
-        )
+    else:
+        for period in periods:
+            points.extend(
+                forecast_to_datapoints(
+                    period,
+                    run_at=run_at,
+                    tz_name=tz_name,
+                    product_kind=product_kind,
+                    quality_flag=quality_flag,
+                )
+            )
     return points
 
 

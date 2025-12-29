@@ -151,6 +151,7 @@ class DataPoint:
     lead_unit: Optional[str]
     lead_offset: Optional[int]
     lead_label: Optional[str]
+    lead_day_index: Optional[int]
     latitude: float
     longitude: float
     station: Optional[str]

@@ -146,6 +146,7 @@ def test_forecast_to_datapoints_daily_lead_time():
         run_at=run_at,
         tz_name="UTC",
         product_kind=PRODUCT_FORECAST_DAILY,
+        lead_day_index=2,
     )
 
     assert points
@@ -153,6 +154,7 @@ def test_forecast_to_datapoints_daily_lead_time():
     assert all(point.lead_offset == 2 for point in points)
     assert all(point.lead_label == "+2d" for point in points)
     assert all(point.local_day is not None for point in points)
+    assert all(point.lead_day_index == 2 for point in points)
 
 
 def test_forecast_to_datapoints_daily_lead_time_local_day_boundary():
@@ -174,11 +176,13 @@ def test_forecast_to_datapoints_daily_lead_time_local_day_boundary():
         run_at=run_at,
         tz_name=tz_name,
         product_kind=PRODUCT_FORECAST_DAILY,
+        lead_day_index=1,
     )
 
     assert points
     assert all(point.lead_unit == "day" for point in points)
     assert all(point.lead_offset == 2 for point in points)
+    assert all(point.lead_day_index == 1 for point in points)
 
 
 def test_forecast_to_datapoints_daily_lead_time_dst_start():
@@ -200,11 +204,13 @@ def test_forecast_to_datapoints_daily_lead_time_dst_start():
         run_at=run_at,
         tz_name=tz_name,
         product_kind=PRODUCT_FORECAST_DAILY,
+        lead_day_index=1,
     )
 
     assert points
     assert all(point.lead_unit == "day" for point in points)
     assert all(point.lead_offset == 1 for point in points)
+    assert all(point.lead_day_index == 1 for point in points)
 
 
 def test_forecast_to_datapoints_daily_lead_time_dst_end():
@@ -226,8 +232,10 @@ def test_forecast_to_datapoints_daily_lead_time_dst_end():
         run_at=run_at,
         tz_name=tz_name,
         product_kind=PRODUCT_FORECAST_DAILY,
+        lead_day_index=1,
     )
 
     assert points
     assert all(point.lead_unit == "day" for point in points)
     assert all(point.lead_offset == 1 for point in points)
+    assert all(point.lead_day_index == 1 for point in points)

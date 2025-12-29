@@ -77,6 +77,7 @@ def ensure_schema(connection: sqlite3.Connection) -> None:
             lead_unit TEXT,
             lead_offset INTEGER,
             lead_label TEXT,
+            lead_day_index INTEGER,
             latitude REAL NOT NULL,
             longitude REAL NOT NULL,
             station TEXT,
@@ -91,6 +92,7 @@ def ensure_schema(connection: sqlite3.Connection) -> None:
         CREATE INDEX IF NOT EXISTS idx_data_points_time ON data_points(run_at_utc, valid_start_utc, observed_at_utc);
         """
     )
+    _ensure_column(connection, "data_points", "lead_day_index", "INTEGER")
 
 
 def insert_raw_payload(connection: sqlite3.Connection, payload: RawPayload) -> int:
@@ -156,6 +158,7 @@ def insert_data_points(
             point.lead_unit,
             point.lead_offset,
             point.lead_label,
+            point.lead_day_index,
             point.latitude,
             point.longitude,
             point.station,
@@ -189,12 +192,13 @@ def insert_data_points(
             lead_unit,
             lead_offset,
             lead_label,
+            lead_day_index,
             latitude,
             longitude,
             station,
             source_field,
             quality_flag
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
         rows,
     )
@@ -210,6 +214,13 @@ def _json_or_none(value: Optional[Mapping[str, str]]) -> Optional[str]:
     if value is None:
         return None
     return json.dumps(value, sort_keys=True)
+
+
+def _ensure_column(connection: sqlite3.Connection, table: str, column: str, column_type: str) -> None:
+    columns = {row[1] for row in connection.execute(f"PRAGMA table_info({table})")}
+    if column in columns:
+        return
+    connection.execute(f"ALTER TABLE {table} ADD COLUMN {column} {column_type}")
 
 
 __all__ = [

@@ -165,6 +165,7 @@ def observation_to_datapoints(
                 lead_unit=None,
                 lead_offset=None,
                 lead_label=None,
+                lead_day_index=None,
                 latitude=observation.location.latitude,
                 longitude=observation.location.longitude,
                 station=observation.station,
@@ -182,6 +183,7 @@ def forecast_to_datapoints(
     run_at: datetime,
     tz_name: str,
     product_kind: str,
+    lead_day_index: Optional[int] = None,
     source_fields: Optional[Mapping[str, str]] = None,
     quality_flag: Optional[str] = None,
 ) -> list[DataPoint]:
@@ -196,6 +198,7 @@ def forecast_to_datapoints(
         forecast_hour = forecast.start_time.replace(minute=0, second=0, microsecond=0)
         delta = forecast_hour - run_hour
         lead_offset = int(delta.total_seconds() // 3600)
+        lead_day_index = None
     else:
         forecast_day = _local_day(forecast.start_time, tz_name)
         run_day = _local_day(run_at, tz_name)
@@ -235,6 +238,7 @@ def forecast_to_datapoints(
                 lead_unit=lead_unit,
                 lead_offset=lead_offset,
                 lead_label=lead_label,
+                lead_day_index=lead_day_index if product_kind == PRODUCT_FORECAST_DAILY else None,
                 latitude=forecast.location.latitude,
                 longitude=forecast.location.longitude,
                 station=None,
