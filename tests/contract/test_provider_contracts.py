@@ -7,7 +7,7 @@ import httpx
 import pytest
 import vcr
 
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 from wxbench.providers import (
     fetch_accuweather_daily_forecast,
@@ -97,6 +97,25 @@ def _coords(*, default_lat: float, default_lon: float) -> tuple[float, float]:
         except ValueError:
             pytest.skip("Invalid coordinates provided via WX_LAT/WX_LON")
     return default_lat, default_lon
+
+
+def _assert_period_sequence(
+    periods,
+    *,
+    expected_step: timedelta | None = None,
+    min_step: timedelta = timedelta(seconds=1),
+) -> None:
+    assert periods
+    starts = [period.start_time for period in periods]
+    assert starts == sorted(starts)
+    assert all(period.end_time > period.start_time for period in periods)
+    deltas = [next_start - start for start, next_start in zip(starts, starts[1:])]
+    if not deltas:
+        return
+    assert all(delta >= min_step for delta in deltas)
+    if expected_step is None:
+        expected_step = deltas[0]
+    assert all(delta == expected_step for delta in deltas)
 
 
 @pytest.fixture()
@@ -205,6 +224,7 @@ def test_accuweather_hourly_forecast_contract(client: httpx.Client) -> None:
     assert periods[0].temperature_apparent_c is not None
     assert periods[0].wind_gust_kph is not None
     assert periods[0].uv_index is not None
+    _assert_period_sequence(periods, expected_step=timedelta(hours=1))
 
 
 def test_accuweather_daily_forecast_contract(client: httpx.Client) -> None:
@@ -266,6 +286,7 @@ def test_openweather_forecast_contract(client: httpx.Client) -> None:
     assert periods[0].temperature_c is not None
     assert periods[0].relative_humidity is not None
     assert periods[0].pressure_sea_level_kpa is not None
+    _assert_period_sequence(periods, expected_step=timedelta(hours=3))
 
 
 def test_openweather_onecall_hourly_contract(client: httpx.Client) -> None:
@@ -288,6 +309,8 @@ def test_openweather_onecall_hourly_contract(client: httpx.Client) -> None:
     assert periods[0].pressure_sea_level_kpa is not None
     assert periods[0].cloud_cover_pct is not None
     assert periods[0].condition_code is not None
+    _assert_period_sequence(periods, expected_step=timedelta(hours=1))
+    _assert_period_sequence(periods, expected_step=timedelta(hours=1))
 
 
 def test_openweather_onecall_daily_contract(client: httpx.Client) -> None:
@@ -310,6 +333,7 @@ def test_openweather_onecall_daily_contract(client: httpx.Client) -> None:
     assert periods[0].pressure_sea_level_kpa is not None
     assert periods[0].cloud_cover_pct is not None
     assert periods[0].condition_code is not None
+    _assert_period_sequence(periods, expected_step=timedelta(days=1))
 
 
 def test_tomorrow_io_observation_contract(client: httpx.Client) -> None:
@@ -376,6 +400,7 @@ def test_tomorrow_io_daily_forecast_contract(client: httpx.Client) -> None:
     assert periods[0].relative_humidity is not None
     assert periods[0].precipitation_amount_rain_mm is not None
     assert periods[0].cloud_cover_pct is not None
+    _assert_period_sequence(periods, expected_step=timedelta(days=1))
 
 
 def test_msc_geomet_observation_contract(client: httpx.Client) -> None:
@@ -408,6 +433,7 @@ def test_msc_geomet_forecast_contract(client: httpx.Client) -> None:
     assert periods[0].location.longitude is not None
     assert periods[0].summary
     assert periods[0].relative_humidity is not None
+    _assert_period_sequence(periods, min_step=timedelta(hours=1))
 
 
 def test_msc_rdps_prognos_forecast_contract(client: httpx.Client) -> None:
@@ -427,3 +453,4 @@ def test_msc_rdps_prognos_forecast_contract(client: httpx.Client) -> None:
     assert periods[0].dewpoint_c is not None
     assert periods[0].wind_speed_kph is not None
     assert periods[0].wind_direction_deg is not None
+    _assert_period_sequence(periods, expected_step=timedelta(hours=1))
