@@ -46,6 +46,36 @@ Location
 
 Provider keys are expected via environment variables at runtime (in GitHub Actions these come from repo secrets). Do not commit keys.
 
+## Hourly runtime (recommended)
+
+The scheduled runner ensures a single hourly run, skips if the current hour already exists, and writes per-run artifacts:
+
+```
+python -m wxbench.runtime --msc-rdps-max-lead-hours 24
+```
+
+Artifacts are written under `data/runs/<run_id>/`:
+
+- `manifest.json` – run parameters, counts, errors, and outputs
+- `logs.jsonl` – start/finish/skip plus per-provider start/success/error events (JSONL)
+- `metrics.json` – compact per-run metrics
+
+The runner defaults to `max_lead_hours=24` for RDPS PROGNOS to keep hourly runs lightweight; override the flag if you want the full 0–84 range.
+
+To store artifacts in Application Support, pass a data root and (optionally) an explicit DB path:
+
+```
+python -m wxbench.runtime --data-root "$HOME/Library/Application Support/wxbench" --db-path "$HOME/Library/Application Support/wxbench/wxbench.sqlite"
+```
+
+### Runbook (minimal)
+
+- Rerun safely: re-run the hourly command; it will skip if the hour already exists.
+- Backfill: true backfills aren’t supported by most provider endpoints; reruns will capture “latest” data only.
+- Inspect state: query `data/wxbench.sqlite` (`raw_payloads`, `data_points`) and review `data/runs/<run_id>/manifest.json`.
+- Outputs: raw payloads and normalized points are stored in SQLite; run artifacts are in `data/runs/<run_id>/`.
+- Rollback: delete the specific hour’s rows from SQLite using `run_at_utc` bounds if you need to invalidate a run.
+
 ## Development setup
 
 Python 3.12+ recommended.

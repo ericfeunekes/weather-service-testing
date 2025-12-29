@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timezone
+import time
 from pathlib import Path
 from typing import Callable, Iterable, Optional
 
@@ -35,10 +36,12 @@ from wxbench.providers import (
     fetch_tomorrow_io_observation,
 )
 from wxbench.providers.capture import CapturedPayload
+from wxbench.providers.errors import ProviderError
 from wxbench.storage.sqlite import RawPayload, ensure_schema, insert_data_points, insert_raw_payload, open_database
 
 
 Clock = Callable[[], datetime]
+EventLogger = Callable[[dict[str, object]], None]
 
 
 @dataclass(frozen=True)
@@ -53,11 +56,11 @@ def _default_clock() -> datetime:
     return datetime.now(timezone.utc)
 
 
-def _to_raw_payload(captured: CapturedPayload) -> RawPayload:
+def _to_raw_payload(captured: CapturedPayload, *, run_at: datetime) -> RawPayload:
     return RawPayload(
         provider=captured.provider,
         endpoint=captured.endpoint,
-        run_at=captured.run_at,
+        run_at=run_at,
         request_url=captured.request_url,
         request_params=captured.request_params,
         request_headers=captured.request_headers,
@@ -73,7 +76,8 @@ def collect_all(
     db_path: Optional[Path] = None,
     client: Optional[httpx.Client] = None,
     clock: Optional[Clock] = None,
-    msc_rdps_max_lead_hours: Optional[int] = None,
+    msc_rdps_max_lead_hours: int = 24,
+    event_logger: Optional[EventLogger] = None,
 ) -> CollectionResult:
     """Fetch observations + hourly/daily forecasts from all providers."""
 
@@ -91,10 +95,14 @@ def collect_all(
     session = client or httpx.Client()
     close_client = client is None
 
+    def _emit(event: dict[str, object]) -> None:
+        if event_logger is not None:
+            event_logger(event)
+
     def _capture(holder: dict[str, int]) -> Callable[[CapturedPayload], None]:
         def _store(captured: CapturedPayload) -> None:
             nonlocal raw_count
-            raw_id = insert_raw_payload(connection, _to_raw_payload(captured))
+            raw_id = insert_raw_payload(connection, _to_raw_payload(captured, run_at=run_at))
             holder["raw_id"] = raw_id
             raw_count += 1
         return _store
@@ -106,6 +114,10 @@ def collect_all(
             ambient_app = config.provider_keys.get("WX_AMBIENT_APPLICATION_KEY")
             ambient_device_mac = config.provider_keys.get("WX_AMBIENT_DEVICE_MAC")
             if ambient_key and ambient_app:
+                provider_start = time.monotonic()
+                raw_before = raw_count
+                point_before = point_count
+                _emit({"event": "provider_start", "provider": "ambient_weather"})
                 holder: dict[str, int] = {}
                 observation = fetch_ambient_weather_observation(
                     api_key=ambient_key,
@@ -119,11 +131,38 @@ def collect_all(
                     points = observation_to_datapoints(observation, run_at=run_at, tz_name=config.timezone)
                     insert_data_points(connection, raw_id, points)
                     point_count += len(points)
-        except Exception as exc:  # noqa: BLE001
-            errors.append(f"ambient_weather: {exc}")
+                _emit(
+                    {
+                        "event": "provider_success",
+                        "provider": "ambient_weather",
+                        "raw_payloads": raw_count - raw_before,
+                        "data_points": point_count - point_before,
+                        "duration_seconds": time.monotonic() - provider_start,
+                    }
+                )
+            else:
+                _emit({"event": "provider_skip", "provider": "ambient_weather", "reason": "missing_keys"})
+        except ProviderError as exc:
+            errors.append(str(exc))
+            _emit(
+                {
+                    "event": "provider_error",
+                    "provider": "ambient_weather",
+                    "operation": exc.operation,
+                    "error_type": exc.__class__.__name__,
+                    "message": exc.message,
+                }
+            )
+            connection.commit()
+        else:
+            connection.commit()
 
         # MSC GeoMet
         try:
+            provider_start = time.monotonic()
+            raw_before = raw_count
+            point_before = point_count
+            _emit({"event": "provider_start", "provider": "msc_geomet"})
             holder: dict[str, int] = {}
             observation = fetch_msc_geomet_observation(
                 latitude=config.latitude,
@@ -165,16 +204,41 @@ def collect_all(
                 )
                 insert_data_points(connection, raw_id, daily_points)
                 point_count += len(daily_points)
-        except Exception as exc:  # noqa: BLE001
-            errors.append(f"msc_geomet: {exc}")
+            _emit(
+                {
+                    "event": "provider_success",
+                    "provider": "msc_geomet",
+                    "raw_payloads": raw_count - raw_before,
+                    "data_points": point_count - point_before,
+                    "duration_seconds": time.monotonic() - provider_start,
+                }
+            )
+        except ProviderError as exc:
+            errors.append(str(exc))
+            _emit(
+                {
+                    "event": "provider_error",
+                    "provider": "msc_geomet",
+                    "operation": exc.operation,
+                    "error_type": exc.__class__.__name__,
+                    "message": exc.message,
+                }
+            )
+            connection.commit()
+        else:
+            connection.commit()
 
         # MSC RDPS PROGNOS (hourly station-point forecasts)
         try:
+            provider_start = time.monotonic()
+            raw_before = raw_count
+            point_before = point_count
+            _emit({"event": "provider_start", "provider": "msc_rdps_prognos"})
             rdps_raw_ids: dict[str, int] = {}
 
             def _capture_rdps(captured: CapturedPayload) -> None:
                 nonlocal raw_count
-                raw_id = insert_raw_payload(connection, _to_raw_payload(captured))
+                raw_id = insert_raw_payload(connection, _to_raw_payload(captured, run_at=run_at))
                 rdps_raw_ids[captured.endpoint] = raw_id
                 raw_count += 1
 
@@ -182,7 +246,8 @@ def collect_all(
                 latitude=config.latitude,
                 longitude=config.longitude,
                 client=session,
-                max_lead_hours=84 if msc_rdps_max_lead_hours is None else msc_rdps_max_lead_hours,
+                max_lead_hours=msc_rdps_max_lead_hours,
+                run_time=run_at,
                 capture=_capture_rdps,
             )
             hourly_points = []
@@ -219,13 +284,38 @@ def collect_all(
                     anchor_raw_id = next(iter(rdps_raw_ids.values()))
                 insert_data_points(connection, anchor_raw_id, daily_points)
                 point_count += len(daily_points)
-        except Exception as exc:  # noqa: BLE001
-            errors.append(f"msc_rdps_prognos: {exc}")
+            _emit(
+                {
+                    "event": "provider_success",
+                    "provider": "msc_rdps_prognos",
+                    "raw_payloads": raw_count - raw_before,
+                    "data_points": point_count - point_before,
+                    "duration_seconds": time.monotonic() - provider_start,
+                }
+            )
+        except ProviderError as exc:
+            errors.append(str(exc))
+            _emit(
+                {
+                    "event": "provider_error",
+                    "provider": "msc_rdps_prognos",
+                    "operation": exc.operation,
+                    "error_type": exc.__class__.__name__,
+                    "message": exc.message,
+                }
+            )
+            connection.commit()
+        else:
+            connection.commit()
 
         # OpenWeather
         try:
             openweather_key = config.provider_keys.get("WX_OPENWEATHER_API_KEY")
             if openweather_key:
+                provider_start = time.monotonic()
+                raw_before = raw_count
+                point_before = point_count
+                _emit({"event": "provider_start", "provider": "openweather"})
                 holder = {}
                 observation = fetch_openweather_observation(
                     latitude=config.latitude,
@@ -277,13 +367,40 @@ def collect_all(
                     )
                     insert_data_points(connection, raw_id, daily_points)
                     point_count += len(daily_points)
-        except Exception as exc:  # noqa: BLE001
-            errors.append(f"openweather: {exc}")
+                _emit(
+                    {
+                        "event": "provider_success",
+                        "provider": "openweather",
+                        "raw_payloads": raw_count - raw_before,
+                        "data_points": point_count - point_before,
+                        "duration_seconds": time.monotonic() - provider_start,
+                    }
+                )
+            else:
+                _emit({"event": "provider_skip", "provider": "openweather", "reason": "missing_keys"})
+        except ProviderError as exc:
+            errors.append(str(exc))
+            _emit(
+                {
+                    "event": "provider_error",
+                    "provider": "openweather",
+                    "operation": exc.operation,
+                    "error_type": exc.__class__.__name__,
+                    "message": exc.message,
+                }
+            )
+            connection.commit()
+        else:
+            connection.commit()
 
         # Tomorrow.io
         try:
             tomorrow_key = config.provider_keys.get("WX_TOMORROW_IO_API_KEY")
             if tomorrow_key:
+                provider_start = time.monotonic()
+                raw_before = raw_count
+                point_before = point_count
+                _emit({"event": "provider_start", "provider": "tomorrow_io"})
                 holder = {}
                 observation = fetch_tomorrow_io_observation(
                     latitude=config.latitude,
@@ -335,13 +452,40 @@ def collect_all(
                     )
                     insert_data_points(connection, raw_id, daily_points)
                     point_count += len(daily_points)
-        except Exception as exc:  # noqa: BLE001
-            errors.append(f"tomorrow_io: {exc}")
+                _emit(
+                    {
+                        "event": "provider_success",
+                        "provider": "tomorrow_io",
+                        "raw_payloads": raw_count - raw_before,
+                        "data_points": point_count - point_before,
+                        "duration_seconds": time.monotonic() - provider_start,
+                    }
+                )
+            else:
+                _emit({"event": "provider_skip", "provider": "tomorrow_io", "reason": "missing_keys"})
+        except ProviderError as exc:
+            errors.append(str(exc))
+            _emit(
+                {
+                    "event": "provider_error",
+                    "provider": "tomorrow_io",
+                    "operation": exc.operation,
+                    "error_type": exc.__class__.__name__,
+                    "message": exc.message,
+                }
+            )
+            connection.commit()
+        else:
+            connection.commit()
 
         # AccuWeather
         try:
             accuweather_key = config.provider_keys.get("WX_ACCUWEATHER_API_KEY")
             if accuweather_key:
+                provider_start = time.monotonic()
+                raw_before = raw_count
+                point_before = point_count
+                _emit({"event": "provider_start", "provider": "accuweather"})
                 holder = {}
                 location = fetch_accuweather_location(
                     latitude=config.latitude,
@@ -406,10 +550,31 @@ def collect_all(
                     )
                     insert_data_points(connection, raw_id, daily_points)
                     point_count += len(daily_points)
-        except Exception as exc:  # noqa: BLE001
-            errors.append(f"accuweather: {exc}")
-
-        connection.commit()
+                _emit(
+                    {
+                        "event": "provider_success",
+                        "provider": "accuweather",
+                        "raw_payloads": raw_count - raw_before,
+                        "data_points": point_count - point_before,
+                        "duration_seconds": time.monotonic() - provider_start,
+                    }
+                )
+            else:
+                _emit({"event": "provider_skip", "provider": "accuweather", "reason": "missing_keys"})
+        except ProviderError as exc:
+            errors.append(str(exc))
+            _emit(
+                {
+                    "event": "provider_error",
+                    "provider": "accuweather",
+                    "operation": exc.operation,
+                    "error_type": exc.__class__.__name__,
+                    "message": exc.message,
+                }
+            )
+            connection.commit()
+        else:
+            connection.commit()
     finally:
         if close_client:
             session.close()

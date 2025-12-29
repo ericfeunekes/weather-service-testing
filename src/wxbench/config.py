@@ -60,7 +60,7 @@ def _parse_coordinate(key: str, env: Mapping[str, str], min_value: float, max_va
         raise ConfigError(f"Missing required configuration: {key}")
 
     try:
-        value = float(raw_value)
+        value = float(raw_value.strip())
     except ValueError as exc:  # pragma: no cover - defensive branch
         raise ConfigError(f"{key} must be a number") from exc
 
@@ -76,6 +76,7 @@ def _parse_timezone(env: Mapping[str, str]) -> str:
     if raw_value is None or raw_value.strip() == "":
         raise ConfigError("Missing required configuration: WX_TZ")
 
+    raw_value = raw_value.strip()
     try:
         ZoneInfo(raw_value)
     except ZoneInfoNotFoundError as exc:
@@ -96,6 +97,9 @@ def _collect_provider_keys(env: Mapping[str, str]) -> Dict[str, str]:
     for key, value in env.items():
         if key in _REQUIRED_KEYS or not key.startswith("WX_"):
             continue
-        if value:
-            optional_keys[key] = value
+        if value is None:
+            continue
+        stripped = value.strip()
+        if stripped:
+            optional_keys[key] = stripped
     return optional_keys

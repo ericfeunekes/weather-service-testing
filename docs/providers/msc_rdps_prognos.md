@@ -46,8 +46,9 @@ Where:
 - Wind direction is degrees; normalize to integer degrees.
 - We select the nearest station to the configured `WX_LAT/WX_LON`.
 - We store `prognos_station_id` as the station identifier.
-- We ingest all lead hours `0-84` each run and store hourly forecasts; daily is derived.
+- The adapter can ingest all lead hours `0-84` and store hourly forecasts; daily is derived.
 - Pulling the full 0-84 range requires 4 files per lead hour (~340 requests per run).
+- The scheduled hourly runner defaults to `max_lead_hours=24` to keep hourly runs lightweight.
 
 ## Contract cassettes
 - `msc_rdps_prognos_forecast.yaml`
