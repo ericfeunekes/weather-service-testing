@@ -1,0 +1,294 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - dataservice.accuweather.com
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=REDACTED&q=44.63955893%2C-63.58675928
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAB/6pWCkstKs7Mz1OyMtRR8k6tVLJSMrE0NbZQ0lEKqSxIVbJScs4sqVTSUQpKzMtW
+        sjIx1FHyyU9OzMmsSk3xS8wFKfBIzMlMS6xQ0lFyzUvPySzOwBAPKMrMTSyqDMgvLknMcc5PAely
+        MvYBmZqaDra8WsnTRclKyc/RVwnTAr/8opIMBcfc1KLM5EQMa1Bla3WUnPNL80qKKpWsoIY6O2Ix
+        0zkxLzEF0zCocK2OkmNKbmZeZnFJUWJJZlmqY1FqItxAv2AsBvrllyUqBCfnl2Rimooq55NalpoD
+        Dm94SEKDOqAovywzLzkV4UdMCajvwMHl7KhUq6MUkpmbGpWflwpyHzRwHYNDlHSUoPEADTh9RDy5
+        55b4p6UVp5YoWema6BnoKHkWuyRW5mSmZ5QEJ5Zl5qUrWaUl5hSn6ij5pVZAlTpnJOalgyLOyMDI
+        TNfAWNfAIsTAzMrAwMrAIArkDPfU/ID84swSaHz6JJZklpSCotrERM/MxBwUrXnpUCFdM2M9M0Nz
+        HSXXnNSyRJgW39SSosxkkDfCEnNKU5WsjAxAjgvNyyxRslLKVdJRAjEhQWJaq6PkmVuQWpSZmIOk
+        w8wUSUdaCYoWg9pakKZix5zMxGK4D4NLCwpyUnNT80oSc8BxDorqYiWr6GolaEQZgZyONckrgCMD
+        lDuwpnyYdG2sjpJLYklicGoJyGAlx8yiwNLEnMySSufSoqLUvBLn/LwUcMAVK+kgybrlF6UmJxaX
+        gEVzUovADJigc35eWmZKKiS1uJWWlBalBiWmJBYp6Sj5ZuaVlqQ6JxaD/A8TDMlMScyBaVaKrQUA
+        AAD//wMASW+YA/oDAAA=
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Alt-Svc:
+      - h3=":443"; ma=93600,h3-29=":443"; ma=93600
+      Cache-Control:
+      - public, max-age=86400
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '641'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 28 Dec 2025 11:57:44 GMT
+      Expires:
+      - Mon, 29 Dec 2025 11:57:44 GMT
+      Server-Timing:
+      - cdn-cache; desc=MISS
+      - edge; dur=18
+      - origin; dur=149
+      - ak_p; desc="1766923064599_400219538_288403204_16856_1311_32_43_-";dur=1
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      akamai-grn:
+      - 0.491c2117.1766923064.12889e8b
+      ratelimit-limit:
+      - '1'
+      ratelimit-remaining:
+      - '249'
+      request-context:
+      - appId=cid-v1:cc223195-bccf-4201-9cde-374567896e20
+      x-location-key:
+      - '49538'
+      zp-rid:
+      - 03fee385-9dad-48a5-9265-bdd762f6670c
+    status:
+      code: 200
+      message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - dataservice.accuweather.com
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=REDACTED&q=44.63955893%2C-63.58675928
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAB/6pWCkstKs7Mz1OyMtRR8k6tVLJSMrE0NbZQ0lEKqSxIVbJScs4sqVTSUQpKzMtW
+        sjIx1FHyyU9OzMmsSk3xS8wFKfBIzMlMS6xQ0lFyzUvPySzOwBAPKMrMTSyqDMgvLknMcc5PAely
+        MvYBmZqaDra8WsnTRclKyc/RVwnTAr/8opIMBcfc1KLM5EQMa1Bla3WUnPNL80qKKpWsoIY6O2Ix
+        0zkxLzEF0zCocK2OkmNKbmZeZnFJUWJJZlmqY1FqItxAv2AsBvrllyUqBCfnl2Rimooq55NalpoD
+        Dm94SEKDOqAovywzLzkV4UdMCajvwMHl7KhUq6MUkpmbGpWflwpyHzRwHYNDlHSUoPEADTh9RDy5
+        55b4p6UVp5YoWema6BnoKHkWuyRW5mSmZ5QEJ5Zl5qUrWaUl5hSn6ij5pVZAlTpnJOalgyLOyMDI
+        TNfAWNfAIsTAzMrAwMrAIArkDPfU/ID84swSaHz6JJZklpSCotrERM/MxBwUrXnpUCFdM2M9M0Nz
+        HSXXnNSyRJgW39SSosxkkDfCEnNKU5WsjAxAjgvNyyxRslLKVdJRAjEhQWJaq6PkmVuQWpSZmIOk
+        w8wUSUdaCYoWg9pakKZix5zMxGK4D4NLCwpyUnNT80oSc8BxDorqYiWr6GolaEQZgZyONckrgCMD
+        lDuwpnyYdG2sjpJLYklicGoJyGAlx8yiwNLEnMySSufSoqLUvBLn/LwUcMAVK+kgybrlF6UmJxaX
+        gEVzUovADJigc35eWmZKKiS1uJWWlBalBiWmJBYp6Sj5ZuaVlqQ6JxaD/A8TDMlMScyBaVaKrQUA
+        AAD//wMASW+YA/oDAAA=
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Alt-Svc:
+      - h3=":443"; ma=93600,h3-29=":443"; ma=93600
+      Cache-Control:
+      - public, max-age=86399
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '641'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 28 Dec 2025 11:57:45 GMT
+      Expires:
+      - Mon, 29 Dec 2025 11:57:44 GMT
+      Server-Timing:
+      - edge; dur=1
+      - origin; dur=123
+      - cdn-cache; desc=MISS
+      - ak_p; desc="1766923064898_400219578_344743139_12270_1297_33_39_-";dur=1
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      akamai-grn:
+      - 0.501c2117.1766923065.6cc59e1d
+      ratelimit-limit:
+      - '1'
+      ratelimit-remaining:
+      - '249'
+      request-context:
+      - appId=cid-v1:cc223195-bccf-4201-9cde-374567896e20
+      x-location-key:
+      - '49538'
+      zp-rid:
+      - 417d58e0-a0dd-4c2c-b323-358fd71a9b9c
+    status:
+      code: 200
+      message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - dataservice.accuweather.com
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=REDACTED&q=44.63955893%2C-63.58675928
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAB/6pWCkstKs7Mz1OyMtRR8k6tVLJSMrE0NbZQ0lEKqSxIVbJScs4sqVTSUQpKzMtW
+        sjIx1FHyyU9OzMmsSk3xS8wFKfBIzMlMS6xQ0lFyzUvPySzOwBAPKMrMTSyqDMgvLknMcc5PAely
+        MvYBmZqaDra8WsnTRclKyc/RVwnTAr/8opIMBcfc1KLM5EQMa1Bla3WUnPNL80qKKpWsoIY6O2Ix
+        0zkxLzEF0zCocK2OkmNKbmZeZnFJUWJJZlmqY1FqItxAv2AsBvrllyUqBCfnl2Rimooq55NalpoD
+        Dm94SEKDOqAovywzLzkV4UdMCajvwMHl7KhUq6MUkpmbGpWflwpyHzRwHYNDlHSUoPEADTh9RDy5
+        55b4p6UVp5YoWema6BnoKHkWuyRW5mSmZ5QEJ5Zl5qUrWaUl5hSn6ij5pVZAlTpnJOalgyLOyMDI
+        TNfAWNfAIsTAzMrAwMrAIArkDPfU/ID84swSaHz6JJZklpSCotrERM/MxBwUrXnpUCFdM2M9M0Nz
+        HSXXnNSyRJgW39SSosxkkDfCEnNKU5WsjAxAjgvNyyxRslLKVdJRAjEhQWJaq6PkmVuQWpSZmIOk
+        w8wUSUdaCYoWg9pakKZix5zMxGK4D4NLCwpyUnNT80oSc8BxDorqYiWr6GolaEQZgZyONckrgCMD
+        lDuwpnyYdG2sjpJLYklicGoJyGAlx8yiwNLEnMySSufSoqLUvBLn/LwUcMAVK+kgybrlF6UmJxaX
+        gEVzUovADJigc35eWmZKKiS1uJWWlBalBiWmJBYp6Sj5ZuaVlqQ6JxaD/A8TDMlMScyBaVaKrQUA
+        AAD//wMASW+YA/oDAAA=
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Alt-Svc:
+      - h3=":443"; ma=93600,h3-29=":443"; ma=93600
+      Cache-Control:
+      - public, max-age=86399
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '641'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 28 Dec 2025 11:57:45 GMT
+      Expires:
+      - Mon, 29 Dec 2025 11:57:44 GMT
+      Server-Timing:
+      - cdn-cache; desc=MISS
+      - edge; dur=18
+      - origin; dur=206
+      - ak_p; desc="1766923065478_400219538_288403713_22424_1411_34_44_-";dur=1
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      akamai-grn:
+      - 0.491c2117.1766923065.1288aeb8
+      ratelimit-limit:
+      - '1'
+      ratelimit-remaining:
+      - '249'
+      request-context:
+      - appId=cid-v1:cc223195-bccf-4201-9cde-374567896e20
+      x-location-key:
+      - '49538'
+      zp-rid:
+      - 0f5184c3-c829-429a-930e-57b4abd81581
+    status:
+      code: 200
+      message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - dataservice.accuweather.com
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=REDACTED&q=44.63955893%2C-63.58675928
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAB/6pWCkstKs7Mz1OyMtRR8k6tVLJSMrE0NbZQ0lEKqSxIVbJScs4sqVTSUQpKzMtW
+        sjIx1FHyyU9OzMmsSk3xS8wFKfBIzMlMS6xQ0lFyzUvPySzOwBAPKMrMTSyqDMgvLknMcc5PAely
+        MvYBmZqaDra8WsnTRclKyc/RVwnTAr/8opIMBcfc1KLM5EQMa1Bla3WUnPNL80qKKpWsoIY6O2Ix
+        0zkxLzEF0zCocK2OkmNKbmZeZnFJUWJJZlmqY1FqItxAv2AsBvrllyUqBCfnl2Rimooq55NalpoD
+        Dm94SEKDOqAovywzLzkV4UdMCajvwMHl7KhUq6MUkpmbGpWflwpyHzRwHYNDlHSUoPEADTh9RDy5
+        55b4p6UVp5YoWema6BnoKHkWuyRW5mSmZ5QEJ5Zl5qUrWaUl5hSn6ij5pVZAlTpnJOalgyLOyMDI
+        TNfAWNfAIsTAzMrAwMrAIArkDPfU/ID84swSaHz6JJZklpSCotrERM/MxBwUrXnpUCFdM2M9M0Nz
+        HSXXnNSyRJgW39SSosxkkDfCEnNKU5WsjAxAjgvNyyxRslLKVdJRAjEhQWJaq6PkmVuQWpSZmIOk
+        w8wUSUdaCYoWg9pakKZix5zMxGK4D4NLCwpyUnNT80oSc8BxDorqYiWr6GolaEQZgZyONckrgCMD
+        lDuwpnyYdG2sjpJLYklicGoJyGAlx8yiwNLEnMySSufSoqLUvBLn/LwUcMAVK+kgybrlF6UmJxaX
+        gEVzUovADJigc35eWmZKKiS1uJWWlBalBiWmJBYp6Sj5ZuaVlqQ6JxaD/A8TDMlMScyBaVaKrQUA
+        AAD//wMASW+YA/oDAAA=
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Alt-Svc:
+      - h3=":443"; ma=93600,h3-29=":443"; ma=93600
+      Cache-Control:
+      - public, max-age=86398
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '641'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 28 Dec 2025 11:57:46 GMT
+      Expires:
+      - Mon, 29 Dec 2025 11:57:44 GMT
+      Server-Timing:
+      - cdn-cache; desc=MISS
+      - edge; dur=18
+      - origin; dur=109
+      - ak_p; desc="1766923066180_400219538_288404096_12676_1384_33_46_-";dur=1
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      akamai-grn:
+      - 0.491c2117.1766923066.1288bbc0
+      ratelimit-limit:
+      - '1'
+      ratelimit-remaining:
+      - '249'
+      request-context:
+      - appId=cid-v1:cc223195-bccf-4201-9cde-374567896e20
+      x-location-key:
+      - '49538'
+      zp-rid:
+      - 973c0f98-ab0c-4bc8-9f09-579842672b29
+    status:
+      code: 200
+      message: OK
+version: 1

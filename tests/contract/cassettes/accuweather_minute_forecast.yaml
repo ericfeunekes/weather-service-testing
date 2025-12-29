@@ -1,0 +1,132 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - dataservice.accuweather.com
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://dataservice.accuweather.com/forecasts/v1/minute?q=44.63955893%2C-63.58675928
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAB/6pWCi7NzU0sqlSyqlYKyChKLE5VslLyy1coKEpNzizILEksyczPU0jLL1JILFHI
+        SU0sLlEwNDJQyM3MU9JRCqksSFWyyivNyYGwPVOUrAxqdaBmZqYWK1lFVysFlyQWlfhm5pWWpCpZ
+        GegouealwHiGhpY6Ss75pXlweUMjAx0liHRIakUJQceo+nr6hYa4xoc5+oS64nVWrI6ST2ZetpKV
+        UkZJSYGVvn55ebleYnJyaXlqYklGapFecn6ufmqefnKifkZiTmZaYoV+knGOfi7Y4bpQRbpp+UWp
+        yYnFJfomlqbGFvY5iXnptql5uqXFajmJJbYmJnpmJmo5+Xm2umbGeqaWSjpKvvlJmTmp9Le5FgAA
+        AP//AwDtDIc72wEAAA==
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Alt-Svc:
+      - h3=":443"; ma=93600,h3-29=":443"; ma=93600
+      Cache-Control:
+      - public, max-age=60
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '298'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 28 Dec 2025 10:00:10 GMT
+      Expires:
+      - Sun, 28 Dec 2025 10:01:10 GMT
+      Server-Timing:
+      - cdn-cache; desc=MISS
+      - edge; dur=32
+      - origin; dur=165
+      - ak_p; desc="1766916009949_400219578_336064089_19771_2180_35_43_-";dur=1
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      akamai-grn:
+      - 0.501c2117.1766916010.6bc7392c
+      ratelimit-limit:
+      - '1'
+      ratelimit-remaining:
+      - '249'
+      request-context:
+      - appId=cid-v1:09fd18b8-4f69-449d-baff-3a56a465c333
+      zp-rid:
+      - e7f8e570-e029-40ee-b5eb-9fc138807c96
+    status:
+      code: 200
+      message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - dataservice.accuweather.com
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://dataservice.accuweather.com/forecasts/v1/minute?q=44.63955893%2C-63.58675928
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAB/6pWCi7NzU0sqlSyqlYKyChKLE5VslLyy1coKEpNzizILEksyczPU0jLL1JILFHI
+        SU0sLlEwNDJQyM3MU9JRCqksSFWyyivNyYGwPVOUrAxqdaBmZqYWK1lFVysFlyQWlfhm5pWWpCpZ
+        GegouealwHiGhpY6Ss75pXlweUMjAx0liHRIakUJQceo+nr6hYa4xoc5+oS64nVWrI6ST2ZetpKV
+        UkZJSYGVvn55ebleYnJyaXlqYklGapFecn6ufmqefnKifkZiTmZaYoV+knGOfi7Y4bpQRbpp+UWp
+        yYnFJfomlqbGFvY5iXnptql5uqXFajmJJbYmJnpmJmo5+Xm2umbGeqaWSjpKvvlJmTmp9Le5FgAA
+        AP//AwDtDIc72wEAAA==
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Alt-Svc:
+      - h3=":443"; ma=93600,h3-29=":443"; ma=93600
+      Cache-Control:
+      - public, max-age=60
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '298'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 28 Dec 2025 11:57:44 GMT
+      Expires:
+      - Sun, 28 Dec 2025 11:58:44 GMT
+      Server-Timing:
+      - edge; dur=1
+      - origin; dur=180
+      - cdn-cache; desc=MISS
+      - ak_p; desc="1766923064296_400219578_344742644_17994_1357_33_39_-";dur=1
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      akamai-grn:
+      - 0.491c2117.1766923064.12888a60
+      ratelimit-limit:
+      - '1'
+      ratelimit-remaining:
+      - '248'
+      request-context:
+      - appId=cid-v1:09fd18b8-4f69-449d-baff-3a56a465c333
+      zp-rid:
+      - 50686b8a-9b90-46a8-a9a3-2640355c4fa9
+    status:
+      code: 200
+      message: OK
+version: 1

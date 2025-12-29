@@ -64,6 +64,7 @@ Contract tests use VCR cassettes by default. To exercise the live provider APIs 
 
 1. Export API keys (only required for authenticated providers):
    - `WX_OPENWEATHER_API_KEY` – OpenWeather
+   - `WX_ACCUWEATHER_API_KEY` – AccuWeather MinuteCast
    - `WX_TOMORROW_IO_API_KEY` – Tomorrow.io
    - `WX_AMBIENT_API_KEY` and `WX_AMBIENT_APPLICATION_KEY` – Ambient Weather
    - Optional location override for contract tests: `WX_LAT` and `WX_LON`.
@@ -79,6 +80,7 @@ Command: `WX_VCR_RECORD_MODE=all pytest tests/contract -rs -q`
 Required environment for a full live run (all providers):
 
 - `WX_AMBIENT_API_KEY` and `WX_AMBIENT_APPLICATION_KEY`
+- `WX_ACCUWEATHER_API_KEY`
 - `WX_OPENWEATHER_API_KEY`
 - `WX_TOMORROW_IO_API_KEY`
 - Optional location override: `WX_LAT` and `WX_LON`
@@ -111,7 +113,12 @@ any development environment.
 
 ## How data is stored (intended)
 
-Raw snapshots are append-only JSONL:
+SQLite (preferred):
+- `data/wxbench.sqlite`
+- `raw_payloads` stores each HTTP response (redacted metadata + raw payload).
+- `data_points` stores normalized per-metric rows for observations + forecasts.
+
+Legacy/optional JSONL:
 - One file per day per source/provider.
 - Each line is one “snapshot event” with a capture timestamp and raw provider payload.
 

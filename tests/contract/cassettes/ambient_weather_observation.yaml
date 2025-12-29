@@ -204,4 +204,130 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.ambientweather.net
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.ambientweather.net/v1/devices?apiKey=REDACTED&applicationKey=REDACTED
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA41UTW/bMAz9KwbPqifLX7FuWVegh60Ymp02FAFjM4lQWQpkOV1W5L8PSlLHyT5v
+        5tPjexRF+tsrtFhPm8ZR14GE24m8reQ0lUkhp0LmCTDQ2PkP6BHkKzToqfc1yKQsikqIquCccwae
+        2s0SpOBxymDdt6pRfgeyTBm8KNN0G6Km3axBTuIqP2KrvvMHKMnismDQ4vcGld4FPOjHQhyJjXIg
+        xWQI5rhdJbwFmTPotyA5g85qdA4bhV5ZAzKNJyWDte2d3jlURpkDjbZk/Cg++I3iF6LnC6C1xq/P
+        SBqnVcZgRzjSzfK4yioGC/Te9qH0YzuUWYIs0nFDDhp5oDrbOtIhFlWcF+KE4aK7xLwPccJgSaS7
+        j+qZQFZxlTBo6OWzVSb4pTHPR4yQcfR94xx9Y3F8y0cMMQgu8ptE3AjxhSeSZ5LzmHP+FRj4HyBh
+        2pJTNb67R62W+B3Y4fHHiZMvSSLzYkjcM1BmacOcGGwD9d62BAxqa13TBfz8pdGDzLK4SKs8LRno
+        8G43RRrnk6JMMrFngMNYJmk5iR7tQlE08yw6lcSih1n0Pr2P0jvBols02GCYV1ufxgDOtZOm7QnN
+        JnFSJkVRcV6kWVkUg9O8tu3GGjK+A/ntNdS0mp+uEkoABt3aOn+F+d2GQgJ03hH5uenbBTl42rNL
+        ibcLBNK11NvZWM7Z3tOvMjPb+3V0Z5prjfHBIGJIrdYL69bWBnxjtfKqRv2r7rlZF6pneNAMHdZh
+        wf9HL3qklbIGdfSpN6pWm7fU37n8kTx4Y9Mqozrv0KstzdERzjVtSc/F38t5sFuMZrX1Cq/NH2b/
+        55D83WGYwAvx2+lYvLa98e4fnTvN9LXSGR7kNrbzqOe1bcKgPDFY0WH/AgEkHP8QpwVUBv0ha7Rl
+        bNjAp/1+v3/6CWkzuWEQBgAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-RAY:
+      - 9b50e1beaf2bd954-EWR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 28 Dec 2025 11:57:44 GMT
+      ETag:
+      - W/"610-WYP8VdNAGML4cRaCuq19hA"
+      Nel:
+      - '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}'
+      Report-To:
+      - '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=oGPJeFDaDfKA56SCOBF8aIV8YyaPVIiCBXDEsCKQsyeGKRhXnAWvuF%2BaGOQsWSmcJlHIKqRvp8I7JqmIjc2OtSYImPIOIGItT7iOmYE3IJJNvjuNzw%3D%3D"}]}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Powered-By:
+      - Express
+      cf-cache-status:
+      - DYNAMIC
+    status:
+      code: 200
+      message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.ambientweather.net
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.ambientweather.net/v1/devices?apiKey=REDACTED&applicationKey=REDACTED
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA41UTW/bMAz9KwbPqmdLthPrlnUFetiKodlpRREwNpMIlaVAltNlRf77oHw4Trov
+        n8znx/coivTTGzRYTeraUduChNuxvC3lRMi0kBMu8xQYaGz9J/QI8g1q9NT5CmQ6KoqSC56Eh4Gn
+        Zr0AyZM4Z7DqGlUrvwU5EgxelanbNVHdrFcgRZyPD9iya/0eSkVc5Awa/FGj0tuAB/2Y8wOxVi6Q
+        ztEMN8s0aUCOUwbdBmTCoLUancNaoVfWgMxjESqxndNbh8oos6fRhowfxHvHQfxK9HIBNNb41RkR
+        sSgzBlvCgW6Wx2VWMpij97YLxR8aoswCZCFicW7JXiMPVGcbRzrEvIzzgh8xnLeXmPchThksiHT7
+        Wb0QyDSPRcmgptevVhm/byHPB5SQcjA+cQ7GMT9c5yOGGHjC85uU33D+LUllkskkiZMk+Q4M/E+Q
+        MGnIqQo/3KNWC/wBbH//w8Txt5TLJOkTdwyUWdgwKgabQL23DQGDylpXtwE/v2n0ILMsLkSZixED
+        HS7upggjUozSjO8YYD+ZqRiNo0c7VxRNPYuOJbHoYRp9FPeRuOMsukWDNYaRtdVxDuBcO2naHNFs
+        HKejtCjKJClENiqK3mlW2WZtDRnfgnx6CzUtZ8ejhBKAQbuyzl9hfrumkACtd0R+ZrpmTg6ed+xS
+        4nSAQLqWOn0byjnbeXovM7WdX0V3pr7WGH7oRQyp5Wpu3cragK+tVl5VqN/rnpt1oXqGe83QYR12
+        /H/0okdaKmtQR186oyq1PqX+zuWP5N4b60YZ1XqHXm1oho5wpmlDesb/Xs6D3WA0raxXeG3+MP0/
+        h/TvDv0EXojfTobile2Md//o3HGmr5XOcC+3tq1HPatsHQblmcGS9vsXCCDh8Ic4LqAy6PdZgy1j
+        /QY+73a73fMvKlgFTBMGAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-RAY:
+      - 9b50e6902b4343f1-EWR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 28 Dec 2025 12:01:01 GMT
+      ETag:
+      - W/"613-TDw8NtbVUc7KYMcuUZA1Zw"
+      Nel:
+      - '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}'
+      Report-To:
+      - '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=lrfxF6lpKoOuVVEeiJxQM1YIILo6tSojOpdkWtCecEy15HoS2YydKW%2FAvPdWdybfbtJl4Ybwx1CCbIO2eX7YIOsI2EqSIP3eDrzvhaWRm8DtFa9z7Q%3D%3D"}]}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Powered-By:
+      - Express
+      cf-cache-status:
+      - DYNAMIC
+    status:
+      code: 200
+      message: OK
 version: 1

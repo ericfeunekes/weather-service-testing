@@ -5,6 +5,6 @@ return data as output. Parsing, validation, normalization, and scoring belong
 in this layer so they can be tested with fast unit tests.
 """
 
-from .models import ForecastPeriod, Location, Observation
+from .models import DataPoint, ForecastPeriod, Location, Observation
 
-__all__ = ["ForecastPeriod", "Location", "Observation"]
+__all__ = ["DataPoint", "ForecastPeriod", "Location", "Observation"]

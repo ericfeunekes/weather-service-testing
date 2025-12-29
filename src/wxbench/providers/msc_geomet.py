@@ -1,13 +1,17 @@
 """Adapter for Environment Canada MSC GeoMet API."""
 from __future__ import annotations
 
-from typing import Optional
+from datetime import datetime, timezone
+from typing import Callable, Optional
 
 import httpx
+from pydantic import ValidationError
 
 from wxbench.domain.mappers.msc_geomet import map_msc_geomet_forecast, map_msc_geomet_observation
+from wxbench.providers.capture import CapturedPayload, capture_payload
 from wxbench.providers._http import DEFAULT_TIMEOUT, send_with_retries
 from wxbench.providers.errors import ProviderPayloadError
+from wxbench.providers.schemas import MscFeatureCollectionPayload
 
 __all__ = ["fetch_msc_geomet_forecast", "fetch_msc_geomet_observation"]
 
@@ -41,6 +45,7 @@ def fetch_msc_geomet_observation(
     base_url: str = BASE_URL,
     retries: int = 2,
     timeout: Optional[httpx.Timeout] | float | None = DEFAULT_TIMEOUT,
+    capture: Optional[Callable[[CapturedPayload], None]] = None,
 ):
     """Fetch the latest observation feature for a coordinate pair."""
 
@@ -59,10 +64,27 @@ def fetch_msc_geomet_observation(
         retries=retries,
     )
 
+    payload_text = response.text
+    if capture is not None:
+        capture(
+            capture_payload(
+                provider="msc_geomet",
+                endpoint="observation",
+                run_at=datetime.now(timezone.utc),
+                request=request,
+                response=response,
+                payload_text=payload_text,
+            )
+        )
+
     try:
         payload = response.json()
     except (ValueError, httpx.HTTPError) as exc:
         raise ProviderPayloadError("msc_geomet", "observation", "Invalid JSON payload") from exc
+    try:
+        MscFeatureCollectionPayload.model_validate(payload)
+    except ValidationError as exc:
+        raise ProviderPayloadError("msc_geomet", "observation", "Unexpected payload shape") from exc
 
     try:
         feature = _extract_first_feature(payload)
@@ -79,6 +101,7 @@ def fetch_msc_geomet_forecast(
     base_url: str = BASE_URL,
     retries: int = 2,
     timeout: Optional[httpx.Timeout] | float | None = DEFAULT_TIMEOUT,
+    capture: Optional[Callable[[CapturedPayload], None]] = None,
 ):
     """Fetch forecast feature data for a coordinate pair."""
 
@@ -97,10 +120,27 @@ def fetch_msc_geomet_forecast(
         retries=retries,
     )
 
+    payload_text = response.text
+    if capture is not None:
+        capture(
+            capture_payload(
+                provider="msc_geomet",
+                endpoint="forecast",
+                run_at=datetime.now(timezone.utc),
+                request=request,
+                response=response,
+                payload_text=payload_text,
+            )
+        )
+
     try:
         payload = response.json()
     except (ValueError, httpx.HTTPError) as exc:
         raise ProviderPayloadError("msc_geomet", "forecast", "Invalid JSON payload") from exc
+    try:
+        MscFeatureCollectionPayload.model_validate(payload)
+    except ValidationError as exc:
+        raise ProviderPayloadError("msc_geomet", "forecast", "Unexpected payload shape") from exc
 
     try:
         feature = _extract_first_feature(payload)
