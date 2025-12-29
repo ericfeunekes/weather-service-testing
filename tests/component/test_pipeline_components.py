@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+from datetime import datetime, timezone
 from pathlib import Path
 
 import httpx
@@ -42,8 +43,16 @@ def test_collect_all_pipeline_stores_raw_and_points(tmp_path: Path) -> None:
         },
     )
 
+    cassette_clock = datetime(2025, 12, 28, 12, tzinfo=timezone.utc)
+
     with httpx.Client() as client, recorder.use_cassette("pipeline_collect_all.yaml"):
-        result = collect_all(config, db_path=db_path, client=client, msc_rdps_max_lead_hours=0)
+        result = collect_all(
+            config,
+            db_path=db_path,
+            client=client,
+            clock=lambda: cassette_clock,
+            msc_rdps_max_lead_hours=0,
+        )
 
     assert result.raw_payloads > 0
     assert result.data_points > 0

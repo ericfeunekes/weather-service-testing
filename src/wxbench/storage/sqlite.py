@@ -30,12 +30,16 @@ class RawPayload:
     payload_json: str
 
 
-def open_database(path: Path | None = None) -> sqlite3.Connection:
+def open_database(path: Path | None = None, *, timeout_seconds: float = 30.0) -> sqlite3.Connection:
     """Open a SQLite database connection (creates file if missing)."""
 
     target = path or DEFAULT_DB_PATH
     target.parent.mkdir(parents=True, exist_ok=True)
-    return sqlite3.connect(target)
+    connection = sqlite3.connect(target, timeout=timeout_seconds)
+    connection.execute("PRAGMA journal_mode=WAL")
+    connection.execute("PRAGMA foreign_keys=ON")
+    connection.execute("PRAGMA busy_timeout=5000")
+    return connection
 
 
 def ensure_schema(connection: sqlite3.Connection) -> None:

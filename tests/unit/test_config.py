@@ -31,6 +31,23 @@ def test_load_config_valid_environment():
     }
 
 
+def test_load_config_strips_whitespace():
+    env = {
+        "WX_LAT": " 51.5 ",
+        "WX_LON": " -0.12 ",
+        "WX_TZ": " UTC ",
+        "WX_PROVIDER_ALPHA_KEY": " abc123\n",
+        "WX_SECONDARY": "  ",
+    }
+
+    config = load_config(env)
+
+    assert config.latitude == pytest.approx(51.5)
+    assert config.longitude == pytest.approx(-0.12)
+    assert config.timezone == "UTC"
+    assert config.provider_keys == {"WX_PROVIDER_ALPHA_KEY": "abc123"}
+
+
 def test_missing_required_values_raise_errors():
     env = {"WX_LAT": "", "WX_LON": "10", "WX_TZ": "UTC"}
 
