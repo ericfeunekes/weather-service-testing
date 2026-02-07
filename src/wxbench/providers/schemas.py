@@ -104,6 +104,17 @@ class AmbientObservationPayload(RootModel[List[AmbientDevice]]):
     pass
 
 
+class AmbientHistoryPayload(RootModel[List[Dict[str, Any]]]):
+    pass
+
+
+class EcowittRealtimePayload(_BaseModel):
+    data: Dict[str, Any]
+    time: Optional[Any] = None
+    code: Optional[int] = None
+    msg: Optional[str] = None
+
+
 class AccuGeoPosition(_BaseModel):
     Latitude: float
     Longitude: float
@@ -139,3 +150,83 @@ class AccuDailyEntry(_BaseModel):
 
 class AccuDailyForecastPayload(_BaseModel):
     DailyForecasts: List[AccuDailyEntry]
+
+
+class WeatherKitMetadata(_BaseModel):
+    latitude: float
+    longitude: float
+
+
+class WeatherKitCurrentWeather(_BaseModel):
+    metadata: WeatherKitMetadata
+    asOf: str
+
+
+class WeatherKitHourWeatherConditions(_BaseModel):
+    forecastStart: str
+
+
+class WeatherKitHourlyForecast(_BaseModel):
+    metadata: WeatherKitMetadata
+    hours: List[WeatherKitHourWeatherConditions]
+
+
+class WeatherKitDayWeatherConditions(_BaseModel):
+    forecastStart: str
+    forecastEnd: Optional[str] = None
+
+
+class WeatherKitDailyForecast(_BaseModel):
+    metadata: WeatherKitMetadata
+    days: List[WeatherKitDayWeatherConditions]
+
+
+class WeatherKitForecastMinute(_BaseModel):
+    startTime: str
+
+
+class WeatherKitForecastPeriodSummary(_BaseModel):
+    startTime: str
+    endTime: Optional[str] = None
+    condition: Optional[str] = None
+
+
+class WeatherKitNextHourForecast(_BaseModel):
+    metadata: Optional[WeatherKitMetadata] = None
+    forecastStart: str
+    forecastEnd: str
+    minutes: List[WeatherKitForecastMinute]
+    summary: List[WeatherKitForecastPeriodSummary]
+
+
+class WeatherKitAlertSummary(_BaseModel):
+    id: str
+    issuedTime: str
+    effectiveTime: str
+    expireTime: str
+    description: str
+    severity: str
+    certainty: str
+    source: str
+    countryCode: str
+    areaId: Optional[str] = None
+    areaName: Optional[str] = None
+    detailsUrl: Optional[str] = None
+    eventOnsetTime: Optional[str] = None
+    eventEndTime: Optional[str] = None
+    urgency: Optional[str] = None
+    responses: Optional[List[str]] = None
+
+
+class WeatherKitAlertCollection(_BaseModel):
+    metadata: Optional[WeatherKitMetadata] = None
+    alerts: List[WeatherKitAlertSummary]
+    detailsUrl: Optional[str] = None
+
+
+class WeatherKitWeatherPayload(_BaseModel):
+    currentWeather: Optional[WeatherKitCurrentWeather] = None
+    forecastHourly: Optional[WeatherKitHourlyForecast] = None
+    forecastDaily: Optional[WeatherKitDailyForecast] = None
+    forecastNextHour: Optional[WeatherKitNextHourForecast] = None
+    weatherAlerts: Optional[WeatherKitAlertCollection] = None

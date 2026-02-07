@@ -68,13 +68,35 @@ To store artifacts in Application Support, pass a data root and (optionally) an 
 python -m wxbench.runtime --data-root "$HOME/Library/Application Support/wxbench" --db-path "$HOME/Library/Application Support/wxbench/wxbench.sqlite"
 ```
 
+Parquet output is written under:
+```
+$HOME/Library/Application Support/wxbench/parquet/
+```
+
+Data model + querying guide:
+```
+docs/data_model_and_pipeline.md
+```
+
+Provider products + metrics alignment:
+```
+docs/provider_products_and_metrics.md
+```
+
 ### Runbook (minimal)
 
 - Rerun safely: re-run the hourly command; it will skip if the hour already exists.
 - Backfill: true backfills aren’t supported by most provider endpoints; reruns will capture “latest” data only.
-- Inspect state: query `data/wxbench.sqlite` (`raw_payloads`, `data_points`) and review `data/runs/<run_id>/manifest.json`.
-- Outputs: raw payloads and normalized points are stored in SQLite; run artifacts are in `data/runs/<run_id>/`.
+- Inspect state: query `data/wxbench.sqlite` (`raw_payloads`, `run_history`) and review `data/runs/<run_id>/manifest.json`.
+- Outputs: raw payloads live in SQLite; normalized points live in Parquet; run artifacts are in `data/runs/<run_id>/`.
+- Compaction + sync: compact prior UTC days only (skip today), then sync only `compact-*` files so partial days never ship.
 - Rollback: delete the specific hour’s rows from SQLite using `run_at_utc` bounds if you need to invalidate a run.
+
+### Backfill SQLite data_points to Parquet
+
+```
+python -m wxbench.parquet_backfill --db-path data/wxbench.sqlite --data-root data
+```
 
 ## Development setup
 
@@ -97,6 +119,7 @@ Contract tests use VCR cassettes by default. To exercise the live provider APIs 
    - `WX_ACCUWEATHER_API_KEY` – AccuWeather MinuteCast
    - `WX_TOMORROW_IO_API_KEY` – Tomorrow.io
    - `WX_AMBIENT_API_KEY` and `WX_AMBIENT_APPLICATION_KEY` – Ambient Weather
+- `WX_WEATHERKIT_TEAM_ID`, `WX_WEATHERKIT_SERVICE_ID`, `WX_WEATHERKIT_KEY_ID`, `WX_WEATHERKIT_KEY_PATH`, `WX_WEATHERKIT_COUNTRY_CODE` – WeatherKit
    - Optional location override for contract tests: `WX_LAT` and `WX_LON`.
    - Trailing whitespace in environment variables is stripped automatically to avoid hidden newline issues during live runs.
 2. Enable recording: `WX_VCR_RECORD_MODE=all pytest tests/contract -q`
@@ -113,6 +136,7 @@ Required environment for a full live run (all providers):
 - `WX_ACCUWEATHER_API_KEY`
 - `WX_OPENWEATHER_API_KEY`
 - `WX_TOMORROW_IO_API_KEY`
+- `WX_WEATHERKIT_TEAM_ID`, `WX_WEATHERKIT_SERVICE_ID`, `WX_WEATHERKIT_KEY_ID`, `WX_WEATHERKIT_KEY_PATH`, `WX_WEATHERKIT_COUNTRY_CODE`
 - Optional location override: `WX_LAT` and `WX_LON`
 
 Latest recorded attempt (2025-12-28):

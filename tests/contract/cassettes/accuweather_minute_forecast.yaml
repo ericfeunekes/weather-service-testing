@@ -129,4 +129,69 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - dataservice.accuweather.com
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://dataservice.accuweather.com/forecasts/v1/minute?q=44.63955893%2C-63.58675928
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAB/6pWCi7NzU0sqlSyqlYKyChKLE5VslLyy1coKEpNzizILEksyczPU0jLL1JILFHI
+        SU0sLlEwNDJQyM3MU9JRCqksSFWyyivNyYGwPVOUrAxqdaBmZqYWK1lFVysFlyQWlfhm5pWWpCpZ
+        GegouealwHiGhpY6Ss75pXlweUMjAx0liHRIakUJQceo+nr6hYa4xoc5+oS64nVWrI6ST2ZetpKV
+        UkZJSYGVvn55ebleYnJyaXlqYklGapFecn6ufmqefnKifkZiTmZaYoV+knGOfi7Y4bpQRbpp+UWp
+        yYnFJfomlqbGFvY5iXnptql5uqXFajmJJbYmJnpmJmo5+Xm2umbGeqaWSjpKvvlJmTmp9Le5FgAA
+        AP//AwDtDIc72wEAAA==
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Alt-Svc:
+      - h3=":443"; ma=93600,h3-29=":443"; ma=93600
+      Cache-Control:
+      - public, max-age=60
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '298'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 01 Jan 2026 09:46:49 GMT
+      Expires:
+      - Thu, 01 Jan 2026 09:47:49 GMT
+      Server-Timing:
+      - edge; dur=3
+      - origin; dur=334
+      - cdn-cache; desc=MISS
+      - ak_p; desc="1767260809136_34697815_2610509064_33715_2000_27_43_-";dur=1
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      akamai-grn:
+      - 0.501c2117.1767260809.40f2676
+      ratelimit-limit:
+      - '1'
+      ratelimit-remaining:
+      - '249'
+      request-context:
+      - appId=cid-v1:09fd18b8-4f69-449d-baff-3a56a465c333
+      zp-rid:
+      - f83e5bbd-23ba-4a6f-a70b-35e5d0a02dc7
+    status:
+      code: 200
+      message: OK
 version: 1

@@ -1,4 +1,4 @@
-"""Orchestration for fetching provider data and storing in SQLite."""
+"""Orchestration for fetching provider data and storing normalized points."""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -12,18 +12,21 @@ import httpx
 from wxbench.config import WxConfig
 from wxbench.domain.aggregate import aggregate_daily_from_periods
 from wxbench.domain.datapoints import (
+    PRODUCT_FORECAST_MINUTELY,
     PRODUCT_FORECAST_DAILY,
     PRODUCT_FORECAST_HOURLY,
+    alerts_to_datapoints,
     observation_to_datapoints,
     forecast_to_datapoints,
 )
-from wxbench.domain.models import DataPoint, ForecastPeriod
+from wxbench.domain.models import DataPoint, ForecastPeriod, Location
 from wxbench.providers import (
     fetch_accuweather_daily_forecast,
     fetch_accuweather_hourly_forecast,
     fetch_accuweather_location,
     fetch_accuweather_observation,
     fetch_ambient_weather_observation,
+    fetch_ecowitt_observation,
     fetch_msc_geomet_forecast,
     fetch_msc_geomet_observation,
     fetch_msc_rdps_prognos_forecast,
@@ -34,10 +37,12 @@ from wxbench.providers import (
     fetch_tomorrow_io_daily_forecast,
     fetch_tomorrow_io_forecast,
     fetch_tomorrow_io_observation,
+    fetch_weatherkit_bundle,
 )
 from wxbench.providers.capture import CapturedPayload
 from wxbench.providers.errors import ProviderError
-from wxbench.storage.sqlite import RawPayload, ensure_schema, insert_data_points, insert_raw_payload, open_database
+from wxbench.storage.datapoints import DataPointWriterFactory
+from wxbench.storage.sqlite import RawPayload, ensure_schema, insert_raw_payload, open_database
 
 
 Clock = Callable[[], datetime]
@@ -77,6 +82,7 @@ def collect_all(
     client: Optional[httpx.Client] = None,
     clock: Optional[Clock] = None,
     msc_rdps_max_lead_hours: int = 24,
+    data_point_writer_factory: DataPointWriterFactory,
     event_logger: Optional[EventLogger] = None,
 ) -> CollectionResult:
     """Fetch observations + hourly/daily forecasts from all providers."""
@@ -87,12 +93,13 @@ def collect_all(
 
     connection = open_database(db_path)
     ensure_schema(connection)
+    data_point_writer = data_point_writer_factory(connection)
 
     raw_count = 0
     point_count = 0
     errors: list[str] = []
 
-    session = client or httpx.Client()
+    session = client or httpx.Client(timeout=httpx.Timeout(30.0))
     close_client = client is None
 
     def _emit(event: dict[str, object]) -> None:
@@ -107,7 +114,64 @@ def collect_all(
             raw_count += 1
         return _store
 
+    def _store_points(raw_id: int, points: Iterable[DataPoint]) -> int:
+        return data_point_writer.write(raw_id, points, run_at=run_at)
+
     try:
+        # EcoWitt (observation only; preferred station ground truth)
+        try:
+            ecowitt_key = config.provider_keys.get("WX_ECOWITT_API_KEY")
+            ecowitt_app = config.provider_keys.get("WX_ECOWITT_APPLICATION_KEY")
+            ecowitt_device_mac = config.provider_keys.get("WX_ECOWITT_DEVICE_MAC")
+            ecowitt_station = config.provider_keys.get("WX_ECOWITT_STATION")
+            if ecowitt_key and ecowitt_app and ecowitt_device_mac:
+                provider_start = time.monotonic()
+                raw_before = raw_count
+                point_before = point_count
+                _emit({"event": "provider_start", "provider": "ecowitt"})
+                holder: dict[str, int] = {}
+                observation = fetch_ecowitt_observation(
+                    api_key=ecowitt_key,
+                    application_key=ecowitt_app,
+                    device_mac=ecowitt_device_mac,
+                    location=Location(latitude=config.latitude, longitude=config.longitude),
+                    station=ecowitt_station or ecowitt_device_mac,
+                    client=session,
+                    capture=_capture(holder),
+                )
+                raw_id = holder.get("raw_id")
+                if raw_id:
+                    points = observation_to_datapoints(observation, run_at=run_at, tz_name=config.timezone)
+                    point_count += _store_points(raw_id, points)
+                _emit(
+                    {
+                        "event": "provider_success",
+                        "provider": "ecowitt",
+                        "raw_payloads": raw_count - raw_before,
+                        "data_points": point_count - point_before,
+                        "duration_seconds": time.monotonic() - provider_start,
+                    }
+                )
+            else:
+                reason = "missing_keys"
+                if ecowitt_key and ecowitt_app and not ecowitt_device_mac:
+                    reason = "missing_device_mac"
+                _emit({"event": "provider_skip", "provider": "ecowitt", "reason": reason})
+        except ProviderError as exc:
+            errors.append(str(exc))
+            _emit(
+                {
+                    "event": "provider_error",
+                    "provider": "ecowitt",
+                    "operation": exc.operation,
+                    "error_type": exc.__class__.__name__,
+                    "message": exc.message,
+                }
+            )
+            connection.commit()
+        else:
+            connection.commit()
+
         # Ambient Weather (observation only)
         try:
             ambient_key = config.provider_keys.get("WX_AMBIENT_API_KEY")
@@ -129,8 +193,7 @@ def collect_all(
                 raw_id = holder.get("raw_id")
                 if raw_id:
                     points = observation_to_datapoints(observation, run_at=run_at, tz_name=config.timezone)
-                    insert_data_points(connection, raw_id, points)
-                    point_count += len(points)
+                    point_count += _store_points(raw_id, points)
                 _emit(
                     {
                         "event": "provider_success",
@@ -173,8 +236,7 @@ def collect_all(
             raw_id = holder.get("raw_id")
             if raw_id:
                 points = observation_to_datapoints(observation, run_at=run_at, tz_name=config.timezone)
-                insert_data_points(connection, raw_id, points)
-                point_count += len(points)
+                point_count += _store_points(raw_id, points)
 
             holder = {}
             forecast_periods = fetch_msc_geomet_forecast(
@@ -191,8 +253,7 @@ def collect_all(
                     tz_name=config.timezone,
                     product_kind=PRODUCT_FORECAST_HOURLY,
                 )
-                insert_data_points(connection, raw_id, hourly_points)
-                point_count += len(hourly_points)
+                point_count += _store_points(raw_id, hourly_points)
 
                 daily_periods = aggregate_daily_from_periods(forecast_periods, tz_name=config.timezone)
                 daily_points = _forecast_points(
@@ -202,8 +263,7 @@ def collect_all(
                     product_kind=PRODUCT_FORECAST_DAILY,
                     quality_flag="derived_daily_from_periods",
                 )
-                insert_data_points(connection, raw_id, daily_points)
-                point_count += len(daily_points)
+                point_count += _store_points(raw_id, daily_points)
             _emit(
                 {
                     "event": "provider_success",
@@ -250,7 +310,7 @@ def collect_all(
                 run_time=run_at,
                 capture=_capture_rdps,
             )
-            hourly_points = []
+            hourly_count = 0
             for period in rdps_periods:
                 lead_hours = int((period.start_time - period.issued_at).total_seconds() // 3600)
                 endpoint = rdps_prognos_endpoint(period.issued_at, lead_hours, "AirTemp")
@@ -263,9 +323,8 @@ def collect_all(
                     tz_name=config.timezone,
                     product_kind=PRODUCT_FORECAST_HOURLY,
                 )
-                insert_data_points(connection, raw_id, points)
-                hourly_points.extend(points)
-            point_count += len(hourly_points)
+                hourly_count += _store_points(raw_id, points)
+            point_count += hourly_count
 
             daily_periods = aggregate_daily_from_periods(rdps_periods, tz_name=config.timezone)
             daily_points = _forecast_points(
@@ -282,8 +341,7 @@ def collect_all(
                     anchor_raw_id = rdps_raw_ids.get(anchor_key)
                 if anchor_raw_id is None:
                     anchor_raw_id = next(iter(rdps_raw_ids.values()))
-                insert_data_points(connection, anchor_raw_id, daily_points)
-                point_count += len(daily_points)
+                point_count += _store_points(anchor_raw_id, daily_points)
             _emit(
                 {
                     "event": "provider_success",
@@ -327,8 +385,7 @@ def collect_all(
                 raw_id = holder.get("raw_id")
                 if raw_id:
                     points = observation_to_datapoints(observation, run_at=run_at, tz_name=config.timezone)
-                    insert_data_points(connection, raw_id, points)
-                    point_count += len(points)
+                    point_count += _store_points(raw_id, points)
 
                 holder = {}
                 hourly_periods = fetch_openweather_onecall_hourly(
@@ -346,8 +403,18 @@ def collect_all(
                         tz_name=config.timezone,
                         product_kind=PRODUCT_FORECAST_HOURLY,
                     )
-                    insert_data_points(connection, raw_id, hourly_points)
-                    point_count += len(hourly_points)
+                    point_count += _store_points(raw_id, hourly_points)
+
+                    derived_daily = aggregate_daily_from_periods(hourly_periods, tz_name=config.timezone)
+                    if derived_daily:
+                        derived_points = _forecast_points(
+                            derived_daily,
+                            run_at=run_at,
+                            tz_name=config.timezone,
+                            product_kind=PRODUCT_FORECAST_DAILY,
+                            quality_flag="derived_daily_from_hourly",
+                        )
+                        point_count += _store_points(raw_id, derived_points)
 
                 holder = {}
                 daily_periods = fetch_openweather_onecall_daily(
@@ -365,8 +432,7 @@ def collect_all(
                         tz_name=config.timezone,
                         product_kind=PRODUCT_FORECAST_DAILY,
                     )
-                    insert_data_points(connection, raw_id, daily_points)
-                    point_count += len(daily_points)
+                    point_count += _store_points(raw_id, daily_points)
                 _emit(
                     {
                         "event": "provider_success",
@@ -412,8 +478,7 @@ def collect_all(
                 raw_id = holder.get("raw_id")
                 if raw_id:
                     points = observation_to_datapoints(observation, run_at=run_at, tz_name=config.timezone)
-                    insert_data_points(connection, raw_id, points)
-                    point_count += len(points)
+                    point_count += _store_points(raw_id, points)
 
                 holder = {}
                 hourly_periods = fetch_tomorrow_io_forecast(
@@ -431,8 +496,18 @@ def collect_all(
                         tz_name=config.timezone,
                         product_kind=PRODUCT_FORECAST_HOURLY,
                     )
-                    insert_data_points(connection, raw_id, hourly_points)
-                    point_count += len(hourly_points)
+                    point_count += _store_points(raw_id, hourly_points)
+
+                    derived_daily = aggregate_daily_from_periods(hourly_periods, tz_name=config.timezone)
+                    if derived_daily:
+                        derived_points = _forecast_points(
+                            derived_daily,
+                            run_at=run_at,
+                            tz_name=config.timezone,
+                            product_kind=PRODUCT_FORECAST_DAILY,
+                            quality_flag="derived_daily_from_hourly",
+                        )
+                        point_count += _store_points(raw_id, derived_points)
 
                 holder = {}
                 daily_periods = fetch_tomorrow_io_daily_forecast(
@@ -450,8 +525,7 @@ def collect_all(
                         tz_name=config.timezone,
                         product_kind=PRODUCT_FORECAST_DAILY,
                     )
-                    insert_data_points(connection, raw_id, daily_points)
-                    point_count += len(daily_points)
+                    point_count += _store_points(raw_id, daily_points)
                 _emit(
                     {
                         "event": "provider_success",
@@ -469,6 +543,108 @@ def collect_all(
                 {
                     "event": "provider_error",
                     "provider": "tomorrow_io",
+                    "operation": exc.operation,
+                    "error_type": exc.__class__.__name__,
+                    "message": exc.message,
+                }
+            )
+            connection.commit()
+        else:
+            connection.commit()
+
+        # WeatherKit
+        try:
+            weatherkit_team_id = config.provider_keys.get("WX_WEATHERKIT_TEAM_ID")
+            weatherkit_service_id = config.provider_keys.get("WX_WEATHERKIT_SERVICE_ID")
+            weatherkit_key_id = config.provider_keys.get("WX_WEATHERKIT_KEY_ID")
+            weatherkit_key_path = config.provider_keys.get("WX_WEATHERKIT_KEY_PATH")
+            weatherkit_country_code = config.provider_keys.get("WX_WEATHERKIT_COUNTRY_CODE")
+            if weatherkit_team_id and weatherkit_service_id and weatherkit_key_id and weatherkit_key_path:
+                provider_start = time.monotonic()
+                raw_before = raw_count
+                point_before = point_count
+                _emit({"event": "provider_start", "provider": "weatherkit"})
+                holder: dict[str, int] = {}
+                bundle = fetch_weatherkit_bundle(
+                    latitude=config.latitude,
+                    longitude=config.longitude,
+                    timezone_name=config.timezone,
+                    country_code=weatherkit_country_code,
+                    client=session,
+                    team_id=weatherkit_team_id,
+                    service_id=weatherkit_service_id,
+                    key_id=weatherkit_key_id,
+                    key_path=weatherkit_key_path,
+                    capture=_capture(holder),
+                )
+                raw_id = holder.get("raw_id")
+                if raw_id:
+                    if bundle.observation is not None:
+                        points = observation_to_datapoints(bundle.observation, run_at=run_at, tz_name=config.timezone)
+                        point_count += _store_points(raw_id, points)
+
+                    if bundle.hourly:
+                        hourly_points = _forecast_points(
+                            bundle.hourly,
+                            run_at=run_at,
+                            tz_name=config.timezone,
+                            product_kind=PRODUCT_FORECAST_HOURLY,
+                        )
+                        point_count += _store_points(raw_id, hourly_points)
+
+                        derived_daily = aggregate_daily_from_periods(bundle.hourly, tz_name=config.timezone)
+                        if derived_daily:
+                            derived_points = _forecast_points(
+                                derived_daily,
+                                run_at=run_at,
+                                tz_name=config.timezone,
+                                product_kind=PRODUCT_FORECAST_DAILY,
+                                quality_flag="derived_daily_from_hourly",
+                            )
+                            point_count += _store_points(raw_id, derived_points)
+
+                    if bundle.daily:
+                        daily_points = _forecast_points(
+                            bundle.daily,
+                            run_at=run_at,
+                            tz_name=config.timezone,
+                            product_kind=PRODUCT_FORECAST_DAILY,
+                        )
+                        point_count += _store_points(raw_id, daily_points)
+
+                    if bundle.next_hour:
+                        minute_points = _forecast_points(
+                            bundle.next_hour,
+                            run_at=run_at,
+                            tz_name=config.timezone,
+                            product_kind=PRODUCT_FORECAST_MINUTELY,
+                        )
+                        point_count += _store_points(raw_id, minute_points)
+
+                    if bundle.alerts:
+                        alert_points: list[DataPoint] = []
+                        for alert in bundle.alerts:
+                            alert_points.extend(
+                                alerts_to_datapoints(alert, run_at=run_at, tz_name=config.timezone)
+                            )
+                        point_count += _store_points(raw_id, alert_points)
+                _emit(
+                    {
+                        "event": "provider_success",
+                        "provider": "weatherkit",
+                        "raw_payloads": raw_count - raw_before,
+                        "data_points": point_count - point_before,
+                        "duration_seconds": time.monotonic() - provider_start,
+                    }
+                )
+            else:
+                _emit({"event": "provider_skip", "provider": "weatherkit", "reason": "missing_keys"})
+        except ProviderError as exc:
+            errors.append(str(exc))
+            _emit(
+                {
+                    "event": "provider_error",
+                    "provider": "weatherkit",
                     "operation": exc.operation,
                     "error_type": exc.__class__.__name__,
                     "message": exc.message,
@@ -508,8 +684,7 @@ def collect_all(
                 raw_id = holder.get("raw_id")
                 if raw_id:
                     points = observation_to_datapoints(observation, run_at=run_at, tz_name=config.timezone)
-                    insert_data_points(connection, raw_id, points)
-                    point_count += len(points)
+                    point_count += _store_points(raw_id, points)
 
                 holder = {}
                 hourly_periods = fetch_accuweather_hourly_forecast(
@@ -528,8 +703,18 @@ def collect_all(
                         tz_name=config.timezone,
                         product_kind=PRODUCT_FORECAST_HOURLY,
                     )
-                    insert_data_points(connection, raw_id, hourly_points)
-                    point_count += len(hourly_points)
+                    point_count += _store_points(raw_id, hourly_points)
+
+                    derived_daily = aggregate_daily_from_periods(hourly_periods, tz_name=config.timezone)
+                    if derived_daily:
+                        derived_points = _forecast_points(
+                            derived_daily,
+                            run_at=run_at,
+                            tz_name=config.timezone,
+                            product_kind=PRODUCT_FORECAST_DAILY,
+                            quality_flag="derived_daily_from_hourly",
+                        )
+                        point_count += _store_points(raw_id, derived_points)
 
                 holder = {}
                 daily_periods = fetch_accuweather_daily_forecast(
@@ -548,8 +733,7 @@ def collect_all(
                         tz_name=config.timezone,
                         product_kind=PRODUCT_FORECAST_DAILY,
                     )
-                    insert_data_points(connection, raw_id, daily_points)
-                    point_count += len(daily_points)
+                    point_count += _store_points(raw_id, daily_points)
                 _emit(
                     {
                         "event": "provider_success",

@@ -116,8 +116,9 @@ def aggregate_daily_from_periods(
 
         day_date = entries[0].start_time.astimezone(ZoneInfo(tz_name)).date()
         local_start = datetime.combine(day_date, time.min, tzinfo=ZoneInfo(tz_name))
+        local_end = datetime.combine(day_date + timedelta(days=1), time.min, tzinfo=ZoneInfo(tz_name))
         start_time = local_start.astimezone(timezone.utc)
-        end_time = start_time + timedelta(days=1)
+        end_time = local_end.astimezone(timezone.utc)
 
         daily_periods.append(
             ForecastPeriod(
@@ -155,7 +156,7 @@ def aggregate_daily_from_periods(
                 precipitation_rate_freezing_rain_mm_hr=mean(precip_rate_freezing) if precip_rate_freezing else None,
                 precipitation_rate_ice_mm_hr=mean(precip_rate_ice) if precip_rate_ice else None,
                 summary=None,
-                wind_speed_kph=max(wind_speeds) if wind_speeds else None,
+                wind_speed_kph=mean(wind_speeds) if wind_speeds else None,
                 wind_gust_kph=max(wind_gusts) if wind_gusts else None,
                 wind_direction_deg=wind_dirs[0] if wind_dirs else None,
                 uv_index=max(uv_index) if uv_index else None,

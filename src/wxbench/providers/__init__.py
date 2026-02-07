@@ -13,7 +13,11 @@ from wxbench.providers.accuweather import (
     fetch_accuweather_minute_forecast,
     fetch_accuweather_observation,
 )
-from wxbench.providers.ambient_weather import fetch_ambient_weather_observation
+from wxbench.providers.ambient_weather import (
+    fetch_ambient_weather_history,
+    fetch_ambient_weather_observation,
+)
+from wxbench.providers.ecowitt import fetch_ecowitt_observation
 from wxbench.providers.msc_geomet import fetch_msc_geomet_forecast, fetch_msc_geomet_observation
 from wxbench.providers.msc_rdps_prognos import fetch_msc_rdps_prognos_forecast, rdps_prognos_endpoint
 from wxbench.providers.openweather import (
@@ -27,6 +31,7 @@ from wxbench.providers.tomorrow_io import (
     fetch_tomorrow_io_forecast,
     fetch_tomorrow_io_observation,
 )
+from wxbench.providers.weatherkit import fetch_weatherkit_bundle
 
 __all__ = [
     "fetch_accuweather_daily_forecast",
@@ -34,7 +39,9 @@ __all__ = [
     "fetch_accuweather_location",
     "fetch_accuweather_minute_forecast",
     "fetch_accuweather_observation",
+    "fetch_ambient_weather_history",
     "fetch_ambient_weather_observation",
+    "fetch_ecowitt_observation",
     "fetch_msc_geomet_forecast",
     "fetch_msc_geomet_observation",
     "fetch_msc_rdps_prognos_forecast",
@@ -46,4 +53,5 @@ __all__ = [
     "fetch_tomorrow_io_daily_forecast",
     "fetch_tomorrow_io_forecast",
     "fetch_tomorrow_io_observation",
+    "fetch_weatherkit_bundle",
 ]

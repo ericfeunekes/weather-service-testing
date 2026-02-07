@@ -5,25 +5,8 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Any, Mapping, Optional, Sequence
 
+from wxbench.domain.mappers._common import INHG_TO_KPA, _to_optional_float, _to_optional_int
 from wxbench.domain.models import ForecastPeriod, Location, Observation
-
-
-def _to_optional_int(value: Any) -> Optional[int]:
-    if value is None:
-        return None
-    try:
-        return int(value)
-    except (TypeError, ValueError):
-        return None
-
-
-def _to_optional_float(value: Any) -> Optional[float]:
-    if value is None:
-        return None
-    try:
-        return float(value)
-    except (TypeError, ValueError):
-        return None
 
 
 def _fahrenheit_to_celsius(value: Optional[float]) -> Optional[float]:
@@ -61,7 +44,7 @@ def _pressure_to_kpa(value: Optional[float], unit: Optional[str]) -> Optional[fl
     if unit_lower in {"mb", "hpa"}:
         return value / 10.0
     if unit_lower in {"inhg"}:
-        return value * 3.38639
+        return value * INHG_TO_KPA
     return value
 
 
@@ -212,6 +195,52 @@ def _average_temperature_from_range(block: Mapping[str, Any]) -> Optional[float]
     return min_val if min_val is not None else max_val
 
 
+def _average_optional(*values: Optional[float]) -> Optional[float]:
+    items = [value for value in values if value is not None]
+    if not items:
+        return None
+    return sum(items) / len(items)
+
+
+def _max_optional(*values: Optional[float]) -> Optional[float]:
+    items = [value for value in values if value is not None]
+    if not items:
+        return None
+    return max(items)
+
+
+def _sum_optional(*values: Optional[float]) -> Optional[float]:
+    total = 0.0
+    found = False
+    for value in values:
+        if value is None:
+            continue
+        total += value
+        found = True
+    return total if found else None
+
+
+def _first_not_none(*values: Optional[float]) -> Optional[float]:
+    """Return the first value that is not None (preserves 0.0)."""
+    for v in values:
+        if v is not None:
+            return v
+    return None
+
+
+def _combine_probability(day: Optional[float], night: Optional[float]) -> Optional[float]:
+    if day is None and night is None:
+        return None
+    if day is None:
+        return night
+    if night is None:
+        return day
+    day_prob = max(0.0, min(100.0, day)) / 100.0
+    night_prob = max(0.0, min(100.0, night)) / 100.0
+    combined = 1.0 - (1.0 - day_prob) * (1.0 - night_prob)
+    return combined * 100.0
+
+
 def map_accuweather_minute_forecast(
     payload: Mapping[str, Any],
     *,
@@ -347,7 +376,7 @@ def map_accuweather_observation(
         cloud_cover_pct=_to_optional_float(current.get("CloudCover")),
         condition=_first_text(current.get("WeatherText")),
         condition_code=_to_optional_int(current.get("WeatherIcon")),
-        precipitation_last_hour_mm=_precip_from_block(precipitation_one_hour) or _precip_from_block(precipitation_block),
+        precipitation_last_hour_mm=_first_not_none(_precip_from_block(precipitation_one_hour), _precip_from_block(precipitation_block)),
         uv_index=uv_index,
         precipitation_type=_first_text(current.get("PrecipitationType")),
         pressure_tendency=_first_text(pressure_tendency.get("LocalizedText"), pressure_tendency.get("Code")),
@@ -396,7 +425,7 @@ def map_accuweather_hourly_forecast(
         visibility_block = (entry.get("Visibility") or {}).get("Metric") or entry.get("Visibility") or {}
         ceiling_block = (entry.get("Ceiling") or {}).get("Metric") or entry.get("Ceiling") or {}
 
-        precip_total = _precip_from_block(total_liquid) or _precip_from_block(rain_block) or _precip_from_block(snow_block)
+        precip_total = _first_not_none(_precip_from_block(total_liquid), _precip_from_block(rain_block), _precip_from_block(snow_block))
 
         periods.append(
             ForecastPeriod(
@@ -468,15 +497,20 @@ def map_accuweather_daily_forecast(
         temp_max_block = (temp.get("Maximum") or {}).get("Metric") or temp.get("Maximum") or {}
 
         day_block: Mapping[str, Any] = entry.get("Day") or {}
+        night_block: Mapping[str, Any] = entry.get("Night") or {}
         real_feel = entry.get("RealFeelTemperature") or {}
         real_feel_min_block = (real_feel.get("Minimum") or {}).get("Metric") or real_feel.get("Minimum") or {}
         real_feel_max_block = (real_feel.get("Maximum") or {}).get("Metric") or real_feel.get("Maximum") or {}
         real_feel_shade = entry.get("RealFeelTemperatureShade") or {}
         wind: Mapping[str, Any] = day_block.get("Wind") or {}
+        night_wind: Mapping[str, Any] = night_block.get("Wind") or {}
         wind_speed_block = (wind.get("Speed") or {}).get("Metric") or wind.get("Speed") or {}
+        night_wind_speed_block = (night_wind.get("Speed") or {}).get("Metric") or night_wind.get("Speed") or {}
         wind_direction = (wind.get("Direction") or {}).get("Degrees")
         gust: Mapping[str, Any] = day_block.get("WindGust") or {}
+        night_gust: Mapping[str, Any] = night_block.get("WindGust") or {}
         gust_speed_block = (gust.get("Speed") or {}).get("Metric") or gust.get("Speed") or {}
+        night_gust_speed_block = (night_gust.get("Speed") or {}).get("Metric") or night_gust.get("Speed") or {}
         uv_value = day_block.get("UVIndex") or day_block.get("UVIndexFloat")
         uv_index = None
         if isinstance(uv_value, Mapping):
@@ -490,10 +524,24 @@ def map_accuweather_daily_forecast(
             uv_index = _to_optional_float(uv_value)
 
         rain_block = (day_block.get("Rain") or {}).get("Metric") or day_block.get("Rain") or {}
+        night_rain_block = (night_block.get("Rain") or {}).get("Metric") or night_block.get("Rain") or {}
         snow_block = (day_block.get("Snow") or {}).get("Metric") or day_block.get("Snow") or {}
+        night_snow_block = (night_block.get("Snow") or {}).get("Metric") or night_block.get("Snow") or {}
         ice_block = (day_block.get("Ice") or {}).get("Metric") or day_block.get("Ice") or {}
+        night_ice_block = (night_block.get("Ice") or {}).get("Metric") or night_block.get("Ice") or {}
         total_liquid = (day_block.get("TotalLiquid") or {}).get("Metric") or day_block.get("TotalLiquid") or {}
-        precip_total = _precip_from_block(total_liquid) or _precip_from_block(rain_block) or _precip_from_block(snow_block)
+        night_total_liquid = (night_block.get("TotalLiquid") or {}).get("Metric") or night_block.get("TotalLiquid") or {}
+        precip_total_day = _first_not_none(
+            _precip_from_block(total_liquid),
+            _precip_from_block(rain_block),
+            _precip_from_block(snow_block),
+        )
+        precip_total_night = _first_not_none(
+            _precip_from_block(night_total_liquid),
+            _precip_from_block(night_rain_block),
+            _precip_from_block(night_snow_block),
+        )
+        precip_total = _sum_optional(precip_total_day, precip_total_night)
         wet_bulb_block = day_block.get("WetBulbTemperature") or {}
         wet_bulb_globe_block = day_block.get("WetBulbGlobeTemperature") or {}
         humidity_block = day_block.get("RelativeHumidity") or {}
@@ -512,6 +560,49 @@ def map_accuweather_daily_forecast(
             temp_apparent = (real_feel_min + real_feel_max) / 2.0
         temp_apparent_shade = _average_temperature_from_range(real_feel_shade)
 
+        wind_speed = _average_optional(
+            _speed_from_block(wind_speed_block),
+            _speed_from_block(night_wind_speed_block),
+        )
+        wind_gust = _max_optional(
+            _speed_from_block(gust_speed_block),
+            _speed_from_block(night_gust_speed_block),
+        )
+
+        precip_prob = _combine_probability(
+            _to_optional_float(day_block.get("PrecipitationProbability")),
+            _to_optional_float(night_block.get("PrecipitationProbability")),
+        )
+        precip_prob_thunder = _combine_probability(
+            _to_optional_float(day_block.get("ThunderstormProbability")),
+            _to_optional_float(night_block.get("ThunderstormProbability")),
+        )
+        precip_prob_rain = _combine_probability(
+            _to_optional_float(day_block.get("RainProbability")),
+            _to_optional_float(night_block.get("RainProbability")),
+        )
+        precip_prob_snow = _combine_probability(
+            _to_optional_float(day_block.get("SnowProbability")),
+            _to_optional_float(night_block.get("SnowProbability")),
+        )
+        precip_prob_ice = _combine_probability(
+            _to_optional_float(day_block.get("IceProbability")),
+            _to_optional_float(night_block.get("IceProbability")),
+        )
+        precip_rain = _sum_optional(
+            _precip_from_block(rain_block),
+            _precip_from_block(night_rain_block),
+        )
+        precip_snow = _sum_optional(
+            _precip_from_block(snow_block),
+            _precip_from_block(night_snow_block),
+        )
+        precip_ice = _sum_optional(
+            _precip_from_block(ice_block),
+            _precip_from_block(night_ice_block),
+        )
+        precip_type = _first_text(day_block.get("PrecipitationType"), night_block.get("PrecipitationType"))
+
         periods.append(
             ForecastPeriod(
                 provider=provider,
@@ -524,20 +615,21 @@ def map_accuweather_daily_forecast(
                 temperature_apparent_shade_c=temp_apparent_shade,
                 temperature_high_c=temp_max,
                 temperature_low_c=temp_min,
-                precipitation_probability=_to_optional_float(day_block.get("PrecipitationProbability")),
-                precipitation_probability_thunderstorm=_to_optional_float(day_block.get("ThunderstormProbability")),
-                precipitation_probability_rain=_to_optional_float(day_block.get("RainProbability")),
-                precipitation_probability_snow=_to_optional_float(day_block.get("SnowProbability")),
-                precipitation_probability_ice=_to_optional_float(day_block.get("IceProbability")),
+                precipitation_probability=precip_prob,
+                precipitation_probability_thunderstorm=precip_prob_thunder,
+                precipitation_probability_rain=precip_prob_rain,
+                precipitation_probability_snow=precip_prob_snow,
+                precipitation_probability_ice=precip_prob_ice,
+                precipitation_type=precip_type,
                 precipitation_mm=precip_total,
-                precipitation_amount_rain_mm=_precip_from_block(rain_block),
-                precipitation_amount_snow_mm=_precip_from_block(snow_block),
-                precipitation_amount_ice_mm=_precip_from_block(ice_block),
+                precipitation_amount_rain_mm=precip_rain,
+                precipitation_amount_snow_mm=precip_snow,
+                precipitation_amount_ice_mm=precip_ice,
                 summary=_first_text(day_block.get("IconPhrase"), day_block.get("ShortPhrase"), day_block.get("LongPhrase")),
                 condition_code=_to_optional_int(day_block.get("Icon")),
-                wind_speed_kph=_speed_from_block(wind_speed_block),
+                wind_speed_kph=wind_speed,
                 wind_direction_deg=_to_optional_int(wind_direction),
-                wind_gust_kph=_speed_from_block(gust_speed_block),
+                wind_gust_kph=wind_gust,
                 uv_index=uv_index,
                 relative_humidity=_average_from_range(humidity_block),
                 cloud_cover_pct=_to_optional_float(day_block.get("CloudCover")),

@@ -9,7 +9,9 @@ import vcr
 
 from wxbench.config import WxConfig
 from wxbench.pipeline import collect_all
-from wxbench.storage.sqlite import open_database
+from wxbench.storage.datapoints import CompositeDataPointWriter
+from wxbench.storage.parquet import ParquetDataPointWriter
+from wxbench.storage.sqlite import SqliteDataPointWriter, open_database
 
 
 CASSETTE_DIR = Path(__file__).parent.parent / "contract" / "cassettes"
@@ -44,6 +46,7 @@ def test_collect_all_pipeline_stores_raw_and_points(tmp_path: Path) -> None:
     )
 
     cassette_clock = datetime(2025, 12, 28, 12, tzinfo=timezone.utc)
+    parquet_root = tmp_path / "parquet"
 
     with httpx.Client() as client, recorder.use_cassette("pipeline_collect_all.yaml"):
         result = collect_all(
@@ -52,6 +55,10 @@ def test_collect_all_pipeline_stores_raw_and_points(tmp_path: Path) -> None:
             client=client,
             clock=lambda: cassette_clock,
             msc_rdps_max_lead_hours=0,
+            data_point_writer_factory=lambda conn: CompositeDataPointWriter(
+                parquet_writer=ParquetDataPointWriter(parquet_root, run_id="test-run"),
+                sqlite_writer=SqliteDataPointWriter(conn),
+            ),
         )
 
     assert result.raw_payloads > 0
@@ -72,3 +79,4 @@ def test_collect_all_pipeline_stores_raw_and_points(tmp_path: Path) -> None:
     assert "wind_gust" in metric_types
     assert "uv_index" in metric_types
     assert "cloud_cover" in metric_types
+    assert any(parquet_root.rglob("*.parquet"))

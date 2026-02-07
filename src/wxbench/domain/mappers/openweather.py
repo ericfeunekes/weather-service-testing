@@ -4,27 +4,10 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 from typing import Any, Callable, Mapping, MutableMapping, Optional, Sequence
 
+from wxbench.domain.mappers._common import _to_optional_float, _to_optional_int
 from wxbench.domain.models import ForecastPeriod, Location, Observation
 
 IsoParser = Callable[[str], datetime]
-
-
-def _to_optional_float(value: Any) -> Optional[float]:
-    if value is None:
-        return None
-    try:
-        return float(value)
-    except (TypeError, ValueError):
-        return None
-
-
-def _to_optional_int(value: Any) -> Optional[int]:
-    if value is None:
-        return None
-    try:
-        return int(value)
-    except (TypeError, ValueError):
-        return None
 
 
 def _kelvin_to_celsius(value: Optional[float]) -> Optional[float]:

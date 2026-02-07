@@ -7,10 +7,12 @@ from datetime import timedelta
 from wxbench.domain.datapoints import (
     PRODUCT_FORECAST_DAILY,
     PRODUCT_FORECAST_HOURLY,
+    PRODUCT_FORECAST_MINUTELY,
+    alerts_to_datapoints,
     observation_to_datapoints,
     forecast_to_datapoints,
 )
-from wxbench.domain.models import ForecastPeriod, Location, Observation
+from wxbench.domain.models import ForecastPeriod, Location, Observation, WeatherAlert
 
 
 def test_observation_to_datapoints_emits_metrics():
@@ -155,6 +157,60 @@ def test_forecast_to_datapoints_daily_lead_time():
     assert all(point.lead_label == "+2d" for point in points)
     assert all(point.local_day is not None for point in points)
     assert all(point.lead_day_index == 2 for point in points)
+
+
+def test_forecast_to_datapoints_minutely_lead_time():
+    run_at = datetime(2024, 1, 1, 12, 0, 30, tzinfo=timezone.utc)
+    start_time = datetime(2024, 1, 1, 12, 3, 10, tzinfo=timezone.utc)
+    end_time = start_time + timedelta(minutes=1)
+    forecast = ForecastPeriod(
+        provider="demo",
+        location=Location(latitude=10.0, longitude=20.0),
+        issued_at=run_at,
+        start_time=start_time,
+        end_time=end_time,
+        precipitation_probability=50.0,
+    )
+
+    points = forecast_to_datapoints(
+        forecast,
+        run_at=run_at,
+        tz_name="UTC",
+        product_kind=PRODUCT_FORECAST_MINUTELY,
+    )
+
+    assert points
+    assert all(point.lead_unit == "minute" for point in points)
+    assert all(point.lead_offset == 3 for point in points)
+    assert all(point.lead_label == "+3m" for point in points)
+
+
+def test_alerts_to_datapoints_emits_text_metrics():
+    alert = WeatherAlert(
+        provider="demo",
+        location=Location(latitude=10.0, longitude=20.0),
+        alert_id="alert-123",
+        issued_at=datetime(2024, 1, 1, 10, tzinfo=timezone.utc),
+        effective_time=datetime(2024, 1, 1, 11, tzinfo=timezone.utc),
+        expire_time=datetime(2024, 1, 1, 15, tzinfo=timezone.utc),
+        severity="severe",
+        certainty="likely",
+        urgency="expected",
+        responses=("prepare",),
+        description="Wind warning",
+        source="Agency",
+        area_id="X1",
+        area_name="Test County",
+        country_code="CA",
+    )
+
+    points = alerts_to_datapoints(alert, run_at=datetime(2024, 1, 1, 10, tzinfo=timezone.utc), tz_name="UTC")
+
+    assert points
+    assert any(point.metric_type == "alert_id" and point.value_text == "alert-123" for point in points)
+    assert any(point.metric_type == "alert_description" and point.value_text == "Wind warning" for point in points)
+    assert any(point.metric_type == "alert_severity" and point.value_text == "severe" for point in points)
+    assert all(point.product_kind == "alert" for point in points)
 
 
 def test_forecast_to_datapoints_daily_lead_time_local_day_boundary():

@@ -159,6 +159,22 @@ def test_hourly_forecast_mapping_includes_apparent_gust_uv():
     assert periods[0].condition_code == 12
 
 
+def test_hourly_forecast_preserves_zero_precipitation():
+    """Ensure 0.0 mm precipitation is not treated as None."""
+    payload = [
+        {
+            "EpochDateTime": 1700000000,
+            "Temperature": {"Metric": {"Value": 5.0, "Unit": "C"}},
+            "Wind": {"Speed": {"Metric": {"Value": 8.0, "Unit": "km/h"}}, "Direction": {"Degrees": 180}},
+            "TotalLiquid": {"Value": 0.0, "Unit": "mm"},
+            "Rain": {"Value": 1.0, "Unit": "mm"},
+        }
+    ]
+    periods = map_accuweather_hourly_forecast(payload, latitude=10.0, longitude=20.0)
+    # TotalLiquid is 0.0 — should be preserved, not fall through to Rain
+    assert periods[0].precipitation_mm == pytest.approx(0.0)
+
+
 def test_daily_forecast_mapping_includes_apparent_gust_uv():
     payload = {
         "DailyForecasts": [
@@ -198,7 +214,18 @@ def test_daily_forecast_mapping_includes_apparent_gust_uv():
                     "RainProbability": 30,
                     "SnowProbability": 10,
                     "ThunderstormProbability": 5,
+                    "PrecipitationType": "Rain",
                     "Rain": {"Value": 2.0, "Unit": "mm"},
+                },
+                "Night": {
+                    "Wind": {"Speed": {"Metric": {"Value": 8.0, "Unit": "km/h"}}, "Direction": {"Degrees": 190}},
+                    "WindGust": {"Speed": {"Metric": {"Value": 22.0, "Unit": "km/h"}}},
+                    "PrecipitationProbability": 20,
+                    "RainProbability": 10,
+                    "SnowProbability": 0,
+                    "ThunderstormProbability": 2,
+                    "PrecipitationType": "Rain",
+                    "Rain": {"Value": 1.0, "Unit": "mm"},
                 },
                 "HoursOfSun": 5.5,
             }
@@ -208,7 +235,8 @@ def test_daily_forecast_mapping_includes_apparent_gust_uv():
     periods = map_accuweather_daily_forecast(payload, latitude=10.0, longitude=20.0)
 
     assert periods[0].temperature_apparent_c == pytest.approx(0.5)
-    assert periods[0].wind_gust_kph == pytest.approx(18.0)
+    assert periods[0].wind_gust_kph == pytest.approx(22.0)
+    assert periods[0].wind_speed_kph == pytest.approx(10.0)
     assert periods[0].uv_index == pytest.approx(2.0)
     assert periods[0].temperature_apparent_shade_c == pytest.approx(-1.0)
     assert periods[0].cloud_cover_pct == pytest.approx(30)
@@ -217,7 +245,8 @@ def test_daily_forecast_mapping_includes_apparent_gust_uv():
     assert periods[0].solar_irradiance_wm2 == pytest.approx(250.0)
     assert periods[0].temperature_wet_bulb_c == pytest.approx(-0.5)
     assert periods[0].temperature_wet_bulb_globe_c == pytest.approx(0.0)
-    assert periods[0].precipitation_probability == pytest.approx(40)
-    assert periods[0].precipitation_probability_rain == pytest.approx(30)
-    assert periods[0].precipitation_amount_rain_mm == pytest.approx(2.0)
+    assert periods[0].precipitation_probability == pytest.approx(52.0)
+    assert periods[0].precipitation_probability_rain == pytest.approx(37.0)
+    assert periods[0].precipitation_amount_rain_mm == pytest.approx(3.0)
+    assert periods[0].precipitation_type == "Rain"
     assert periods[0].sun_hours == pytest.approx(5.5)

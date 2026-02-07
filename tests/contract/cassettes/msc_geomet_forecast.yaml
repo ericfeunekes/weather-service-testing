@@ -1827,4 +1827,142 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.weather.gc.ca
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.weather.gc.ca/collections/citypageweather-realtime/items?bbox=-64.08675928%2C44.13955893%2C-63.08675928%2C45.13955893&f=json&limit=1
+  response:
+    body:
+      string: !!binary |
+        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
+        AQA=
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - Keep-Alive
+      Content-Crs:
+      - <http://www.opengis.net/def/crs/OGC/1.3/CRS84>
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - en-CA
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 01 Jan 2026 09:46:52 GMT
+      Keep-Alive:
+      - timeout=5, max=100
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=63072000; preload
+      - max-age=63072000; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Powered-By:
+      - pygeoapi 0.20.0
+    status:
+      code: 200
+      message: OK
 version: 1

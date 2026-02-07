@@ -14,6 +14,9 @@
 Observation (station devices)
 - `GET https://api.ambientweather.net/v1/devices`
 
+History (device data)
+- `GET https://api.ambientweather.net/v1/devices/{macAddress}`
+
 ## Required query params
 - `apiKey`
 - `applicationKey`
@@ -52,5 +55,11 @@ deterministic behavior.
   - inHg -> kPa
   - inches -> mm
 
+## History notes
+- History data is available at 5‑minute or 30‑minute intervals, not true minute-by-minute.
+- Up to ~10 minutes of delay before recent data appears.
+- Parameters: `limit` (max 288) and `end_date` (epoch ms) control the history window.
+
 ## Contract cassettes (planned)
 - `ambient_weather_observation.yaml`
+- `ambient_weather_history.yaml`

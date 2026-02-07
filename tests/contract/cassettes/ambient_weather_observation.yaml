@@ -330,4 +330,67 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.ambientweather.net
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.ambientweather.net/v1/devices?apiKey=REDACTED&applicationKey=REDACTED
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA41U247aMBD9lWieTWonwVn8RreV9qFdVUufWq3QkAxg1bGR47ClK/69coBw6fUt
+        c3LmnMlc8vUVGqymde2pbUHB/Z26n6hproRU00yNBTAw2IZ3GBDUK9QYqAsVKFHKMpO8lJxzziBQ
+        s1mCykWaM1h3ja512IGaSAYv2tbthqhuNmtQPM2yA7bq2tBDIhUZgwa/16jNLsKgirQoD7Rae1Bi
+        LIdojtuV4A0oUUgG3RYUZ9A6g95jrTFoZ3to7Tpvdh611QeAtmTDRdzbXcQvRN/OgEjzkkHjbFhf
+        sXaE17ILDMF1AZQ4tEHbJSgp0+LciMjM80j1rvFkYpxN0nFZHjFctNdYCH0NDJZEpv2gv9GpuTW9
+        fHLaBlA5T7PJBSNmHHxPnN63R+IMnzDGkPFsPBLZKOefRaHyTHGecs6/AIPwAxRMG/K6wjcPaPQS
+        vwPrh35IlCMuRlx85hNVyCFxz0DbpYv7YbGJ1AfXEDConPN1G/Hzk8E43iKV+WQcO2ziuEYyT8d3
+        shRFtmeAwzqKvLxLntxCUzILLDmWxJLHWfI2f0jy9xlL7tFijXFPXXWcPpxrJ0PbI1rcpaIUUk44
+        l3lRSjk4zSvXbJwlG1pQX19jTav58VNiCcCgXTsfbrCw21BMgDZ4ojC3XbMgD897di1x+oBIupU6
+        vbuU864L9KvMzHVhnby39a3G5YtBxJJerRfOr52L+MYZHXSF5lfdc7OuVM/woBk7bOJh/49e8kQr
+        7Sya5GNndaU3p9TfufyRPHhj3Wir2+Ax6C3N0RPODW3JzLO/l/PotpjMKhc03po/zv7PQfzdYdjA
+        K/H76aV45Tob/D86d9zpW6UzPMhtXBvQzCtXx0V5ZrCi/v4iARQc/hDHA9QWQ591cWVsuMDn/X6/
+        f/4JBNEdtggGAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-RAY:
+      - 9b7117762dab42cd-EWR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 01 Jan 2026 09:46:49 GMT
+      ETag:
+      - W/"608-ExL4cECG4EdfJbZzdVVkCA"
+      Nel:
+      - '{"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}'
+      Report-To:
+      - '{"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=MCfkHPQsIariCqYkq3eH9wLf%2B3h1jaHGE2KStqvQ62wVPfuzVrNkKSw2kRoUlA%2F47P%2BGVtxChH%2FV3pMS7aZsepPyO5C77u9RAW6qxuzdLFrXcoH12A%3D%3D"}]}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Powered-By:
+      - Express
+      cf-cache-status:
+      - DYNAMIC
+    status:
+      code: 200
+      message: OK
 version: 1

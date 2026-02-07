@@ -161,4 +161,172 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.tomorrow.io
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.tomorrow.io/v4/weather/forecast?apikey=REDACTED&location=44.63955893%2C-63.58675928&timesteps=1d&units=metric
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 9b71178e5b848dd6-EWR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 01 Jan 2026 09:46:52 GMT
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=3JQlJzaIv8jzWI.Ff5kEcC3WJAQdPlgoWC0dRnjmJbU-1767260812-1.0.1.1-e7WZlUVs.uAsIW9eh59OGXJ2jqiOjJx4JRNiiiKiwjixr1KaZCn9YgHKCED_UhgH_3g2lFlz1EdrjbAw3FbRqF4c74J7y_DlI5qNb4aqygY;
+        path=/; expires=Thu, 01-Jan-26 10:16:52 GMT; domain=.tomorrow.io; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=oZovMKkXmWVuK14GAZbffgq7aT1XEt1RWNfUa5bTiwg-1767260812655-0.0.1.1-604800000;
+        path=/; domain=.tomorrow.io; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - accept-encoding
+      Via:
+      - 1.1 google
+      cf-apo-via:
+      - origin,host
+      expect-ct:
+      - max-age=86400, enforce
+      referrer-policy:
+      - same-origin
+      x-content-type-options:
+      - nosniff
+      x-correlation-id:
+      - 6d5f9885-77c8-45e4-97a2-fb94aa78e0a5
+      x-frame-options:
+      - SAMEORIGIN
+      x-kong-proxy-latency:
+      - '14'
+      x-kong-upstream-latency:
+      - '59'
+      x-ratelimit-remaining-plan-5f857927f9d5bdc6c63abb67:
+      - '10'
+      x-ratelimit-remaining-plan-5f96c370732c89cb4d9a98e8:
+      - '3'
+      x-ratelimit-remaining-plan-5fa4047f4acee993fbd7399d:
+      - '3'
+      x-ratelimit-remaining-plan-5fb2a269785f8043656f245e:
+      - '10'
+      x-ratelimit-remaining-plan-600d6ce482ff404e9a7a4c0c:
+      - '5'
+      x-ratelimit-remaining-plan-600d73bef98f624e9adcf465:
+      - '5'
+      x-ratelimit-remaining-plan-600d742fdee75e4e9aab6661:
+      - '5'
+      x-ratelimit-remaining-plan-6036283133bb2ff6d4bd82a7:
+      - '3'
+      x-ratelimit-remaining-plan-606d86d0a26c4d7df907bc7a:
+      - '5'
+      x-ratelimit-remaining-plan-609d458bdd3d437ff19fd44f:
+      - '5'
+      x-ratelimit-remaining-plan-60d46beae90c3b3549a59ff3:
+      - '3'
+      x-ratelimit-remaining-plan-60f00adf8d481f9421462962:
+      - '3'
+      x-ratelimit-remaining-plan-60f00d40803f8e9421c5a7f8:
+      - '5'
+      x-ratelimit-remaining-plan-60f58bbc299fbc36c91529aa:
+      - '5'
+      x-ratelimit-remaining-plan-648b3f22ef567da8b7fb4599:
+      - '1'
+      x-ratelimit-remaining-plan-649ab4540000000000b71412:
+      - '3'
+      x-ratelimit-remaining-web-app:
+      - '500000'
+      x-request-id:
+      - 6988b956-b163-4c9e-a63b-19d831dcb9c6
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 version: 1

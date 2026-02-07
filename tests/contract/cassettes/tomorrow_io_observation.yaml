@@ -224,4 +224,117 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.tomorrow.io
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.tomorrow.io/v4/weather/realtime?apikey=REDACTED&location=44.63955893%2C-63.58675928&units=metric
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA2VRy07DMBD8lz27lvNskhsUCSpxqCgnbm6ypZZcO/IjBar8O5u0oCKkHLwzo53Z
+        yRk6GSQ0ZwjqiNBAKtJyIRL6XkXd5GUjxBswGKSO6Ced1JMyoNtiCMq8Q5MIseQpg1bb2N1LT2uW
+        vLrOK1R6Vt1AdkAHTZUw6PC0scoEaBYJLxnsHeIXyV+kMmsT0HgVPqERDA7xqLp5qAsGvcNW9SrI
+        oKzZOLuTO7K5Son0PjrconzGAfU1YUaRfqno9rLFW5q2un+uXiOGv0G8sae/SMBjj04GsqQ7BK8Z
+        3EB3fS8dziemExWHJ6QODytrWnRmPi4Oa9Phx/welFc/xyQJTynXCWU4oFvZjgyo7YQgZboHRS1M
+        BRCY5xfsMXoqM+fZZdz2iB3RvBhHBtq2c2HTb9Ry0uW8zOqiqGrS62nRosx4UZXLok6rcfwGZhGG
+        1h4CAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-Ray:
+      - 9b71178bcd32c451-EWR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 01 Jan 2026 09:46:52 GMT
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=REmlEsNWMeIRZ4xis6HJAHD6HJu_8FBNNhpLvGXKA58-1767260812-1.0.1.1-ybzFDGjLez30gLgro.jb1p4VSeeiupYqXA6x84kISN_AHap8Mr6eDSrUAVPyg_u_DGVBchhLsUqHH8tsAp5FVWhJgSrnIn7egZlKpenkzUA;
+        path=/; expires=Thu, 01-Jan-26 10:16:52 GMT; domain=.tomorrow.io; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=eM0JHHAeV4WiX5I.mIajI1jXYUBC_P0tDLqrMFpceW8-1767260812221-0.0.1.1-604800000;
+        path=/; domain=.tomorrow.io; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=31536000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - accept-encoding
+      Via:
+      - 1.1 google
+      cf-apo-via:
+      - origin,host
+      expect-ct:
+      - max-age=86400, enforce
+      referrer-policy:
+      - same-origin
+      x-content-type-options:
+      - nosniff
+      x-correlation-id:
+      - 6264781c-10bd-4e67-b0bc-b39eebc05ca1
+      x-frame-options:
+      - SAMEORIGIN
+      x-kong-proxy-latency:
+      - '14'
+      x-kong-upstream-latency:
+      - '33'
+      x-ratelimit-remaining-plan-5f857927f9d5bdc6c63abb67:
+      - '10'
+      x-ratelimit-remaining-plan-5f96c370732c89cb4d9a98e8:
+      - '3'
+      x-ratelimit-remaining-plan-5fa4047f4acee993fbd7399d:
+      - '3'
+      x-ratelimit-remaining-plan-5fb2a269785f8043656f245e:
+      - '10'
+      x-ratelimit-remaining-plan-600d6ce482ff404e9a7a4c0c:
+      - '5'
+      x-ratelimit-remaining-plan-600d73bef98f624e9adcf465:
+      - '5'
+      x-ratelimit-remaining-plan-600d742fdee75e4e9aab6661:
+      - '5'
+      x-ratelimit-remaining-plan-6036283133bb2ff6d4bd82a7:
+      - '3'
+      x-ratelimit-remaining-plan-606d86d0a26c4d7df907bc7a:
+      - '5'
+      x-ratelimit-remaining-plan-609d458bdd3d437ff19fd44f:
+      - '5'
+      x-ratelimit-remaining-plan-60d46beae90c3b3549a59ff3:
+      - '3'
+      x-ratelimit-remaining-plan-60f00adf8d481f9421462962:
+      - '3'
+      x-ratelimit-remaining-plan-60f00d40803f8e9421c5a7f8:
+      - '5'
+      x-ratelimit-remaining-plan-60f58bbc299fbc36c91529aa:
+      - '5'
+      x-ratelimit-remaining-plan-648b3f22ef567da8b7fb4599:
+      - '3'
+      x-ratelimit-remaining-plan-649ab4540000000000b71412:
+      - '3'
+      x-ratelimit-remaining-web-app:
+      - '500000'
+      x-request-id:
+      - 749f71a0-3f94-4f7a-a8e6-917e025c10d9
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 version: 1

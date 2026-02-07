@@ -86,6 +86,7 @@ class ForecastPeriod:
     temperature_high_c: Optional[float] = None
     temperature_low_c: Optional[float] = None
     precipitation_probability: Optional[float] = None
+    precipitation_type: Optional[str] = None
     precipitation_mm: Optional[float] = None
     summary: Optional[str] = None
     wind_speed_kph: Optional[float] = None
@@ -128,6 +129,30 @@ class ForecastPeriod:
     solar_irradiance_wm2: Optional[float] = None
     sun_hours: Optional[float] = None
     condition_code: Optional[int] = None
+
+
+@dataclass(frozen=True)
+class WeatherAlert:
+    """Normalized severe weather alert."""
+
+    provider: str
+    location: Location
+    alert_id: str
+    issued_at: datetime
+    effective_time: datetime
+    expire_time: datetime
+    event_start: Optional[datetime] = None
+    event_end: Optional[datetime] = None
+    severity: Optional[str] = None
+    certainty: Optional[str] = None
+    urgency: Optional[str] = None
+    responses: tuple[str, ...] = ()
+    description: Optional[str] = None
+    source: Optional[str] = None
+    area_id: Optional[str] = None
+    area_name: Optional[str] = None
+    details_url: Optional[str] = None
+    country_code: Optional[str] = None
 
 
 @dataclass(frozen=True)

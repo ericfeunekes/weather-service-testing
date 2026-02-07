@@ -7,7 +7,7 @@ from wxbench.domain.mappers.accuweather import (
     map_accuweather_minute_forecast,
     map_accuweather_observation,
 )
-from wxbench.domain.mappers.ambient_weather import map_ambient_weather_observation
+from wxbench.domain.mappers.ambient_weather import map_ambient_weather_history, map_ambient_weather_observation
 from wxbench.domain.mappers.msc_geomet import map_msc_geomet_forecast, map_msc_geomet_observation
 from wxbench.domain.mappers.openweather import (
     map_openweather_forecast,
@@ -28,6 +28,7 @@ __all__ = [
     "map_accuweather_minute_forecast",
     "map_accuweather_observation",
     "map_ambient_weather_observation",
+    "map_ambient_weather_history",
     "map_msc_geomet_observation",
     "map_msc_geomet_forecast",
     "map_openweather_observation",

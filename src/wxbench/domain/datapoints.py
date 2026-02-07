@@ -5,12 +5,14 @@ from datetime import date, datetime
 from typing import Iterable, Mapping, Optional
 from zoneinfo import ZoneInfo
 
-from wxbench.domain.models import DataPoint, ForecastPeriod, Observation
+from wxbench.domain.models import DataPoint, ForecastPeriod, Observation, WeatherAlert
 
 
 PRODUCT_OBSERVATION = "observation"
 PRODUCT_FORECAST_HOURLY = "forecast_hourly"
 PRODUCT_FORECAST_DAILY = "forecast_daily"
+PRODUCT_FORECAST_MINUTELY = "forecast_minutely"
+PRODUCT_ALERT = "alert"
 
 
 _OBSERVATION_METRICS: tuple[tuple[str, str, Optional[str], bool], ...] = (
@@ -76,6 +78,7 @@ _FORECAST_METRICS: tuple[tuple[str, str, Optional[str], bool], ...] = (
     ("temperature_high_c", "temperature_high", "C", False),
     ("temperature_low_c", "temperature_low", "C", False),
     ("precipitation_probability", "precip_probability", "%", False),
+    ("precipitation_type", "precip_type", None, True),
     ("precipitation_probability_rain", "precip_probability_rain", "%", False),
     ("precipitation_probability_snow", "precip_probability_snow", "%", False),
     ("precipitation_probability_ice", "precip_probability_ice", "%", False),
@@ -117,7 +120,12 @@ _FORECAST_METRICS: tuple[tuple[str, str, Optional[str], bool], ...] = (
 
 def _lead_label(offset: int, unit: str) -> str:
     sign = "+" if offset >= 0 else ""
-    suffix = "h" if unit == "hour" else "d"
+    if unit == "hour":
+        suffix = "h"
+    elif unit == "day":
+        suffix = "d"
+    else:
+        suffix = "m"
     return f"{sign}{offset}{suffix}"
 
 
@@ -189,17 +197,25 @@ def forecast_to_datapoints(
 ) -> list[DataPoint]:
     """Explode a normalized forecast period into data points."""
 
-    if product_kind not in (PRODUCT_FORECAST_HOURLY, PRODUCT_FORECAST_DAILY):
+    if product_kind not in (PRODUCT_FORECAST_HOURLY, PRODUCT_FORECAST_DAILY, PRODUCT_FORECAST_MINUTELY):
         raise ValueError(f"Unsupported product_kind: {product_kind}")
 
-    lead_unit = "hour" if product_kind == PRODUCT_FORECAST_HOURLY else "day"
-    if lead_unit == "hour":
+    if product_kind == PRODUCT_FORECAST_HOURLY:
+        lead_unit = "hour"
         run_hour = run_at.replace(minute=0, second=0, microsecond=0)
         forecast_hour = forecast.start_time.replace(minute=0, second=0, microsecond=0)
         delta = forecast_hour - run_hour
         lead_offset = int(delta.total_seconds() // 3600)
         lead_day_index = None
+    elif product_kind == PRODUCT_FORECAST_MINUTELY:
+        lead_unit = "minute"
+        run_minute = run_at.replace(second=0, microsecond=0)
+        forecast_minute = forecast.start_time.replace(second=0, microsecond=0)
+        delta = forecast_minute - run_minute
+        lead_offset = int(delta.total_seconds() // 60)
+        lead_day_index = None
     else:
+        lead_unit = "day"
         forecast_day = _local_day(forecast.start_time, tz_name)
         run_day = _local_day(run_at, tz_name)
         lead_offset = (forecast_day - run_day).days
@@ -250,11 +266,79 @@ def forecast_to_datapoints(
     return points
 
 
+_ALERT_METRICS: tuple[tuple[str, str], ...] = (
+    ("alert_id", "alert_id"),
+    ("description", "alert_description"),
+    ("severity", "alert_severity"),
+    ("certainty", "alert_certainty"),
+    ("urgency", "alert_urgency"),
+    ("responses", "alert_response"),
+    ("source", "alert_source"),
+    ("area_id", "alert_area_id"),
+    ("area_name", "alert_area_name"),
+    ("country_code", "alert_country_code"),
+    ("details_url", "alert_details_url"),
+)
+
+
+def alerts_to_datapoints(
+    alert: WeatherAlert,
+    *,
+    run_at: datetime,
+    tz_name: str,
+    source_fields: Optional[Mapping[str, str]] = None,
+) -> list[DataPoint]:
+    """Explode a normalized weather alert into data points."""
+
+    points: list[DataPoint] = []
+    for field_name, metric_type in _ALERT_METRICS:
+        value = getattr(alert, field_name)
+        if value is None or value == ():
+            continue
+        if field_name == "responses":
+            value_text = ",".join(str(item) for item in value)
+        else:
+            value_text = str(value)
+
+        points.append(
+            DataPoint(
+                provider=alert.provider,
+                product_kind=PRODUCT_ALERT,
+                metric_type=metric_type,
+                value_num=None,
+                value_text=value_text,
+                unit=None,
+                value_raw=None,
+                unit_raw=None,
+                observed_at=None,
+                valid_start=alert.effective_time,
+                valid_end=alert.expire_time,
+                issued_at=alert.issued_at,
+                run_at=run_at,
+                local_day=_local_day(alert.effective_time, tz_name),
+                lead_unit=None,
+                lead_offset=None,
+                lead_label=None,
+                lead_day_index=None,
+                latitude=alert.location.latitude,
+                longitude=alert.location.longitude,
+                station=None,
+                source_field=(source_fields or {}).get(field_name),
+                quality_flag=None,
+            )
+        )
+
+    return points
+
+
 __all__ = [
     "DataPoint",
     "PRODUCT_OBSERVATION",
     "PRODUCT_FORECAST_HOURLY",
     "PRODUCT_FORECAST_DAILY",
+    "PRODUCT_FORECAST_MINUTELY",
+    "PRODUCT_ALERT",
     "observation_to_datapoints",
     "forecast_to_datapoints",
+    "alerts_to_datapoints",
 ]

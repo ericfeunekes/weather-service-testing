@@ -5,7 +5,11 @@ from pathlib import Path
 
 import pytest
 
-from wxbench.domain.mappers.ambient_weather import map_ambient_weather_observation
+from wxbench.domain.mappers.ambient_weather import (
+    map_ambient_weather_history,
+    map_ambient_weather_observation,
+)
+from wxbench.domain.models import Location
 
 FIXTURES = Path(__file__).parent.parent / "fixtures"
 
@@ -89,6 +93,24 @@ def test_observation_maps_extended_fields() -> None:
     assert observation.solar_radiation_wm2 == pytest.approx(400)
     assert observation.battery_in == pytest.approx(1)
     assert observation.battery_out == pytest.approx(0)
+
+
+def test_history_mapping_normalizes_fields() -> None:
+    history = load_fixture("ambient_weather_history.json")
+    location = Location(latitude=40.0, longitude=-75.0)
+
+    observations = map_ambient_weather_history(history, location=location, station="Backyard")
+
+    assert len(observations) == 2
+    first = observations[0]
+    assert first.observed_at == datetime(2023, 6, 1, 0, tzinfo=timezone.utc)
+    assert first.temperature_c == pytest.approx(20.0, abs=0.01)
+    assert first.dewpoint_c == pytest.approx(12.78, abs=0.01)
+    assert first.wind_speed_kph == pytest.approx(8.0467, abs=0.001)
+    assert first.wind_direction_deg == 90
+    assert first.pressure_kpa == pytest.approx(101.32, abs=0.02)
+    assert first.relative_humidity == pytest.approx(65)
+    assert first.precipitation_last_hour_mm == pytest.approx(1.27, abs=0.01)
 
 
 def test_observation_requires_device() -> None:

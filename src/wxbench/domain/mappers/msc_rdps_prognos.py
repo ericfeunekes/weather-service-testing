@@ -6,6 +6,8 @@ from datetime import datetime
 from math import asin, cos, radians, sin, sqrt
 from typing import Any, Iterable, Mapping, Optional, Sequence
 
+from wxbench.domain.mappers._common import _to_optional_float
+
 
 @dataclass(frozen=True)
 class PrognosStationValue:
@@ -32,15 +34,6 @@ def _parse_lead_hours(value: str) -> int:
     if not value.startswith("PT") or not value.endswith("H"):
         raise ValueError(f"Unexpected lead time format: {value}")
     return int(value[2:-1])
-
-
-def _to_optional_float(value: Any) -> Optional[float]:
-    if value is None:
-        return None
-    try:
-        return float(value)
-    except (TypeError, ValueError):
-        return None
 
 
 def _haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:

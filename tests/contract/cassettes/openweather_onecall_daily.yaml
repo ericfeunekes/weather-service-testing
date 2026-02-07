@@ -54,4 +54,59 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.openweathermap.org
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.openweathermap.org/data/3.0/onecall?appid=REDACTED&exclude=minutely%2Chourly%2Calerts%2Ccurrent&lat=44.63955893&lon=-63.58675928&units=metric
+  response:
+    body:
+      string: '{"lat":44.6396,"lon":-63.5868,"timezone":"America/Halifax","timezone_offset":-14400,"daily":[{"dt":1767283200,"sunrise":1767268278,"sunset":1767300253,"moonrise":1767292200,"moonset":1767262560,"moon_phase":0.43,"summary":"You
+        can expect partly cloudy with snow in the morning, with partly cloudy with
+        rain in the afternoon","temp":{"day":2.2,"min":-1.56,"max":4.81,"night":-0.65,"eve":4.81,"morn":-1.01},"feels_like":{"day":-2.39,"night":-7.36,"eve":-0.18,"morn":-4.37},"pressure":1004,"humidity":97,"dew_point":1.49,"wind_speed":11.1,"wind_deg":151,"wind_gust":20.74,"weather":[{"id":616,"main":"Snow","description":"rain
+        and snow","icon":"13d"}],"clouds":100,"pop":1,"rain":7.52,"snow":1.06,"uvi":0.41},{"dt":1767369600,"sunrise":1767354679,"sunset":1767386706,"moonrise":1767382620,"moonset":1767353280,"moon_phase":0.47,"summary":"Expect
+        a day of partly cloudy with snow","temp":{"day":-4.58,"min":-5.63,"max":-1.67,"night":-5.63,"eve":-3.93,"morn":-4.35},"feels_like":{"day":-11.58,"night":-11.93,"eve":-9.92,"morn":-11.35},"pressure":1001,"humidity":51,"dew_point":-13.67,"wind_speed":8.65,"wind_deg":250,"wind_gust":16.54,"weather":[{"id":600,"main":"Snow","description":"light
+        snow","icon":"13d"}],"clouds":65,"pop":0.2,"snow":0.1,"uvi":0.97},{"dt":1767456000,"sunrise":1767441077,"sunset":1767473162,"moonrise":1767473700,"moonset":1767443100,"moon_phase":0.5,"summary":"There
+        will be partly cloudy today","temp":{"day":-5.08,"min":-9.01,"max":-4.79,"night":-9.01,"eve":-7.74,"morn":-7.25},"feels_like":{"day":-12.08,"night":-15.33,"eve":-14.74,"morn":-14.22},"pressure":1004,"humidity":54,"dew_point":-13.32,"wind_speed":6.9,"wind_deg":276,"wind_gust":13.55,"weather":[{"id":803,"main":"Clouds","description":"broken
+        clouds","icon":"04d"}],"clouds":76,"pop":0,"uvi":0.96},{"dt":1767542400,"sunrise":1767527473,"sunset":1767559620,"moonrise":1767565020,"moonset":1767532140,"moon_phase":0.55,"summary":"There
+        will be partly cloudy today","temp":{"day":-7.06,"min":-9.2,"max":-5.84,"night":-7.98,"eve":-6.04,"morn":-8.78},"feels_like":{"day":-7.06,"night":-14.66,"eve":-10.73,"morn":-13.4},"pressure":1017,"humidity":62,"dew_point":-13.78,"wind_speed":4.69,"wind_deg":349,"wind_gust":8.54,"weather":[{"id":804,"main":"Clouds","description":"overcast
+        clouds","icon":"04d"}],"clouds":100,"pop":0,"uvi":0.93},{"dt":1767628800,"sunrise":1767613867,"sunset":1767646079,"moonrise":1767656220,"moonset":1767620460,"moon_phase":0.58,"summary":"There
+        will be partly cloudy today","temp":{"day":-9.81,"min":-11.17,"max":-8.8,"night":-9.87,"eve":-9.14,"morn":-10.36},"feels_like":{"day":-16.81,"night":-15.57,"eve":-16.14,"morn":-17.36},"pressure":1016,"humidity":58,"dew_point":-17.32,"wind_speed":5.87,"wind_deg":295,"wind_gust":9.85,"weather":[{"id":803,"main":"Clouds","description":"broken
+        clouds","icon":"04d"}],"clouds":78,"pop":0,"uvi":1},{"dt":1767715200,"sunrise":1767700258,"sunset":1767732540,"moonrise":1767747180,"moonset":1767708300,"moon_phase":0.62,"summary":"You
+        can expect partly cloudy in the morning, with snow in the afternoon","temp":{"day":-4.76,"min":-9.59,"max":0.02,"night":0.02,"eve":-2.72,"morn":-9.07},"feels_like":{"day":-9.04,"night":-3.93,"eve":-5.31,"morn":-13.9},"pressure":1024,"humidity":63,"dew_point":-11.26,"wind_speed":3.55,"wind_deg":194,"wind_gust":7.7,"weather":[{"id":600,"main":"Snow","description":"light
+        snow","icon":"13d"}],"clouds":30,"pop":0.2,"snow":0.18,"uvi":1},{"dt":1767801600,"sunrise":1767786647,"sunset":1767819003,"moonrise":1767837900,"moonset":1767795960,"moon_phase":0.65,"summary":"There
+        will be partly cloudy with snow until morning, then partly cloudy with rain","temp":{"day":5.59,"min":1.66,"max":6.18,"night":3.26,"eve":5.25,"morn":3.02},"feels_like":{"day":0.83,"night":1.19,"eve":1.62,"morn":-1.18},"pressure":1014,"humidity":97,"dew_point":4.89,"wind_speed":8.35,"wind_deg":167,"wind_gust":19.48,"weather":[{"id":616,"main":"Snow","description":"rain
+        and snow","icon":"13d"}],"clouds":100,"pop":1,"rain":12.24,"snow":0.18,"uvi":1},{"dt":1767888000,"sunrise":1767873033,"sunset":1767905467,"moonrise":1767928380,"moonset":1767883440,"moon_phase":0.69,"summary":"There
+        will be partly cloudy today","temp":{"day":4.05,"min":1.54,"max":5.72,"night":2.77,"eve":2.71,"morn":2.83},"feels_like":{"day":2.03,"night":-0.8,"eve":-0.09,"morn":0.98},"pressure":1017,"humidity":88,"dew_point":2.03,"wind_speed":3.88,"wind_deg":316,"wind_gust":9.33,"weather":[{"id":804,"main":"Clouds","description":"overcast
+        clouds","icon":"04d"}],"clouds":100,"pop":0,"uvi":1}]}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '4519'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 01 Jan 2026 09:46:51 GMT
+      X-Cache-Key:
+      - /data/3.0/onecall?exclude=minutely%2Chourly%2Calerts%2Ccurrent&lat=44.64&lon=-63.59&units=metric
+    status:
+      code: 200
+      message: OK
 version: 1

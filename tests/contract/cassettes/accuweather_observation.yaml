@@ -78,4 +78,83 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - dataservice.accuweather.com
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://dataservice.accuweather.com/currentconditions/v1/49538?apikey=REDACTED&details=true
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAB/4quVvLJT07M8U8qTi0qSyzJzM9zSSxJDcnMTVWyUjIyMDLTNTDUNTAMMTC1Mja2
+        MjDQNTCxMjBQ0lFyLchPzoCoMzQ3MzcytbS0MNBRCk9NLMlILQpJrShRslLyyUzPKFEozssvV4JL
+        eSbn5ylZGVrqKHkkFgcUpSZnFmSWgG1WsiopKk3VUUIRDKksADklGGKGZ7FLYiXE1rTEnOJUHaWQ
+        1NyC1KLEktKiVCWraiXf1JKizGQQKywxpzRVyUrXSM9QRyk0LxPkHmclCBNiqKF5rY6SJ0h7ZmIO
+        khYjCz0DiDolKyU3VC0WtbU6SkGpiTluqak5BO02RDII3W4dpYCMosRikOec83NSlLC7xdgAyQh0
+        t2AYgd1twRmJKTgCZ0AcmJNYklmW6lGam5mSWVKpZGVpoqPkmZeSn18UlIouZ2ymo+SSWh6Qn5lX
+        AooizPg1Rgog9DDGHqZG5kha0MMUFL/hmXkpIMtcMotSk0F5AsxJTS9KTS1WsjI0tdCB5JrMqtQU
+        JSul4GBXUIbIS8/JLM6A8mt1lIILUkHSWNKkkZ4FPH1l5+pnoCQxHInSUM8cric3E02PZS3M2e6l
+        xeBwwm25mZ4R3CBiLTdGcjAOy0PDPPNSUiuUrEBZB8J2y8lPLFGygqRgiBCsXAAXCGGZxZlJmTng
+        NIAllCyQYik7FyWMzLBHrCmSjtxMFB1GoADyTyouKSoFx2hxSD6y9UrBuko6Ss45+aUpzvllqUVK
+        VoYGBjpKzqmZOZl56aDox0h45mZGyNah2GaK3X1GpgaQwICURmklKJoMQE4MKEotLsZVlhkaGJjp
+        mcFjLzcJRb+hCQ5bLfXMEVGemeeRjqoNHDQwe0NS81JS85IrQV4G1wygNA6NteCS1MSUSlA45YPK
+        E6VgUJkVkFhcYmTikV9ahFQauqQWJBbhLJJN9EzhfiAuxyInBWwZ1rGgILEoNa8EyQkgD2DEma4R
+        UuInzmqClQGosHDOyMwhXBvQwvLUEqfSnCQi/G1CYpAT9jfEavec/KRUIuyneiUMaSUYZhRhjWnk
+        fJaLWngYY88myDoy81CzCDRnIpoqwaW5uYlF4FwCcQe8CYOlIEM2mUpuSSwuAWU5enk9sbjEGGRf
+        MQ4LEZFLPf+Z0dtCS3wWGsOzD9E+RAQK1uSUWFxiaER/Ky3obiWkdsCVdKgcsLUoPQLkbJpYXAJO
+        UkGJeemQ1nBmXmZuaS7WJE2LXoNvYgVu+wxJrhONLJGaH5iVYq2OEqhqhiQx4vxsgmQgkZUjcosL
+        0w06SgPiZ0iCI87PyF0B4vxsiD/c6e7nWh0l3/ykzJxUn8y8bCUrpYySkgIrff3y8nK9xOTk0nJI
+        h1wvOT9XPzVPPzlRPyMxJzMtsUI/yThHHwAAAP//Si4tArWbdKGq9E0sTY0t7HMS89JtU/N0S4uV
+        dJRoYmxtLAAAAP//AwDFx7azehAAAA==
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Alt-Svc:
+      - h3=":443"; ma=93600,h3-29=":443"; ma=93600
+      Cache-Control:
+      - public, max-age=279
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1105'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 01 Jan 2026 09:46:50 GMT
+      Expires:
+      - Thu, 01 Jan 2026 09:51:29 GMT
+      Server-Timing:
+      - edge; dur=1
+      - origin; dur=104
+      - cdn-cache; desc=MISS
+      - ak_p; desc="1767260810128_34697806_1952694680_10445_1581_28_44_-";dur=1
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      akamai-grn:
+      - 0.501c2117.1767260810.40f2c0e
+      ratelimit-limit:
+      - '1'
+      ratelimit-remaining:
+      - '249'
+      request-context:
+      - appId=cid-v1:0158d69b-75d9-4a19-9e5f-a14693f847e4
+      zp-rid:
+      - decd0213-9bbf-4c96-93d7-d9d57596b0c2
+    status:
+      code: 200
+      message: OK
 version: 1

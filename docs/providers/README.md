@@ -19,6 +19,8 @@ Each provider page includes:
 - `docs/providers/msc_geomet.md`
 - `docs/providers/msc_rdps_prognos.md`
 - `docs/providers/ambient_weather.md`
+- `docs/providers/ecowitt.md`
+- `docs/providers/weatherkit.md`
 
 ## Contract test intent
 

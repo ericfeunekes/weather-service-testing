@@ -4,6 +4,7 @@ from __future__ import annotations
 from datetime import datetime, timedelta
 from typing import Any, Callable, Iterable, Mapping, Optional, Sequence
 
+from wxbench.domain.mappers._common import _to_optional_float, _to_optional_int
 from wxbench.domain.models import ForecastPeriod, Location, Observation
 
 IsoParser = Callable[[str], datetime]
@@ -17,24 +18,6 @@ def _default_iso8601_parser(value: str) -> datetime:
 def _parse_iso8601(value: str, iso_parser: Optional[IsoParser]) -> datetime:
     parser = iso_parser or _default_iso8601_parser
     return parser(value)
-
-
-def _to_optional_float(value: Any) -> Optional[float]:
-    if value is None:
-        return None
-    try:
-        return float(value)
-    except (TypeError, ValueError):
-        return None
-
-
-def _to_optional_int(value: Any) -> Optional[int]:
-    if value is None:
-        return None
-    try:
-        return int(value)
-    except (TypeError, ValueError):
-        return None
 
 
 def _ms_to_kph(value: Optional[float]) -> Optional[float]:
@@ -276,7 +259,8 @@ def map_tomorrow_io_forecast(
         snow_lwe = _to_optional_float(values.get("snowAccumulationLwe"))
         sleet_lwe = _to_optional_float(values.get("sleetAccumulationLwe"))
         ice_lwe = _to_optional_float(values.get("iceAccumulationLwe"))
-        snow_depth = _to_optional_float(values.get("snowDepth"))
+        snow_depth_raw = _to_optional_float(values.get("snowDepth"))
+        snow_depth = snow_depth_raw * 100 if snow_depth_raw is not None else None
         evapotranspiration = _to_optional_float(values.get("evapotranspiration"))
         condition_code = _to_optional_int(values.get("weatherCode"))
         condition = _describe_weather_code(values.get("weatherCode"))
@@ -385,7 +369,8 @@ def map_tomorrow_io_daily_forecast(
         snow_intensity = _daily_value(values, "snowIntensity")
         sleet_intensity = _daily_value(values, "sleetIntensity")
         freezing_rain_intensity = _daily_value(values, "freezingRainIntensity")
-        snow_depth = _daily_value(values, "snowDepth")
+        snow_depth_raw = _daily_value(values, "snowDepth")
+        snow_depth = snow_depth_raw * 100 if snow_depth_raw is not None else None
         evapotranspiration = _daily_value_sum(values, "evapotranspiration") or _daily_value(values, "evapotranspiration")
         wind_speed = _ms_to_kph(_first_present(values, ("windSpeedAvg", "windSpeed")))
         wind_dir = _to_optional_int(values.get("windDirectionAvg") or values.get("windDirection"))
@@ -395,11 +380,8 @@ def map_tomorrow_io_daily_forecast(
         condition_code = _to_optional_int(values.get("weatherCodeMax") or values.get("weatherCode"))
         condition = _describe_weather_code(values.get("weatherCode"))
 
-        precip_total = sum(
-            value for value in (rain_sum, snow_sum, sleet_sum, ice_sum) if value is not None
-        )
-        if precip_total == 0:
-            precip_total = None
+        precip_components = [v for v in (rain_sum, snow_sum, sleet_sum, ice_sum) if v is not None]
+        precip_total = sum(precip_components) if precip_components else None
 
         normalized.append(
             ForecastPeriod(

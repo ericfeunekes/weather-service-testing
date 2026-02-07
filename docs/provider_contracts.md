@@ -34,7 +34,13 @@ This document links adapter entrypoints to the recorded cassettes and the provid
 - **Spec doc:** `docs/providers/accuweather.md`
 
 ## Ambient Weather
-- **Adapter functions:** `wxbench.providers.ambient_weather.fetch_ambient_weather_observation`
-- **Endpoints:** `GET /v1/devices`
-- **Cassette files:** `tests/contract/cassettes/ambient_weather_observation.yaml`
+- **Adapter functions:** `wxbench.providers.ambient_weather.fetch_ambient_weather_observation`, `wxbench.providers.ambient_weather.fetch_ambient_weather_history`
+- **Endpoints:** `GET /v1/devices`, `GET /v1/devices/{macAddress}`
+- **Cassette files:** `tests/contract/cassettes/ambient_weather_observation.yaml`, `tests/contract/cassettes/ambient_weather_history.yaml`
 - **Spec doc:** `docs/providers/ambient_weather.md`
+
+## WeatherKit
+- **Adapter functions:** `wxbench.providers.weatherkit.fetch_weatherkit_bundle`
+- **Endpoints:** `GET /api/v1/weather/{language}/{latitude}/{longitude}`
+- **Cassette files:** `tests/contract/cassettes/weatherkit_weather.yaml`
+- **Spec doc:** `docs/providers/weatherkit.md`

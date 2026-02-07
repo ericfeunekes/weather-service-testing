@@ -11,7 +11,16 @@ requires-python = ">=3.12"
 dependencies = [
   "httpx>=0.27,<0.28",
   "pydantic>=2.6,<3.0",
+  "cryptography>=42,<45",
+  "PyYAML>=6.0,<7.0",
+  "reportlab>=4.4,<5.0",
+  "pyarrow>=16,<18",
 ]
+
+[project.scripts]
+trip-brief = "wxbench.trip_brief.cli:main"
+wxbench-sync-parquet = "wxbench.sync_parquet:main"
+wxbench-compact-sweep = "wxbench.compact_sweep:main"
 
 [project.optional-dependencies]
 dev = [

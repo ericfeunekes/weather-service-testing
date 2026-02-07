@@ -422,4 +422,43 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - api.openweathermap.org
+      User-Agent:
+      - python-httpx/0.27.2
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.openweathermap.org/data/2.5/weather?appid=REDACTED&lat=44.63955893&lon=-63.58675928
+  response:
+    body:
+      string: '{"coord":{"lon":-63.5868,"lat":44.6396},"weather":[{"id":804,"main":"Clouds","description":"overcast
+        clouds","icon":"04n"}],"base":"stations","main":{"temp":272.14,"feels_like":272.14,"temp_min":270.51,"temp_max":272.9,"pressure":1007,"humidity":91,"sea_level":1007,"grnd_level":1000},"visibility":10000,"wind":{"speed":1.03,"deg":170},"clouds":{"all":96},"dt":1767260811,"sys":{"type":2,"id":2094650,"country":"CA","sunrise":1767268278,"sunset":1767300253},"timezone":-14400,"id":6324729,"name":"Halifax","cod":200}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '516'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 01 Jan 2026 09:46:51 GMT
+      X-Cache-Key:
+      - /data/2.5/weather?lat=44.64&lon=-63.59
+    status:
+      code: 200
+      message: OK
 version: 1

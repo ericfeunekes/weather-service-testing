@@ -184,3 +184,65 @@ def test_daily_forecast_mapping_includes_apparent_gust_uv():
     assert periods[0].relative_humidity == pytest.approx(60)
     assert periods[0].precipitation_probability == pytest.approx(70)
     assert periods[0].precipitation_amount_rain_mm == pytest.approx(2.5)
+
+
+def test_daily_forecast_preserves_zero_precip_total():
+    """precip_total=0.0 when all components are 0 should remain 0.0, not None."""
+    payload = {
+        "location": {"lat": 10.0, "lon": 20.0},
+        "timelines": {
+            "daily": [
+                {
+                    "time": "2024-05-01T00:00:00Z",
+                    "values": {
+                        "temperatureAvg": 6.0,
+                        "rainAccumulationSum": 0.0,
+                        "snowAccumulationSum": 0.0,
+                    },
+                }
+            ]
+        },
+    }
+    periods = map_tomorrow_io_daily_forecast(payload)
+    assert periods[0].precipitation_mm == pytest.approx(0.0)
+
+
+def test_forecast_snow_depth_converted_to_cm():
+    """snowDepth from Tomorrow.io is in meters, should be cm in output."""
+    payload = {
+        "location": {"lat": 10.0, "lon": 20.0},
+        "timelines": {
+            "hourly": [
+                {
+                    "time": "2024-05-01T13:00:00Z",
+                    "values": {
+                        "temperature": 0.0,
+                        "snowDepth": 0.15,
+                        "weatherCode": 5000,
+                    },
+                }
+            ]
+        },
+    }
+    periods = map_tomorrow_io_forecast(payload)
+    assert periods[0].snow_depth_cm == pytest.approx(15.0)
+
+
+def test_daily_forecast_snow_depth_converted_to_cm():
+    """Daily snowDepth from Tomorrow.io is in meters, should be cm in output."""
+    payload = {
+        "location": {"lat": 10.0, "lon": 20.0},
+        "timelines": {
+            "daily": [
+                {
+                    "time": "2024-05-01T00:00:00Z",
+                    "values": {
+                        "temperatureAvg": -2.0,
+                        "snowDepthAvg": 0.25,
+                    },
+                }
+            ]
+        },
+    }
+    periods = map_tomorrow_io_daily_forecast(payload)
+    assert periods[0].snow_depth_cm == pytest.approx(25.0)

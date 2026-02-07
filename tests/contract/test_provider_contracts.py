@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import re
 from pathlib import Path
 
 import httpx
@@ -15,6 +16,7 @@ from wxbench.providers import (
     fetch_accuweather_location,
     fetch_accuweather_minute_forecast,
     fetch_accuweather_observation,
+    fetch_ambient_weather_history,
     fetch_msc_geomet_forecast,
     fetch_msc_geomet_observation,
     fetch_msc_rdps_prognos_forecast,
@@ -27,6 +29,7 @@ from wxbench.providers import (
     fetch_tomorrow_io_forecast,
     fetch_tomorrow_io_observation,
 )
+from wxbench.providers.weatherkit import fetch_weatherkit_bundle
 
 
 CASSETTE_DIR = Path(__file__).parent / "cassettes"
@@ -37,8 +40,11 @@ recorder = vcr.VCR(
     filter_query_parameters=[
         ("appid", "REDACTED"),
         ("apikey", "REDACTED"),
+        ("api_key", "REDACTED"),
         ("apiKey", "REDACTED"),
         ("applicationKey", "REDACTED"),
+        ("application_key", "REDACTED"),
+        ("mac", "REDACTED"),
     ],
     filter_headers=["authorization"],
     match_on=["method", "scheme", "host", "port", "path", "query"],
@@ -52,6 +58,9 @@ DEFAULT_AMBIENT_APPLICATION_KEY = "another-secret"
 DEFAULT_ACCUWEATHER_API_KEY = "super-secret"
 DEFAULT_OPENWEATHER_API_KEY = "super-secret"
 DEFAULT_TOMORROW_IO_API_KEY = "another-secret"
+DEFAULT_WEATHERKIT_TEAM_ID = "DEMO_TEAM_ID"
+DEFAULT_WEATHERKIT_SERVICE_ID = "com.example.weatherkit"
+DEFAULT_WEATHERKIT_KEY_ID = "DEMO_KEY_ID"
 
 
 def _require_env(var: str, *, provider: str) -> str:
@@ -76,6 +85,21 @@ def _ambient_device_mac() -> str | None:
     return None
 
 
+def _ambient_history_mac() -> str:
+    value = os.getenv("WX_AMBIENT_DEVICE_MAC")
+    if RECORDING:
+        if value:
+            return value.strip()
+        pytest.skip("Set WX_AMBIENT_DEVICE_MAC to record Ambient history")
+    cassette_path = CASSETTE_DIR / "ambient_weather_history.yaml"
+    if cassette_path.exists():
+        text = cassette_path.read_text()
+        match = re.search(r"/v1/devices/([^?\\s]+)", text)
+        if match:
+            return match.group(1)
+    return (value or "00:11:22:33:44:55").strip()
+
+
 def _openweather_key() -> str:
     return _require_env("WX_OPENWEATHER_API_KEY", provider="OpenWeather") or DEFAULT_OPENWEATHER_API_KEY
 
@@ -86,6 +110,40 @@ def _accuweather_key() -> str:
 
 def _tomorrow_io_key() -> str:
     return _require_env("WX_TOMORROW_IO_API_KEY", provider="Tomorrow.io") or DEFAULT_TOMORROW_IO_API_KEY
+
+
+def _weatherkit_team_id() -> str:
+    return _require_env("WX_WEATHERKIT_TEAM_ID", provider="WeatherKit") or DEFAULT_WEATHERKIT_TEAM_ID
+
+
+def _weatherkit_service_id() -> str:
+    return _require_env("WX_WEATHERKIT_SERVICE_ID", provider="WeatherKit") or DEFAULT_WEATHERKIT_SERVICE_ID
+
+
+def _weatherkit_key_id() -> str:
+    return _require_env("WX_WEATHERKIT_KEY_ID", provider="WeatherKit") or DEFAULT_WEATHERKIT_KEY_ID
+
+
+def _weatherkit_key_path(tmp_path: Path) -> str:
+    value = os.getenv("WX_WEATHERKIT_KEY_PATH")
+    if value:
+        return value
+    if RECORDING:
+        pytest.skip("Set WX_WEATHERKIT_KEY_PATH to record WeatherKit")
+
+    from cryptography.hazmat.primitives import serialization
+    from cryptography.hazmat.primitives.asymmetric import ec
+
+    private_key = ec.generate_private_key(ec.SECP256R1())
+    path = tmp_path / "weatherkit_key.p8"
+    path.write_bytes(
+        private_key.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.PKCS8,
+            encryption_algorithm=serialization.NoEncryption(),
+        )
+    )
+    return str(path)
 
 
 def _coords(*, default_lat: float, default_lon: float) -> tuple[float, float]:
@@ -144,6 +202,29 @@ def test_ambient_weather_observation_contract(client: httpx.Client) -> None:
     assert observation.location.latitude is not None
     assert observation.location.longitude is not None
     assert observation.temperature_c is not None
+
+
+def test_ambient_weather_history_contract(client: httpx.Client) -> None:
+    with recorder.use_cassette("ambient_weather_history.yaml"):
+        api_key, application_key = _ambient_keys()
+        observation = fetch_ambient_weather_observation(
+            api_key=api_key,
+            application_key=application_key,
+            device_mac=_ambient_device_mac(),
+            client=client,
+        )
+        history = fetch_ambient_weather_history(
+            api_key=api_key,
+            application_key=application_key,
+            device_mac=_ambient_history_mac(),
+            location=observation.location,
+            station=observation.station,
+            end_at=datetime(2025, 12, 31, 12, tzinfo=timezone.utc),
+            client=client,
+        )
+
+    assert history
+    assert history[0].observed_at is not None
 
 
 def test_accuweather_minute_forecast_contract(client: httpx.Client) -> None:
@@ -459,3 +540,27 @@ def test_msc_rdps_prognos_forecast_contract(client: httpx.Client) -> None:
     assert periods[0].wind_speed_kph is not None
     assert periods[0].wind_direction_deg is not None
     _assert_period_sequence(periods, expected_step=timedelta(hours=1))
+
+
+def test_weatherkit_weather_contract(client: httpx.Client, tmp_path: Path) -> None:
+    with recorder.use_cassette("weatherkit_weather.yaml"):
+        latitude, longitude = _coords(default_lat=44.639, default_lon=-63.587)
+        bundle = fetch_weatherkit_bundle(
+            latitude=latitude,
+            longitude=longitude,
+            timezone_name=os.getenv("WX_TZ", "America/Halifax"),
+            country_code="CA",
+            client=client,
+            team_id=_weatherkit_team_id(),
+            service_id=_weatherkit_service_id(),
+            key_id=_weatherkit_key_id(),
+            key_path=_weatherkit_key_path(tmp_path),
+        )
+
+    assert bundle.observation is not None
+    assert bundle.observation.temperature_c is not None
+    assert bundle.hourly
+    assert bundle.daily
+    assert bundle.next_hour
+    _assert_period_sequence(bundle.next_hour, expected_step=timedelta(minutes=1))
+    assert bundle.alerts == []

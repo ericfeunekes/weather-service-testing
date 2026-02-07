@@ -1,0 +1,132 @@
+{
+  "currentWeather": {
+    "metadata": {
+      "latitude": 10.0,
+      "longitude": 20.0
+    },
+    "asOf": "2025-12-31T12:00:00Z",
+    "cloudCover": 0.25,
+    "conditionCode": "Clear",
+    "humidity": 0.5,
+    "pressure": 1013.0,
+    "pressureTrend": "rising",
+    "temperature": 5.5,
+    "temperatureApparent": 3.0,
+    "temperatureDewPoint": 1.0,
+    "uvIndex": 4,
+    "visibility": 10000,
+    "windDirection": 180,
+    "windGust": 20.0,
+    "windSpeed": 12.0,
+    "precipitationIntensity": 0.6
+  },
+  "forecastHourly": {
+    "metadata": {
+      "latitude": 10.0,
+      "longitude": 20.0
+    },
+    "hours": [
+      {
+        "forecastStart": "2025-12-31T12:00:00Z",
+        "cloudCover": 0.1,
+        "conditionCode": "Clear",
+        "humidity": 0.4,
+        "precipitationChance": 0.2,
+        "precipitationAmount": 0.5,
+        "precipitationType": "rain",
+        "pressure": 1010.0,
+        "snowfallIntensity": 0.0,
+        "temperature": 6.0,
+        "temperatureApparent": 4.0,
+        "temperatureDewPoint": 0.5,
+        "uvIndex": 3,
+        "visibility": 8000,
+        "windDirection": 190,
+        "windGust": 18.0,
+        "windSpeed": 10.0
+      }
+    ]
+  },
+  "forecastDaily": {
+    "metadata": {
+      "latitude": 10.0,
+      "longitude": 20.0
+    },
+    "days": [
+      {
+        "forecastStart": "2025-12-31T00:00:00Z",
+        "forecastEnd": "2026-01-01T00:00:00Z",
+        "conditionCode": "Cloudy",
+        "precipitationAmount": 2.0,
+        "precipitationChance": 0.3,
+        "precipitationType": "rain",
+        "snowfallAmount": 1.2,
+        "temperatureMax": 8.0,
+        "temperatureMin": 2.0,
+        "maxUvIndex": 5,
+        "daytimeForecast": {
+          "cloudCover": 0.6,
+          "humidity": 0.7,
+          "windDirection": 200,
+          "windSpeed": 14.0
+        }
+      }
+    ]
+  },
+  "forecastNextHour": {
+    "metadata": {
+      "latitude": 10.0,
+      "longitude": 20.0
+    },
+    "forecastStart": "2025-12-31T12:00:00Z",
+    "forecastEnd": "2025-12-31T13:00:00Z",
+    "minutes": [
+      {
+        "startTime": "2025-12-31T12:00:00Z",
+        "precipitationChance": 0.6,
+        "precipitationIntensity": 1.2
+      },
+      {
+        "startTime": "2025-12-31T12:01:00Z",
+        "precipitationChance": 0.5,
+        "precipitationIntensity": 0.8
+      }
+    ],
+    "summary": [
+      {
+        "startTime": "2025-12-31T12:00:00Z",
+        "endTime": "2025-12-31T12:10:00Z",
+        "condition": "rain",
+        "precipitationChance": 0.6,
+        "precipitationIntensity": 1.2
+      }
+    ]
+  },
+  "weatherAlerts": {
+    "metadata": {
+      "latitude": 10.0,
+      "longitude": 20.0
+    },
+    "alerts": [
+      {
+        "id": "9f2c0ea1-4a8c-4f00-9c1f-3a4cfe1a2c90",
+        "areaId": "NSZ001",
+        "areaName": "Example County",
+        "certainty": "likely",
+        "countryCode": "CA",
+        "description": "Heavy rainfall expected.",
+        "detailsUrl": "https://example.com/alerts/9f2c0ea1",
+        "effectiveTime": "2025-12-31T12:00:00Z",
+        "eventEndTime": "2025-12-31T18:00:00Z",
+        "eventOnsetTime": "2025-12-31T13:00:00Z",
+        "expireTime": "2025-12-31T20:00:00Z",
+        "issuedTime": "2025-12-31T11:30:00Z",
+        "responses": ["prepare", "avoid"],
+        "severity": "moderate",
+        "source": "Environment Canada",
+        "urgency": "expected"
+      }
+    ],
+    "detailsUrl": "https://example.com/alerts"
+  }
+}

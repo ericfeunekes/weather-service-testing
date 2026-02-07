@@ -1,0 +1,22 @@
+[
+  {
+    "dateutc": 1685577600000,
+    "tempf": 68.0,
+    "dewPoint": 55.0,
+    "windspeedmph": 5.0,
+    "winddir": 90,
+    "baromrelin": 29.92,
+    "humidity": 65,
+    "hourlyrainin": 0.05
+  },
+  {
+    "dateutc": 1685577900000,
+    "tempf": 69.8,
+    "dewPoint": 56.0,
+    "windspeedmph": 6.0,
+    "winddir": 100,
+    "baromrelin": 29.90,
+    "humidity": 60,
+    "hourlyrainin": 0.0
+  }
+]
