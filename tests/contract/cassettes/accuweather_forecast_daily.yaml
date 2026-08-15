@@ -13,257 +13,40 @@ interactions:
       accept:
       - application/json
     method: GET
-    uri: https://dataservice.accuweather.com/forecasts/v1/daily/5day/49538?apikey=REDACTED&details=true&metric=true
+    uri: https://dataservice.accuweather.com/forecasts/v1/daily/5day/3381543?apikey=REDACTED&details=true&metric=true
   response:
     body:
-      string: !!binary |
-        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
+      string: "{\"Headline\":{\"EffectiveDate\":\"2026-08-15T08:00:00-04:00\",\"EffectiveEpochDate\":1786795200,\"Severity\":4,\"Text\":\"Pleasant
+        tomorrow\",\"Category\":\"warm\",\"EndDate\":null,\"EndEpochDate\":null,\"MobileLink\":\"http://www.accuweather.com/en/ca/centretown/k1p/daily-weather-forecast/3381543?unit=c&lang=en-us\",\"Link\":\"http://www.accuweather.com/en/ca/centretown/k1p/daily-weather-forecast/3381543?unit=c&lang=en-us\"},\"DailyForecasts\":[{\"Date\":\"2026-08-14T07:00:00-04:00\",\"EpochDate\":1786705200,\"Sun\":{\"Rise\":\"2026-08-14T06:02:00-04:00\",\"EpochRise\":1786701720,\"Set\":\"2026-08-14T20:12:00-04:00\",\"EpochSet\":1786752720},\"Moon\":{\"Rise\":\"2026-08-14T08:16:00-04:00\",\"EpochRise\":1786709760,\"Set\":\"2026-08-14T21:02:00-04:00\",\"EpochSet\":1786755720,\"Phase\":\"WaxingCrescent\",\"Age\":2},\"Temperature\":{\"Minimum\":{\"Value\":13.1,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":24.5,\"Unit\":\"C\",\"UnitType\":17}},\"RealFeelTemperature\":{\"Minimum\":{\"Value\":12.9,\"Unit\":\"C\",\"UnitType\":17,\"Phrase\":\"Cool\"},\"Maximum\":{\"Value\":28.7,\"Unit\":\"C\",\"UnitType\":17,\"Phrase\":\"Very
+        Warm\"}},\"RealFeelTemperatureShade\":{\"Minimum\":{\"Value\":12.9,\"Unit\":\"C\",\"UnitType\":17,\"Phrase\":\"Cool\"},\"Maximum\":{\"Value\":22.8,\"Unit\":\"C\",\"UnitType\":17,\"Phrase\":\"Pleasant\"}},\"HoursOfSun\":10.0,\"DegreeDaySummary\":{\"Heating\":{\"Value\":0.0,\"Unit\":\"C\",\"UnitType\":17},\"Cooling\":{\"Value\":1.0,\"Unit\":\"C\",\"UnitType\":17}},\"AirAndPollen\":[{\"Name\":\"AirQuality\",\"Value\":0,\"Category\":\"Good\",\"CategoryValue\":1,\"Type\":\"Ozone\"},{\"Name\":\"Grass\",\"Value\":110,\"Category\":\"High\",\"CategoryValue\":3},{\"Name\":\"Mold\",\"Value\":3250,\"Category\":\"Low\",\"CategoryValue\":1},{\"Name\":\"Ragweed\",\"Value\":275,\"Category\":\"High\",\"CategoryValue\":3},{\"Name\":\"Tree\",\"Value\":7,\"Category\":\"Low\",\"CategoryValue\":1},{\"Name\":\"UVIndex\",\"Value\":7,\"Category\":\"High\",\"CategoryValue\":3}],\"Day\":{\"Icon\":14,\"IconPhrase\":\"Partly
+        sunny w/ showers\",\"HasPrecipitation\":true,\"PrecipitationType\":\"Rain\",\"PrecipitationIntensity\":\"Light\",\"ShortPhrase\":\"A
+        shower or two this morning\",\"LongPhrase\":\"A couple of brief showers late
+        this morning; some clouds, then sunshine\",\"PrecipitationProbability\":49,\"ThunderstormProbability\":10,\"RainProbability\":49,\"SnowProbability\":0,\"IceProbability\":0,\"Wind\":{\"Speed\":{\"Value\":9.3,\"Unit\":\"km/h\",\"UnitType\":7},\"Direction\":{\"Degrees\":331,\"Localized\":\"NNW\",\"English\":\"NNW\"}},\"WindGust\":{\"Speed\":{\"Value\":22.2,\"Unit\":\"km/h\",\"UnitType\":7},\"Direction\":{\"Degrees\":350,\"Localized\":\"N\",\"English\":\"N\"}},\"TotalLiquid\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"Rain\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"Snow\":{\"Value\":0.0,\"Unit\":\"cm\",\"UnitType\":4},\"Ice\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"HoursOfPrecipitation\":0.5,\"HoursOfRain\":0.5,\"HoursOfSnow\":0.0,\"HoursOfIce\":0.0,\"CloudCover\":33,\"Evapotranspiration\":{\"Value\":3.8,\"Unit\":\"mm\",\"UnitType\":3},\"SolarIrradiance\":{\"Value\":6702.0,\"Unit\":\"W/m\xB2\",\"UnitType\":33},\"RelativeHumidity\":{\"Minimum\":47,\"Maximum\":77,\"Average\":57},\"WetBulbTemperature\":{\"Minimum\":{\"Value\":16.1,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":18.7,\"Unit\":\"C\",\"UnitType\":17},\"Average\":{\"Value\":17.1,\"Unit\":\"C\",\"UnitType\":17}},\"WetBulbGlobeTemperature\":{\"Minimum\":{\"Value\":19.5,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":21.4,\"Unit\":\"C\",\"UnitType\":17},\"Average\":{\"Value\":20.6,\"Unit\":\"C\",\"UnitType\":17}},\"UVIndexFloat\":{\"Minimum\":0.8,\"Maximum\":6.6}},\"Night\":{\"Icon\":34,\"IconPhrase\":\"Mostly
+        clear\",\"HasPrecipitation\":false,\"ShortPhrase\":\"Mainly clear\",\"LongPhrase\":\"Mainly
+        clear\",\"PrecipitationProbability\":1,\"ThunderstormProbability\":0,\"RainProbability\":1,\"SnowProbability\":0,\"IceProbability\":0,\"Wind\":{\"Speed\":{\"Value\":7.4,\"Unit\":\"km/h\",\"UnitType\":7},\"Direction\":{\"Degrees\":332,\"Localized\":\"NNW\",\"English\":\"NNW\"}},\"WindGust\":{\"Speed\":{\"Value\":18.5,\"Unit\":\"km/h\",\"UnitType\":7},\"Direction\":{\"Degrees\":327,\"Localized\":\"NNW\",\"English\":\"NNW\"}},\"TotalLiquid\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"Rain\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"Snow\":{\"Value\":0.0,\"Unit\":\"cm\",\"UnitType\":4},\"Ice\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"HoursOfPrecipitation\":0.0,\"HoursOfRain\":0.0,\"HoursOfSnow\":0.0,\"HoursOfIce\":0.0,\"CloudCover\":22,\"Evapotranspiration\":{\"Value\":0.3,\"Unit\":\"mm\",\"UnitType\":3},\"SolarIrradiance\":{\"Value\":186.1,\"Unit\":\"W/m\xB2\",\"UnitType\":33},\"RelativeHumidity\":{\"Minimum\":59,\"Maximum\":93,\"Average\":78},\"WetBulbTemperature\":{\"Minimum\":{\"Value\":12.6,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":16.8,\"Unit\":\"C\",\"UnitType\":17},\"Average\":{\"Value\":14.1,\"Unit\":\"C\",\"UnitType\":17}},\"WetBulbGlobeTemperature\":{\"Minimum\":{\"Value\":14.5,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":20.2,\"Unit\":\"C\",\"UnitType\":17},\"Average\":{\"Value\":16.5,\"Unit\":\"C\",\"UnitType\":17}},\"UVIndexFloat\":{\"Minimum\":0.0,\"Maximum\":0.8}},\"Sources\":[\"AccuWeather\"],\"MobileLink\":\"http://www.accuweather.com/en/ca/centretown/k1p/daily-weather-forecast/3381543?day=1&unit=c&lang=en-us\",\"Link\":\"http://www.accuweather.com/en/ca/centretown/k1p/daily-weather-forecast/3381543?day=1&unit=c&lang=en-us\"},{\"Date\":\"2026-08-15T07:00:00-04:00\",\"EpochDate\":1786791600,\"Sun\":{\"Rise\":\"2026-08-15T06:03:00-04:00\",\"EpochRise\":1786788180,\"Set\":\"2026-08-15T20:11:00-04:00\",\"EpochSet\":1786839060},\"Moon\":{\"Rise\":\"2026-08-15T09:31:00-04:00\",\"EpochRise\":1786800660,\"Set\":\"2026-08-15T21:20:00-04:00\",\"EpochSet\":1786843200,\"Phase\":\"WaxingCrescent\",\"Age\":3},\"Temperature\":{\"Minimum\":{\"Value\":12.0,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":24.4,\"Unit\":\"C\",\"UnitType\":17}},\"RealFeelTemperature\":{\"Minimum\":{\"Value\":12.4,\"Unit\":\"C\",\"UnitType\":17,\"Phrase\":\"Cool\"},\"Maximum\":{\"Value\":26.2,\"Unit\":\"C\",\"UnitType\":17,\"Phrase\":\"Pleasant\"}},\"RealFeelTemperatureShade\":{\"Minimum\":{\"Value\":12.4,\"Unit\":\"C\",\"UnitType\":17,\"Phrase\":\"Cool\"},\"Maximum\":{\"Value\":23.1,\"Unit\":\"C\",\"UnitType\":17,\"Phrase\":\"Pleasant\"}},\"HoursOfSun\":11.0,\"DegreeDaySummary\":{\"Heating\":{\"Value\":0.0,\"Unit\":\"C\",\"UnitType\":17},\"Cooling\":{\"Value\":0.0,\"Unit\":\"C\",\"UnitType\":17}},\"AirAndPollen\":[{\"Name\":\"AirQuality\",\"Value\":0,\"Category\":\"Good\",\"CategoryValue\":1,\"Type\":\"Ozone\"},{\"Name\":\"Grass\",\"Value\":12,\"Category\":\"Moderate\",\"CategoryValue\":2},{\"Name\":\"Mold\",\"Value\":3250,\"Category\":\"Low\",\"CategoryValue\":1},{\"Name\":\"Ragweed\",\"Value\":275,\"Category\":\"High\",\"CategoryValue\":3},{\"Name\":\"Tree\",\"Value\":7,\"Category\":\"Low\",\"CategoryValue\":1},{\"Name\":\"UVIndex\",\"Value\":7,\"Category\":\"High\",\"CategoryValue\":3}],\"Day\":{\"Icon\":2,\"IconPhrase\":\"Mostly
+        sunny\",\"HasPrecipitation\":false,\"ShortPhrase\":\"Mostly sunny and nice\",\"LongPhrase\":\"Mostly
+        sunny; a beautiful start to the weekend\",\"PrecipitationProbability\":1,\"ThunderstormProbability\":0,\"RainProbability\":1,\"SnowProbability\":0,\"IceProbability\":0,\"Wind\":{\"Speed\":{\"Value\":9.3,\"Unit\":\"km/h\",\"UnitType\":7},\"Direction\":{\"Degrees\":332,\"Localized\":\"NNW\",\"English\":\"NNW\"}},\"WindGust\":{\"Speed\":{\"Value\":27.8,\"Unit\":\"km/h\",\"UnitType\":7},\"Direction\":{\"Degrees\":319,\"Localized\":\"NW\",\"English\":\"NW\"}},\"TotalLiquid\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"Rain\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"Snow\":{\"Value\":0.0,\"Unit\":\"cm\",\"UnitType\":4},\"Ice\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"HoursOfPrecipitation\":0.0,\"HoursOfRain\":0.0,\"HoursOfSnow\":0.0,\"HoursOfIce\":0.0,\"CloudCover\":23,\"Evapotranspiration\":{\"Value\":4.1,\"Unit\":\"mm\",\"UnitType\":3},\"SolarIrradiance\":{\"Value\":7832.9,\"Unit\":\"W/m\xB2\",\"UnitType\":33},\"RelativeHumidity\":{\"Minimum\":40,\"Maximum\":80,\"Average\":53},\"WetBulbTemperature\":{\"Minimum\":{\"Value\":14.0,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":15.8,\"Unit\":\"C\",\"UnitType\":17},\"Average\":{\"Value\":15.3,\"Unit\":\"C\",\"UnitType\":17}},\"WetBulbGlobeTemperature\":{\"Minimum\":{\"Value\":16.3,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":21.0,\"Unit\":\"C\",\"UnitType\":17},\"Average\":{\"Value\":19.3,\"Unit\":\"C\",\"UnitType\":17}},\"UVIndexFloat\":{\"Minimum\":0.8,\"Maximum\":7.1}},\"Night\":{\"Icon\":34,\"IconPhrase\":\"Mostly
+        clear\",\"HasPrecipitation\":false,\"ShortPhrase\":\"Mostly clear\",\"LongPhrase\":\"Mostly
+        clear\",\"PrecipitationProbability\":1,\"ThunderstormProbability\":0,\"RainProbability\":1,\"SnowProbability\":0,\"IceProbability\":0,\"Wind\":{\"Speed\":{\"Value\":5.6,\"Unit\":\"km/h\",\"UnitType\":7},\"Direction\":{\"Degrees\":93,\"Localized\":\"E\",\"English\":\"E\"}},\"WindGust\":{\"Speed\":{\"Value\":11.1,\"Unit\":\"km/h\",\"UnitType\":7},\"Direction\":{\"Degrees\":6,\"Localized\":\"N\",\"English\":\"N\"}},\"TotalLiquid\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"Rain\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"Snow\":{\"Value\":0.0,\"Unit\":\"cm\",\"UnitType\":4},\"Ice\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"HoursOfPrecipitation\":0.0,\"HoursOfRain\":0.0,\"HoursOfSnow\":0.0,\"HoursOfIce\":0.0,\"CloudCover\":25,\"Evapotranspiration\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"SolarIrradiance\":{\"Value\":180.5,\"Unit\":\"W/m\xB2\",\"UnitType\":33},\"RelativeHumidity\":{\"Minimum\":53,\"Maximum\":100,\"Average\":83},\"WetBulbTemperature\":{\"Minimum\":{\"Value\":12.0,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":15.3,\"Unit\":\"C\",\"UnitType\":17},\"Average\":{\"Value\":13.5,\"Unit\":\"C\",\"UnitType\":17}},\"WetBulbGlobeTemperature\":{\"Minimum\":{\"Value\":13.8,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":19.3,\"Unit\":\"C\",\"UnitType\":17},\"Average\":{\"Value\":15.8,\"Unit\":\"C\",\"UnitType\":17}},\"UVIndexFloat\":{\"Minimum\":0.0,\"Maximum\":0.8}},\"Sources\":[\"AccuWeather\"],\"MobileLink\":\"http://www.accuweather.com/en/ca/centretown/k1p/daily-weather-forecast/3381543?day=2&unit=c&lang=en-us\",\"Link\":\"http://www.accuweather.com/en/ca/centretown/k1p/daily-weather-forecast/3381543?day=2&unit=c&lang=en-us\"},{\"Date\":\"2026-08-16T07:00:00-04:00\",\"EpochDate\":1786878000,\"Sun\":{\"Rise\":\"2026-08-16T06:04:00-04:00\",\"EpochRise\":1786874640,\"Set\":\"2026-08-16T20:09:00-04:00\",\"EpochSet\":1786925340},\"Moon\":{\"Rise\":\"2026-08-16T10:43:00-04:00\",\"EpochRise\":1786891380,\"Set\":\"2026-08-16T21:39:00-04:00\",\"EpochSet\":1786930740,\"Phase\":\"WaxingCrescent\",\"Age\":4},\"Temperature\":{\"Minimum\":{\"Value\":16.3,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":22.7,\"Unit\":\"C\",\"UnitType\":17}},\"RealFeelTemperature\":{\"Minimum\":{\"Value\":14.3,\"Unit\":\"C\",\"UnitType\":17,\"Phrase\":\"Cool\"},\"Maximum\":{\"Value\":22.8,\"Unit\":\"C\",\"UnitType\":17,\"Phrase\":\"Pleasant\"}},\"RealFeelTemperatureShade\":{\"Minimum\":{\"Value\":14.3,\"Unit\":\"C\",\"UnitType\":17,\"Phrase\":\"Cool\"},\"Maximum\":{\"Value\":21.1,\"Unit\":\"C\",\"UnitType\":17,\"Phrase\":\"Pleasant\"}},\"HoursOfSun\":3.7,\"DegreeDaySummary\":{\"Heating\":{\"Value\":0.0,\"Unit\":\"C\",\"UnitType\":17},\"Cooling\":{\"Value\":2.0,\"Unit\":\"C\",\"UnitType\":17}},\"AirAndPollen\":[{\"Name\":\"AirQuality\",\"Value\":0,\"Category\":\"Good\",\"CategoryValue\":1,\"Type\":\"Ozone\"},{\"Name\":\"Grass\",\"Value\":0,\"Category\":\"Low\",\"CategoryValue\":1},{\"Name\":\"Mold\",\"Value\":5038,\"Category\":\"Low\",\"CategoryValue\":1},{\"Name\":\"Ragweed\",\"Value\":0,\"Category\":\"Low\",\"CategoryValue\":1},{\"Name\":\"Tree\",\"Value\":0,\"Category\":\"Low\",\"CategoryValue\":1},{\"Name\":\"UVIndex\",\"Value\":4,\"Category\":\"Moderate\",\"CategoryValue\":2}],\"Day\":{\"Icon\":16,\"IconPhrase\":\"Mostly
+        cloudy w/ t-storms\",\"HasPrecipitation\":true,\"PrecipitationType\":\"Rain\",\"PrecipitationIntensity\":\"Moderate\",\"ShortPhrase\":\"A
+        shower and thunderstorm\",\"LongPhrase\":\"Some sun, then turning cloudy with
+        a couple of showers and a thunderstorm\",\"PrecipitationProbability\":88,\"ThunderstormProbability\":35,\"RainProbability\":88,\"SnowProbability\":0,\"IceProbability\":0,\"Wind\":{\"Speed\":{\"Value\":11.1,\"Unit\":\"km/h\",\"UnitType\":7},\"Direction\":{\"Degrees\":89,\"Localized\":\"E\",\"English\":\"E\"}},\"WindGust\":{\"Speed\":{\"Value\":33.3,\"Unit\":\"km/h\",\"UnitType\":7},\"Direction\":{\"Degrees\":80,\"Localized\":\"E\",\"English\":\"E\"}},\"TotalLiquid\":{\"Value\":6.7,\"Unit\":\"mm\",\"UnitType\":3},\"Rain\":{\"Value\":6.7,\"Unit\":\"mm\",\"UnitType\":3},\"Snow\":{\"Value\":0.0,\"Unit\":\"cm\",\"UnitType\":4},\"Ice\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"HoursOfPrecipitation\":4.0,\"HoursOfRain\":4.0,\"HoursOfSnow\":0.0,\"HoursOfIce\":0.0,\"CloudCover\":85,\"Evapotranspiration\":{\"Value\":2.3,\"Unit\":\"mm\",\"UnitType\":3},\"SolarIrradiance\":{\"Value\":3262.6,\"Unit\":\"W/m\xB2\",\"UnitType\":33},\"RelativeHumidity\":{\"Minimum\":59,\"Maximum\":84,\"Average\":71},\"WetBulbTemperature\":{\"Minimum\":{\"Value\":14.0,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":17.8,\"Unit\":\"C\",\"UnitType\":17},\"Average\":{\"Value\":16.7,\"Unit\":\"C\",\"UnitType\":17}},\"WetBulbGlobeTemperature\":{\"Minimum\":{\"Value\":15.9,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":19.8,\"Unit\":\"C\",\"UnitType\":17},\"Average\":{\"Value\":18.4,\"Unit\":\"C\",\"UnitType\":17}},\"UVIndexFloat\":{\"Minimum\":0.2,\"Maximum\":4.0}},\"Night\":{\"Icon\":18,\"IconPhrase\":\"Rain\",\"HasPrecipitation\":true,\"PrecipitationType\":\"Rain\",\"PrecipitationIntensity\":\"Light\",\"ShortPhrase\":\"Rain
+        most of the time\",\"LongPhrase\":\"Rain most of the time\",\"PrecipitationProbability\":91,\"ThunderstormProbability\":0,\"RainProbability\":91,\"SnowProbability\":0,\"IceProbability\":0,\"Wind\":{\"Speed\":{\"Value\":9.3,\"Unit\":\"km/h\",\"UnitType\":7},\"Direction\":{\"Degrees\":34,\"Localized\":\"NE\",\"English\":\"NE\"}},\"WindGust\":{\"Speed\":{\"Value\":33.3,\"Unit\":\"km/h\",\"UnitType\":7},\"Direction\":{\"Degrees\":78,\"Localized\":\"ENE\",\"English\":\"ENE\"}},\"TotalLiquid\":{\"Value\":6.5,\"Unit\":\"mm\",\"UnitType\":3},\"Rain\":{\"Value\":6.5,\"Unit\":\"mm\",\"UnitType\":3},\"Snow\":{\"Value\":0.0,\"Unit\":\"cm\",\"UnitType\":4},\"Ice\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"HoursOfPrecipitation\":4.0,\"HoursOfRain\":4.0,\"HoursOfSnow\":0.0,\"HoursOfIce\":0.0,\"CloudCover\":60,\"Evapotranspiration\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"SolarIrradiance\":{\"Value\":176.9,\"Unit\":\"W/m\xB2\",\"UnitType\":33},\"RelativeHumidity\":{\"Minimum\":84,\"Maximum\":99,\"Average\":95},\"WetBulbTemperature\":{\"Minimum\":{\"Value\":16.3,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":17.8,\"Unit\":\"C\",\"UnitType\":17},\"Average\":{\"Value\":17.0,\"Unit\":\"C\",\"UnitType\":17}},\"WetBulbGlobeTemperature\":{\"Minimum\":{\"Value\":16.9,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":19.5,\"Unit\":\"C\",\"UnitType\":17},\"Average\":{\"Value\":18.2,\"Unit\":\"C\",\"UnitType\":17}},\"UVIndexFloat\":{\"Minimum\":0.0,\"Maximum\":0.8}},\"Sources\":[\"AccuWeather\"],\"MobileLink\":\"http://www.accuweather.com/en/ca/centretown/k1p/daily-weather-forecast/3381543?day=3&unit=c&lang=en-us\",\"Link\":\"http://www.accuweather.com/en/ca/centretown/k1p/daily-weather-forecast/3381543?day=3&unit=c&lang=en-us\"},{\"Date\":\"2026-08-17T07:00:00-04:00\",\"EpochDate\":1786964400,\"Sun\":{\"Rise\":\"2026-08-17T06:06:00-04:00\",\"EpochRise\":1786961160,\"Set\":\"2026-08-17T20:07:00-04:00\",\"EpochSet\":1787011620},\"Moon\":{\"Rise\":\"2026-08-17T11:54:00-04:00\",\"EpochRise\":1786982040,\"Set\":\"2026-08-17T21:59:00-04:00\",\"EpochSet\":1787018340,\"Phase\":\"WaxingCrescent\",\"Age\":5},\"Temperature\":{\"Minimum\":{\"Value\":14.0,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":25.0,\"Unit\":\"C\",\"UnitType\":17}},\"RealFeelTemperature\":{\"Minimum\":{\"Value\":14.8,\"Unit\":\"C\",\"UnitType\":17,\"Phrase\":\"Cool\"},\"Maximum\":{\"Value\":27.1,\"Unit\":\"C\",\"UnitType\":17,\"Phrase\":\"Very
+        Warm\"}},\"RealFeelTemperatureShade\":{\"Minimum\":{\"Value\":14.8,\"Unit\":\"C\",\"UnitType\":17,\"Phrase\":\"Cool\"},\"Maximum\":{\"Value\":24.1,\"Unit\":\"C\",\"UnitType\":17,\"Phrase\":\"Pleasant\"}},\"HoursOfSun\":8.6,\"DegreeDaySummary\":{\"Heating\":{\"Value\":0.0,\"Unit\":\"C\",\"UnitType\":17},\"Cooling\":{\"Value\":1.0,\"Unit\":\"C\",\"UnitType\":17}},\"AirAndPollen\":[{\"Name\":\"AirQuality\",\"Value\":0,\"Category\":\"Good\",\"CategoryValue\":1,\"Type\":\"Ozone\"},{\"Name\":\"Grass\",\"Value\":0,\"Category\":\"Low\",\"CategoryValue\":1},{\"Name\":\"Mold\",\"Value\":5794,\"Category\":\"Low\",\"CategoryValue\":1},{\"Name\":\"Ragweed\",\"Value\":0,\"Category\":\"Low\",\"CategoryValue\":1},{\"Name\":\"Tree\",\"Value\":0,\"Category\":\"Low\",\"CategoryValue\":1},{\"Name\":\"UVIndex\",\"Value\":7,\"Category\":\"High\",\"CategoryValue\":3}],\"Day\":{\"Icon\":3,\"IconPhrase\":\"Partly
+        sunny\",\"HasPrecipitation\":false,\"ShortPhrase\":\"Partly sunny and pleasant\",\"LongPhrase\":\"Partly
+        sunny and pleasant\",\"PrecipitationProbability\":25,\"ThunderstormProbability\":0,\"RainProbability\":25,\"SnowProbability\":0,\"IceProbability\":0,\"Wind\":{\"Speed\":{\"Value\":9.3,\"Unit\":\"km/h\",\"UnitType\":7},\"Direction\":{\"Degrees\":306,\"Localized\":\"NW\",\"English\":\"NW\"}},\"WindGust\":{\"Speed\":{\"Value\":29.6,\"Unit\":\"km/h\",\"UnitType\":7},\"Direction\":{\"Degrees\":298,\"Localized\":\"WNW\",\"English\":\"WNW\"}},\"TotalLiquid\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"Rain\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"Snow\":{\"Value\":0.0,\"Unit\":\"cm\",\"UnitType\":4},\"Ice\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"HoursOfPrecipitation\":0.0,\"HoursOfRain\":0.0,\"HoursOfSnow\":0.0,\"HoursOfIce\":0.0,\"CloudCover\":42,\"Evapotranspiration\":{\"Value\":3.0,\"Unit\":\"mm\",\"UnitType\":3},\"SolarIrradiance\":{\"Value\":6325.1,\"Unit\":\"W/m\xB2\",\"UnitType\":33},\"RelativeHumidity\":{\"Minimum\":61,\"Maximum\":94,\"Average\":75},\"WetBulbTemperature\":{\"Minimum\":{\"Value\":17.9,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":20.1,\"Unit\":\"C\",\"UnitType\":17},\"Average\":{\"Value\":19.1,\"Unit\":\"C\",\"UnitType\":17}},\"WetBulbGlobeTemperature\":{\"Minimum\":{\"Value\":19.5,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":23.3,\"Unit\":\"C\",\"UnitType\":17},\"Average\":{\"Value\":21.6,\"Unit\":\"C\",\"UnitType\":17}},\"UVIndexFloat\":{\"Minimum\":0.8,\"Maximum\":6.9}},\"Night\":{\"Icon\":35,\"IconPhrase\":\"Partly
+        cloudy\",\"HasPrecipitation\":false,\"ShortPhrase\":\"Partly cloudy\",\"LongPhrase\":\"Partly
+        cloudy\",\"PrecipitationProbability\":2,\"ThunderstormProbability\":0,\"RainProbability\":2,\"SnowProbability\":0,\"IceProbability\":0,\"Wind\":{\"Speed\":{\"Value\":3.7,\"Unit\":\"km/h\",\"UnitType\":7},\"Direction\":{\"Degrees\":287,\"Localized\":\"WNW\",\"English\":\"WNW\"}},\"WindGust\":{\"Speed\":{\"Value\":14.8,\"Unit\":\"km/h\",\"UnitType\":7},\"Direction\":{\"Degrees\":309,\"Localized\":\"NW\",\"English\":\"NW\"}},\"TotalLiquid\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"Rain\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"Snow\":{\"Value\":0.0,\"Unit\":\"cm\",\"UnitType\":4},\"Ice\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"HoursOfPrecipitation\":0.0,\"HoursOfRain\":0.0,\"HoursOfSnow\":0.0,\"HoursOfIce\":0.0,\"CloudCover\":31,\"Evapotranspiration\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"SolarIrradiance\":{\"Value\":167.7,\"Unit\":\"W/m\xB2\",\"UnitType\":33},\"RelativeHumidity\":{\"Minimum\":68,\"Maximum\":100,\"Average\":89},\"WetBulbTemperature\":{\"Minimum\":{\"Value\":14.0,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":18.4,\"Unit\":\"C\",\"UnitType\":17},\"Average\":{\"Value\":16.1,\"Unit\":\"C\",\"UnitType\":17}},\"WetBulbGlobeTemperature\":{\"Minimum\":{\"Value\":15.8,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":21.3,\"Unit\":\"C\",\"UnitType\":17},\"Average\":{\"Value\":18.2,\"Unit\":\"C\",\"UnitType\":17}},\"UVIndexFloat\":{\"Minimum\":0.0,\"Maximum\":0.8}},\"Sources\":[\"AccuWeather\"],\"MobileLink\":\"http://www.accuweather.com/en/ca/centretown/k1p/daily-weather-forecast/3381543?day=4&unit=c&lang=en-us\",\"Link\":\"http://www.accuweather.com/en/ca/centretown/k1p/daily-weather-forecast/3381543?day=4&unit=c&lang=en-us\"},{\"Date\":\"2026-08-18T07:00:00-04:00\",\"EpochDate\":1787050800,\"Sun\":{\"Rise\":\"2026-08-18T06:07:00-04:00\",\"EpochRise\":1787047620,\"Set\":\"2026-08-18T20:06:00-04:00\",\"EpochSet\":1787097960},\"Moon\":{\"Rise\":\"2026-08-18T13:03:00-04:00\",\"EpochRise\":1787072580,\"Set\":\"2026-08-18T22:22:00-04:00\",\"EpochSet\":1787106120,\"Phase\":\"WaxingCrescent\",\"Age\":6},\"Temperature\":{\"Minimum\":{\"Value\":15.1,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":26.6,\"Unit\":\"C\",\"UnitType\":17}},\"RealFeelTemperature\":{\"Minimum\":{\"Value\":15.5,\"Unit\":\"C\",\"UnitType\":17,\"Phrase\":\"Cool\"},\"Maximum\":{\"Value\":28.5,\"Unit\":\"C\",\"UnitType\":17,\"Phrase\":\"Very
+        Warm\"}},\"RealFeelTemperatureShade\":{\"Minimum\":{\"Value\":15.5,\"Unit\":\"C\",\"UnitType\":17,\"Phrase\":\"Cool\"},\"Maximum\":{\"Value\":25.1,\"Unit\":\"C\",\"UnitType\":17,\"Phrase\":\"Pleasant\"}},\"HoursOfSun\":11.6,\"DegreeDaySummary\":{\"Heating\":{\"Value\":0.0,\"Unit\":\"C\",\"UnitType\":17},\"Cooling\":{\"Value\":3.0,\"Unit\":\"C\",\"UnitType\":17}},\"AirAndPollen\":[{\"Name\":\"AirQuality\",\"Value\":0,\"Category\":\"Good\",\"CategoryValue\":1,\"Type\":\"Ozone\"},{\"Name\":\"Grass\",\"Value\":0,\"Category\":\"Low\",\"CategoryValue\":1},{\"Name\":\"Mold\",\"Value\":7243,\"Category\":\"Moderate\",\"CategoryValue\":2},{\"Name\":\"Ragweed\",\"Value\":0,\"Category\":\"Low\",\"CategoryValue\":1},{\"Name\":\"Tree\",\"Value\":0,\"Category\":\"Low\",\"CategoryValue\":1},{\"Name\":\"UVIndex\",\"Value\":7,\"Category\":\"High\",\"CategoryValue\":3}],\"Day\":{\"Icon\":2,\"IconPhrase\":\"Mostly
+        sunny\",\"HasPrecipitation\":false,\"ShortPhrase\":\"Mostly sunny\",\"LongPhrase\":\"Mostly
+        sunny\",\"PrecipitationProbability\":3,\"ThunderstormProbability\":0,\"RainProbability\":3,\"SnowProbability\":0,\"IceProbability\":0,\"Wind\":{\"Speed\":{\"Value\":9.3,\"Unit\":\"km/h\",\"UnitType\":7},\"Direction\":{\"Degrees\":254,\"Localized\":\"WSW\",\"English\":\"WSW\"}},\"WindGust\":{\"Speed\":{\"Value\":25.9,\"Unit\":\"km/h\",\"UnitType\":7},\"Direction\":{\"Degrees\":258,\"Localized\":\"WSW\",\"English\":\"WSW\"}},\"TotalLiquid\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"Rain\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"Snow\":{\"Value\":0.0,\"Unit\":\"cm\",\"UnitType\":4},\"Ice\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"HoursOfPrecipitation\":0.0,\"HoursOfRain\":0.0,\"HoursOfSnow\":0.0,\"HoursOfIce\":0.0,\"CloudCover\":14,\"Evapotranspiration\":{\"Value\":4.3,\"Unit\":\"mm\",\"UnitType\":3},\"SolarIrradiance\":{\"Value\":7719.0,\"Unit\":\"W/m\xB2\",\"UnitType\":33},\"RelativeHumidity\":{\"Minimum\":47,\"Maximum\":84,\"Average\":60},\"WetBulbTemperature\":{\"Minimum\":{\"Value\":15.5,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":19.1,\"Unit\":\"C\",\"UnitType\":17},\"Average\":{\"Value\":18.0,\"Unit\":\"C\",\"UnitType\":17}},\"WetBulbGlobeTemperature\":{\"Minimum\":{\"Value\":17.6,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":23.4,\"Unit\":\"C\",\"UnitType\":17},\"Average\":{\"Value\":21.6,\"Unit\":\"C\",\"UnitType\":17}},\"UVIndexFloat\":{\"Minimum\":0.8,\"Maximum\":6.8}},\"Night\":{\"Icon\":35,\"IconPhrase\":\"Partly
+        cloudy\",\"HasPrecipitation\":false,\"ShortPhrase\":\"Partly cloudy\",\"LongPhrase\":\"Partly
+        cloudy\",\"PrecipitationProbability\":4,\"ThunderstormProbability\":0,\"RainProbability\":4,\"SnowProbability\":0,\"IceProbability\":0,\"Wind\":{\"Speed\":{\"Value\":5.6,\"Unit\":\"km/h\",\"UnitType\":7},\"Direction\":{\"Degrees\":235,\"Localized\":\"SW\",\"English\":\"SW\"}},\"WindGust\":{\"Speed\":{\"Value\":18.5,\"Unit\":\"km/h\",\"UnitType\":7},\"Direction\":{\"Degrees\":230,\"Localized\":\"SW\",\"English\":\"SW\"}},\"TotalLiquid\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"Rain\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"Snow\":{\"Value\":0.0,\"Unit\":\"cm\",\"UnitType\":4},\"Ice\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"HoursOfPrecipitation\":0.0,\"HoursOfRain\":0.0,\"HoursOfSnow\":0.0,\"HoursOfIce\":0.0,\"CloudCover\":43,\"Evapotranspiration\":{\"Value\":0.0,\"Unit\":\"mm\",\"UnitType\":3},\"SolarIrradiance\":{\"Value\":137.2,\"Unit\":\"W/m\xB2\",\"UnitType\":33},\"RelativeHumidity\":{\"Minimum\":63,\"Maximum\":100,\"Average\":85},\"WetBulbTemperature\":{\"Minimum\":{\"Value\":15.1,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":18.1,\"Unit\":\"C\",\"UnitType\":17},\"Average\":{\"Value\":16.5,\"Unit\":\"C\",\"UnitType\":17}},\"WetBulbGlobeTemperature\":{\"Minimum\":{\"Value\":15.8,\"Unit\":\"C\",\"UnitType\":17},\"Maximum\":{\"Value\":21.3,\"Unit\":\"C\",\"UnitType\":17},\"Average\":{\"Value\":18.5,\"Unit\":\"C\",\"UnitType\":17}},\"UVIndexFloat\":{\"Minimum\":0.0,\"Maximum\":0.7}},\"Sources\":[\"AccuWeather\"],\"MobileLink\":\"http://www.accuweather.com/en/ca/centretown/k1p/daily-weather-forecast/3381543?day=5&unit=c&lang=en-us\",\"Link\":\"http://www.accuweather.com/en/ca/centretown/k1p/daily-weather-forecast/3381543?day=5&unit=c&lang=en-us\"}]}"
     headers:
-      Access-Control-Allow-Methods:
-      - GET
-      Alt-Svc:
-      - h3=":443"; ma=93600,h3-29=":443"; ma=93600
-      Cache-Control:
-      - public, max-age=1200
-      Connection:
-      - keep-alive
-      Content-Encoding:
-      - gzip
-      Content-Length:
-      - '4309'
       Content-Type:
       - application/json; charset=utf-8
-      Date:
-      - Sun, 28 Dec 2025 11:57:46 GMT
-      Expires:
-      - Sun, 28 Dec 2025 12:17:46 GMT
-      Server-Timing:
-      - edge; dur=1
-      - origin; dur=256
-      - cdn-cache; desc=MISS
-      - ak_p; desc="1766923066428_400219578_344744485_25744_1587_33_38_-";dur=1
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-      Vary:
-      - Accept-Encoding
-      akamai-grn:
-      - 0.501c2117.1766923066.6cc5ba23
-      am:
-      - 'true'
-      ratelimit-limit:
-      - '1'
-      ratelimit-remaining:
-      - '249'
-      request-context:
-      - appId=cid-v1:ea11c69b-764f-4610-b1e2-0faa867e8fb2
-      zp-rid:
-      - 4e9b1717-cee4-4425-81bd-805a13f2d9fa
-    status:
-      code: 200
-      message: OK
-- request:
-    body: ''
-    headers:
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Host:
-      - dataservice.accuweather.com
-      User-Agent:
-      - python-httpx/0.27.2
-      accept:
-      - application/json
-    method: GET
-    uri: https://dataservice.accuweather.com/forecasts/v1/daily/5day/49538?apikey=REDACTED&details=true&metric=true
-  response:
-    body:
-      string: !!binary |
-        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
-        Dokp/QY/sFlVG1sLAAAA//8DAGh2klE9WAAA
-    headers:
-      Access-Control-Allow-Methods:
-      - GET
-      Alt-Svc:
-      - h3=":443"; ma=93600,h3-29=":443"; ma=93600
-      Cache-Control:
-      - public, max-age=1200
-      Connection:
-      - keep-alive
-      Content-Encoding:
-      - gzip
-      Content-Length:
-      - '3960'
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Thu, 01 Jan 2026 09:46:51 GMT
-      Expires:
-      - Thu, 01 Jan 2026 10:06:51 GMT
-      Server-Timing:
-      - edge; dur=6
-      - origin; dur=126
-      - cdn-cache; desc=MISS
-      - ak_p; desc="1767260811128_34697815_2610549556_13130_1986_28_73_-";dur=1
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-      Vary:
-      - Accept-Encoding
-      akamai-grn:
-      - 0.501c2117.1767260811.40f320e
-      am:
-      - 'true'
-      ratelimit-limit:
-      - '1'
-      ratelimit-remaining:
-      - '249'
-      request-context:
-      - appId=cid-v1:ea11c69b-764f-4610-b1e2-0faa867e8fb2
-      zp-rid:
-      - b3ca319d-93ea-499d-ad90-17940fd36289
+      content-length:
+      - '22350'
     status:
       code: 200
       message: OK

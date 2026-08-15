@@ -200,6 +200,29 @@ cython_debug/
 weatherkit_key.p8
 *.p8
 
+# Local agent and generated workspace state
+/.codex/
+/.xskills/
+/.scratch/
+/scratch/
+/data/
+/reports/
+
+# Preserved historical local artifacts
+/PLAN.md
+/repo_feedback.md
+/docs/route_weather_predictions.md
+/docs/wxbench_sqlite_pruning_gap.md
+/docs/precipitation_fusion_notes.md
+/scripts/route_weather_forecast.py
+
+# Generated SQLite artifacts
+*.sqlite
+*.sqlite3
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite-journal
+
 # Cursor
 #  Cursor is an AI-powered code editor. `.cursorignore` specifies files/directories to
 #  exclude from AI features like autocomplete and code analysis. Recommended for sensitive data

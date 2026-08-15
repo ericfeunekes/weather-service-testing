@@ -24,6 +24,7 @@ __all__ = ["fetch_msc_rdps_prognos_forecast", "rdps_prognos_endpoint"]
 
 
 BASE_URL = "https://dd.weather.gc.ca/today/model_rdps/stat-post-processing"
+ARCHIVE_ROOT = "https://dd.weather.gc.ca"
 RUN_CYCLES = (0, 6, 12, 18)
 
 
@@ -38,7 +39,7 @@ class _VariableSpec:
 _VARIABLES = (
     _VariableSpec("AirTemp", "MLR", "AGL-1.5m", "temperature_c"),
     _VariableSpec("DewPoint", "MLR", "AGL-1.5m", "dewpoint_c"),
-    _VariableSpec("WindSpeed", "LASSO", "AGL-10m", "wind_speed_kph"),
+    _VariableSpec("WindSpeed", "LightGBM", "AGL-10m", "wind_speed_kph"),
     _VariableSpec("WindDir", "WDLASSO2", "AGL-10m", "wind_direction_deg"),
 )
 
@@ -57,11 +58,21 @@ def _select_run_time(now: datetime) -> datetime:
 def _build_filename(run_time: datetime, lead_hour: int, spec: _VariableSpec) -> str:
     stamp = run_time.strftime("%Y%m%dT%HZ")
     lead = f"{lead_hour:03d}"
-    return f"{stamp}_MSC_RDPS-PROGNOS-{spec.method}-{spec.name}_{spec.vertical}_PT{lead}H.json"
+    return f"{stamp}_MSC_RDPS-PROGNOS-{spec.method}_{spec.name}_{spec.vertical}_PT{lead}H.json"
 
 
 def _build_url(base_url: str, run_time: datetime, lead_hour: int, spec: _VariableSpec) -> str:
     return f"{base_url}/{run_time:%H}/{lead_hour:03d}/{_build_filename(run_time, lead_hour, spec)}"
+
+
+def _base_url_for_run(base_url: str, *, now: datetime, run_time: datetime) -> str:
+    if base_url.rstrip("/") != BASE_URL:
+        return base_url
+    if now.tzinfo is None:
+        now = now.replace(tzinfo=timezone.utc)
+    if run_time.date() == now.astimezone(timezone.utc).date():
+        return base_url
+    return f"{ARCHIVE_ROOT}/{run_time:%Y%m%d}/WXO-DD/model_rdps/stat-post-processing"
 
 
 def rdps_prognos_endpoint(run_time: datetime, lead_hour: int, variable: str) -> str:
@@ -82,7 +93,8 @@ def _resolve_run_time(
     while attempts < len(RUN_CYCLES):
         lead_hour = 0
         spec = _VARIABLES[0]
-        url = _build_url(base_url, run_time, lead_hour, spec)
+        run_base_url = _base_url_for_run(base_url, now=now, run_time=run_time)
+        url = _build_url(run_base_url, run_time, lead_hour, spec)
         request = client.build_request("GET", url, headers={"accept": "application/geo+json"}, timeout=timeout)
         try:
             response = send_with_retries(
@@ -155,6 +167,7 @@ def fetch_msc_rdps_prognos_forecast(
     run_reference_time, cached_payload = _resolve_run_time(
         now=now, client=client, base_url=base_url, timeout=timeout, retries=retries, capture=capture
     )
+    run_base_url = _base_url_for_run(base_url, now=now, run_time=run_reference_time)
 
     station_id: Optional[str] = None
     station_lat = station_lon = None
@@ -171,7 +184,7 @@ def fetch_msc_rdps_prognos_forecast(
                 payload = cached_payload
                 cached_used = True
             else:
-                url = _build_url(base_url, run_reference_time, lead_hour, spec)
+                url = _build_url(run_base_url, run_reference_time, lead_hour, spec)
                 request = client.build_request("GET", url, headers={"accept": "application/geo+json"}, timeout=timeout)
                 response = send_with_retries(
                     client,

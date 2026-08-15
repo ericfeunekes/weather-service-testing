@@ -2,7 +2,6 @@
 set -euo pipefail
 
 ENV_FILE="/Users/ericfeunekes/Library/Application Support/wxbench/wxbench.env"
-SYNC_TARGET="eric@holy-stone-imac.tailae8a7b.ts.net:/Users/eric/coding/weather-modeling/data"
 if [ -f "$ENV_FILE" ]; then
   while IFS= read -r line; do
     [ -z "$line" ] && continue
@@ -38,9 +37,14 @@ if ! /Users/ericfeunekes/coding/weather-service-testing/.venv/bin/python -m wxbe
   echo "Compaction sweep failed" >&2
 fi
 
+if [ -z "${WX_SYNC_TARGET:-}" ]; then
+  echo "Sync disabled: WX_SYNC_TARGET not configured"
+  exit 0
+fi
+
 if ! /Users/ericfeunekes/coding/weather-service-testing/.venv/bin/python -m wxbench.sync_parquet \
   --data-root "/Users/ericfeunekes/Library/Application Support/wxbench" \
-  --target "$SYNC_TARGET"; then
+  --target "$WX_SYNC_TARGET"; then
   echo "Sync step failed" >&2
   exit 2
 fi

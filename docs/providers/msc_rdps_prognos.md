@@ -15,7 +15,7 @@
 ## Endpoint pattern (Datamart)
 
 ```
-GET https://dd.weather.gc.ca/today/model_rdps/stat-post-processing/{HH}/{LEAD}/{YYYYMMDD}T{HH}Z_MSC_RDPS-PROGNOS-{METHOD}-{VARIABLE}_{VERTICAL}_PT{LEAD}H.json
+GET https://dd.weather.gc.ca/today/model_rdps/stat-post-processing/{HH}/{LEAD}/{YYYYMMDD}T{HH}Z_MSC_RDPS-PROGNOS-{METHOD}_{VARIABLE}_{VERTICAL}_PT{LEAD}H.json
 ```
 
 Where:
@@ -28,7 +28,7 @@ Where:
 ### Variable -> method mapping
 - `AirTemp` -> `MLR` (AGL-1.5m)
 - `DewPoint` -> `MLR` (AGL-1.5m)
-- `WindSpeed` -> `LASSO` (AGL-10m)
+- `WindSpeed` -> `LightGBM` (AGL-10m)
 - `WindDir` -> `WDLASSO2` (AGL-10m)
 
 ## Response fields used (examples)
@@ -49,6 +49,7 @@ Where:
 - The adapter can ingest all lead hours `0-84` and store hourly forecasts; daily is derived.
 - Pulling the full 0-84 range requires 4 files per lead hour (~340 requests per run).
 - The scheduled hourly runner defaults to `max_lead_hours=24` to keep hourly runs lightweight.
+- When availability fallback crosses UTC midnight, previous-day cycles use the dated archive under `/{YYYYMMDD}/WXO-DD/model_rdps/stat-post-processing/` instead of `/today/`.
 
 ## Contract cassettes
 - `msc_rdps_prognos_forecast.yaml`
