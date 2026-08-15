@@ -12,6 +12,7 @@ from wxbench.pipeline import collect_all
 from wxbench.storage.datapoints import CompositeDataPointWriter
 from wxbench.storage.parquet import ParquetDataPointWriter
 from wxbench.storage.sqlite import SqliteDataPointWriter, open_database
+from tests.vcr_redaction import redact_request, redact_response
 
 
 CASSETTE_DIR = Path(__file__).parent.parent / "contract" / "cassettes"
@@ -25,7 +26,10 @@ recorder = vcr.VCR(
         ("apiKey", "REDACTED"),
         ("applicationKey", "REDACTED"),
     ],
-    filter_headers=["authorization"],
+    filter_headers=["authorization", "cookie"],
+    before_record_request=redact_request,
+    decode_compressed_response=True,
+    before_record_response=redact_response,
     match_on=["method", "scheme", "host", "port", "path", "query"],
 )
 
@@ -45,7 +49,7 @@ def test_collect_all_pipeline_stores_raw_and_points(tmp_path: Path) -> None:
         },
     )
 
-    cassette_clock = datetime(2025, 12, 28, 12, tzinfo=timezone.utc)
+    cassette_clock = datetime(2026, 8, 15, 0, 13, tzinfo=timezone.utc)
     parquet_root = tmp_path / "parquet"
 
     with httpx.Client() as client, recorder.use_cassette("pipeline_collect_all.yaml"):
@@ -71,6 +75,9 @@ def test_collect_all_pipeline_stores_raw_and_points(tmp_path: Path) -> None:
         row[0]
         for row in connection.execute("SELECT DISTINCT metric_type FROM data_points").fetchall()
     }
+    providers = {
+        row[0] for row in connection.execute("SELECT DISTINCT provider FROM data_points").fetchall()
+    }
     connection.close()
 
     assert raw_count == result.raw_payloads
@@ -79,4 +86,5 @@ def test_collect_all_pipeline_stores_raw_and_points(tmp_path: Path) -> None:
     assert "wind_gust" in metric_types
     assert "uv_index" in metric_types
     assert "cloud_cover" in metric_types
+    assert "msc_rdps_prognos" in providers
     assert any(parquet_root.rglob("*.parquet"))

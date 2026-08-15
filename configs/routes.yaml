@@ -1,0 +1,35 @@
+# Trip brief route presets
+# Keep secrets out of this file.
+
+version: 1
+
+defaults:
+  sampling:
+    distance_km: 50
+    time_cap_minutes: 40
+  output:
+    format: markdown
+    pdf: false
+  route:
+    travel_mode: DRIVE
+    routing_preference: TRAFFIC_AWARE
+    units: METRIC
+  msc:
+    mode: endpoints
+  timezone: America/Halifax
+
+routes:
+  bathurst_to_halifax:
+    name: Bathurst, NB → Halifax, NS
+    origin: "Bathurst, NB"
+    destination: "Halifax, NS"
+    timezone: America/Halifax
+
+  halifax_to_martock:
+    name: Halifax, NS → Ski Martock, NS
+    origin: "Halifax, NS"
+    destination: "Ski Martock, NS"
+    timezone: America/Halifax
+    sampling:
+      distance_km: 25
+      time_cap_minutes: 30

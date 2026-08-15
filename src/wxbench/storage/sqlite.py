@@ -670,7 +670,7 @@ def list_unsynced_parquet_files(
     path_prefix: str | None = None,
     compacted_only: bool = False,
 ) -> list[ParquetIndexRow]:
-    clauses = ["sync.target IS NULL"]
+    clauses = ["(sync.target IS NULL OR sync.status = 'failed')"]
     params: list[object] = [target]
     if min_mtime is not None:
         clauses.append("idx.mtime <= ?")

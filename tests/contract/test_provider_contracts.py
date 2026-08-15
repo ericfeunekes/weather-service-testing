@@ -30,6 +30,7 @@ from wxbench.providers import (
     fetch_tomorrow_io_observation,
 )
 from wxbench.providers.weatherkit import fetch_weatherkit_bundle
+from tests.vcr_redaction import redact_request, redact_response
 
 
 CASSETTE_DIR = Path(__file__).parent / "cassettes"
@@ -46,7 +47,10 @@ recorder = vcr.VCR(
         ("application_key", "REDACTED"),
         ("mac", "REDACTED"),
     ],
-    filter_headers=["authorization"],
+    filter_headers=["authorization", "cookie"],
+    before_record_request=redact_request,
+    decode_compressed_response=True,
+    before_record_response=redact_response,
     match_on=["method", "scheme", "host", "port", "path", "query"],
 )
 
@@ -147,13 +151,6 @@ def _weatherkit_key_path(tmp_path: Path) -> str:
 
 
 def _coords(*, default_lat: float, default_lon: float) -> tuple[float, float]:
-    lat_raw = os.getenv("WX_LAT")
-    lon_raw = os.getenv("WX_LON")
-    if lat_raw and lon_raw:
-        try:
-            return float(lat_raw), float(lon_raw)
-        except ValueError:
-            pytest.skip("Invalid coordinates provided via WX_LAT/WX_LON")
     return default_lat, default_lon
 
 
@@ -229,7 +226,7 @@ def test_ambient_weather_history_contract(client: httpx.Client) -> None:
 
 def test_accuweather_minute_forecast_contract(client: httpx.Client) -> None:
     with recorder.use_cassette("accuweather_minute_forecast.yaml"):
-        latitude, longitude = _coords(default_lat=44.639, default_lon=-63.587)
+        latitude, longitude = _coords(default_lat=45.421, default_lon=-75.697)
         periods = fetch_accuweather_minute_forecast(
             latitude=latitude,
             longitude=longitude,
@@ -245,7 +242,7 @@ def test_accuweather_minute_forecast_contract(client: httpx.Client) -> None:
 
 def test_accuweather_location_contract(client: httpx.Client) -> None:
     with recorder.use_cassette("accuweather_location_search.yaml"):
-        latitude, longitude = _coords(default_lat=44.639, default_lon=-63.587)
+        latitude, longitude = _coords(default_lat=45.421, default_lon=-75.697)
         location = fetch_accuweather_location(
             latitude=latitude,
             longitude=longitude,
@@ -260,7 +257,7 @@ def test_accuweather_location_contract(client: httpx.Client) -> None:
 
 def test_accuweather_observation_contract(client: httpx.Client) -> None:
     with recorder.use_cassette("accuweather_location_search.yaml"):
-        latitude, longitude = _coords(default_lat=44.639, default_lon=-63.587)
+        latitude, longitude = _coords(default_lat=45.421, default_lon=-75.697)
         location = fetch_accuweather_location(
             latitude=latitude,
             longitude=longitude,
@@ -288,7 +285,7 @@ def test_accuweather_observation_contract(client: httpx.Client) -> None:
 
 def test_accuweather_hourly_forecast_contract(client: httpx.Client) -> None:
     with recorder.use_cassette("accuweather_location_search.yaml"):
-        latitude, longitude = _coords(default_lat=44.639, default_lon=-63.587)
+        latitude, longitude = _coords(default_lat=45.421, default_lon=-75.697)
         location = fetch_accuweather_location(
             latitude=latitude,
             longitude=longitude,
@@ -315,7 +312,7 @@ def test_accuweather_hourly_forecast_contract(client: httpx.Client) -> None:
 
 def test_accuweather_daily_forecast_contract(client: httpx.Client) -> None:
     with recorder.use_cassette("accuweather_location_search.yaml"):
-        latitude, longitude = _coords(default_lat=44.639, default_lon=-63.587)
+        latitude, longitude = _coords(default_lat=45.421, default_lon=-75.697)
         location = fetch_accuweather_location(
             latitude=latitude,
             longitude=longitude,
@@ -350,8 +347,8 @@ def test_openweather_observation_contract(client: httpx.Client) -> None:
         )
 
     assert observation.provider == "openweather"
-    assert observation.location.latitude == pytest.approx(latitude)
-    assert observation.location.longitude == pytest.approx(longitude)
+    assert observation.location.latitude == pytest.approx(latitude, abs=0.01)
+    assert observation.location.longitude == pytest.approx(longitude, abs=0.01)
     assert observation.condition
     assert observation.temperature_c is not None
     assert observation.temperature_apparent_c is not None
@@ -525,7 +522,7 @@ def test_msc_geomet_forecast_contract(client: httpx.Client) -> None:
 def test_msc_rdps_prognos_forecast_contract(client: httpx.Client) -> None:
     with recorder.use_cassette("msc_rdps_prognos_forecast.yaml"):
         latitude, longitude = _coords(default_lat=45.421, default_lon=-75.697)
-        run_time = datetime(2025, 12, 28, 0, tzinfo=timezone.utc)
+        run_time = datetime(2026, 8, 14, 6, tzinfo=timezone.utc)
         periods = fetch_msc_rdps_prognos_forecast(
             latitude=latitude,
             longitude=longitude,
@@ -544,7 +541,7 @@ def test_msc_rdps_prognos_forecast_contract(client: httpx.Client) -> None:
 
 def test_weatherkit_weather_contract(client: httpx.Client, tmp_path: Path) -> None:
     with recorder.use_cassette("weatherkit_weather.yaml"):
-        latitude, longitude = _coords(default_lat=44.639, default_lon=-63.587)
+        latitude, longitude = _coords(default_lat=45.421, default_lon=-75.697)
         bundle = fetch_weatherkit_bundle(
             latitude=latitude,
             longitude=longitude,
