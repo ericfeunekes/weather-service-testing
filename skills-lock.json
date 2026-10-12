@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "testing": {
+      "source": "ericfeunekes/ai-marketplace",
+      "sourceType": "github",
+      "skillPath": "skills/testing/SKILL.md",
+      "computedHash": "47834346b275f45f58bd5ed042f861b0bcf0a3c2bde26f0cea0e639037326cbf"
+    }
+  }
+}
